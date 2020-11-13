@@ -6,15 +6,32 @@
     <v-card-title>
       <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
     </v-card-title>
+
+    <!-- mobile-breakpoint="" eliminates the mobile table view option as I'm doing custom column visibility instead -->
     <v-data-table
-      :headers="headers"
+      :headers="computedHeaders"
       :items="plays"
       :search="search"
-      single-expand
-      item-key="id"
-      show-expand
+      mobile-breakpoint=""
+      @click:row="handleClick"
     >
-      <template v-slot:expanded-item="{ headers, item }">
+      <!-- <template slot="items" slot-scope="props">
+        <tr @click="showAlert(props.item)"> -->
+          <!-- <td>{{ props.item.name }}</td> -->
+          <!-- <td class="text-xs-right">{{ props.item.datePlayed }}</td>
+          <td class="text-xs-right">{{ props.item.boardGameId }}</td>
+          <td class="text-xs-right">{{ props.item.type }}</td>
+        </tr>
+      </template> -->
+
+       <!-- <template :slot="items" slot-scope="props">
+        <td>{{ props.item.name }}</td> -->
+        <!-- <td class="text-xs-right">{{ props.item.datePlayed }}</td>
+        <td class="text-xs-right">{{ props.item.boardGameId }}</td>
+        <td class="text-xs-right" v-if="!$vuetify.breakpoint.smAndDown">{{ props.item.type }}</td>
+      </template> --> -->
+    
+      <!-- <template v-slot:expanded-item="{ headers, item }">
         <td :colspan="headers.length">
           <v-container>
             <h3>{{ item.boardGameId }}</h3>
@@ -22,8 +39,51 @@
             <p><strong>Description: </strong>{{ item.description }}</p>
           </v-container>
         </td>
-      </template>
+      </template> -->
     </v-data-table>
+
+    <!-- Dialog/Modal with additional information -->
+    <v-dialog
+      v-model="dialog"
+      width="300"
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+      transition="dialog-bottom-transition"
+    >
+      <!-- <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="red lighten-2"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          Click Me
+        </v-btn>
+      </template> -->
+
+      <v-card>
+        <v-card-title class="headline grey lighten-2">
+          More info about GamePlay
+        </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
 
   </v-container>
 </template>
@@ -36,15 +96,22 @@ export default {
       search: "",
       // expanded: [],
       // singleExpand: true,
+      dialog: false,
       headers: [
         { text: "Date", value: 'datePlayed' },
-        { text: "Name", value: 'boardGameId' },
+        { text: "Game", value: 'boardGameId' },
         { text: "Winner", value: 'winnerId' },
-        { text: '', value: 'data-table-expand' },
+        { text: "Something?", value: 'winnerId', hide: 'smAndDown'},
+
+        // The space after in the align: makes it so the class mobile-invisible-column is applied
+        // { text: '', value: 'data-table-expand', hide: "smAndDown"},
       ]
     };
   },
   computed: {
+    computedHeaders() {
+      return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
+    },
     plays() {
       let plays = this.deepCopy(this.$root.$data.history);
       // console.log("root");
@@ -62,6 +129,12 @@ export default {
     }
   },
   methods: {
+    handleClick(item) {
+      console.log("Handle click = " + item.boardGameId);
+      this.dialog = true;
+      // this.highlightClickedRow(value);
+      // this.viewDetails(value);
+    },
     readableDate(date) {
       console.log(date);
       return date.toLocaleDateString("en-US", {
@@ -157,3 +230,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@media (max-width: 600px){
+  .mobile-invisible-column {
+    display: none !important;
+  }
+}
+</style>
