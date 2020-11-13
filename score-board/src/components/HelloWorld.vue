@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <!-- Mobile FAB -->
     <v-row class="text-center">
       <v-col cols="12">
         <v-img
@@ -43,6 +44,7 @@
       </v-col>
 
       <v-col class="mb-5" cols="12">
+    
         <h2 class="headline font-weight-bold mb-3">
           Important Links
         </h2>
