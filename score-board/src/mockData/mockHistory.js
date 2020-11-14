@@ -71,3 +71,4 @@ let mockHistory = [
 ]
 
 export default mockHistory;
+

@@ -33,7 +33,7 @@ let mockMembers = [
         id: 4,
         firstName: "Steven",
         lastName: "Greenberg",
-        fullName: "Steven Greenber",
+        fullName: "Steven Greenberg",
         dateJoined: new Date("November 10, 2020 10:31:00"),
         gamesPlayed: 48,
         totalWins: 14,
