@@ -4,10 +4,9 @@
 
     <!-- Table and Search -->
 
-    <!-- Fix Search Later -->
-    <!-- <v-card-title>
+    <v-card-title>
       <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
-    </v-card-title> -->
+    </v-card-title>
 
     <!-- mobile-breakpoint="" eliminates the mobile table view option as I'm doing custom column visibility instead -->
     <v-data-table
@@ -27,7 +26,7 @@
         </tr>
       </template> -->
 
-      <template v-slot:item.datePlayed=" { item }">
+      <!-- <template v-slot:item.datePlayed=" { item }">
         {{ readableDate(item.datePlayed) }}
       </template>
       <template v-slot:item.boardGameId=" { item }">
@@ -38,7 +37,7 @@
       </template>
       <template v-slot:item.playersId=" { item }">
         {{ numPlayers(item.playersId) }}
-      </template>
+      </template> -->
 
     </v-data-table>
 
@@ -73,10 +72,10 @@ export default {
       dialog: false,
       detailPlay: null,
       headers: [
-        { text: "Date", value: 'datePlayed' },
-        { text: "Game", value: 'boardGameId' },
-        { text: "Winner", value: 'winnerId' },
-        { text: "# Players", value: 'playersId', hide: 'smAndDown'},
+        { text: "Date", value: 'readableDate' },
+        { text: "Game", value: 'boardGameName' },
+        { text: "Winner", value: 'winnerDisplay' },
+        { text: "# Players", value: 'numPlayers', hide: 'smAndDown'},
 
         // The space after in the align: makes it so the class mobile-invisible-column is applied
         // { text: '', value: 'data-table-expand', hide: "smAndDown"},
@@ -87,9 +86,24 @@ export default {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
+
+    // Takes the root data array of play objects and maps them to a new array
+    // the ... operator is like Object.assign() and is creating new objects (and
+    // then modifying some properties for History.vue's purposes) so that this 
+    // returned list does not edit the objects stored in the root data. While 
+    // mapping does create a new array, it is stil referencing the same objects.
     plays() {
-      return this.$root.$data.history;
-    }
+      return this.$root.$data.history.map(play => {
+        return {
+          ...play,
+          readableDate: this.readableDate(play.datePlayed),
+          boardGameName: this.gameName(play.boardGameId),
+          winnerDisplay: this.playWinnerMember(play.winnerId, play.type, play.boardWin),
+          numPlayers: this.numPlayers(play.playersId),
+        };
+      });
+    },
+
     // plays() {
     //   let plays = this.deepCopy(this.$root.$data.history);
     //   // console.log("root");
