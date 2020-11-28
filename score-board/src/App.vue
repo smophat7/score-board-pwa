@@ -1,6 +1,7 @@
 <template>
   <v-app>
 
+    <!-- Top App Bar -->
     <v-app-bar app clipped-left color="primary" dark>
       <div class="d-flex align-center">
         <v-img alt="Vuetify Logo" class="shrink mr-2" contain
@@ -15,6 +16,7 @@
     </v-app-bar>
 
     <!-- Side Navigation Drawer on Large Devices -->
+    <!-- Account Selection -->
     <v-navigation-drawer app clipped v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
       <v-list-item class="px-2">
         <v-list-item-avatar>
@@ -26,22 +28,20 @@
         </v-btn>
       </v-list-item>
       <v-divider></v-divider>
-
+      <!-- Record Button -->
       <v-list dense>
         <v-list-item class="d-flex-wrap justify-center">
-          <!-- <v-fab-transition> -->
-            <v-btn v-show="mini" color="secondary" dark small fab>
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          <!-- </v-fab-transition> -->
+          <v-btn v-show="mini" to="/record" color="secondary" dark small fab>
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
           <v-scroll-x-transition>
-            <v-btn v-show="!mini" color="secondary" dark small>
+            <v-btn v-show="!mini"  to="/record" color="secondary" dark small>
               <v-icon>mdi-plus</v-icon>
               <span>Record Game</span>
             </v-btn>
           </v-scroll-x-transition>
         </v-list-item>
-
+        <!-- Side Menu Items -->
         <v-list-item v-for="item in items" :key="item.title" link :to="item.path">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -53,6 +53,7 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- Main Content of App -->
     <v-main>
       <v-fade-transition mode="out-in">
       <router-view/>
@@ -61,7 +62,7 @@
 
     <!-- Mobile FAB -->
       <v-fab-transition>
-        <v-btn class="d-sm-none fab-mobile" color="secondary" fab large dark>
+        <v-btn class="d-sm-none fab-mobile" to="/record" color="secondary" fab large dark>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-fab-transition>

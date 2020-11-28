@@ -24,6 +24,11 @@ const routes = [
     name: 'History',
     component: () => import("../views/History/History.vue")
   },
+  {
+    path: '/record',
+    name: 'Record',
+    component: () => import("../views/Record/RecordGame.vue")
+  }
 ];
 
 const router = new VueRouter({
