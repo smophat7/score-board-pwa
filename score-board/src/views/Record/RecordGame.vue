@@ -9,7 +9,6 @@
         <v-icon>mdi-close</v-icon>
         Cancel
       </v-btn>
-
     </v-app-bar>
 
     <v-card>
@@ -49,6 +48,9 @@
         <!-- Individual step content cards -->
         <v-stepper-items id="stepper-content" class="relative-stepper-content">
           <v-stepper-content step="1" class="stepper-contents">
+            <v-card color="grey lighten-1" height="400px"></v-card>
+            <br>
+            <br>
             <v-card color="grey lighten-1" height="400px"></v-card>
           </v-stepper-content>
 
@@ -145,7 +147,7 @@
   position: fixed;
   bottom: 0;
   background-color: white;
-      box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
 }
 
 </style>

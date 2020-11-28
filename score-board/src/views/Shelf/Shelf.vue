@@ -2,6 +2,21 @@
   <v-container>
     <h1>Shelf</h1>
 
+    <v-btn class="mt-3" color="secondary" @click="searchNewButtonClick">
+      Search for New Games
+    </v-btn>
+
+    <v-dialog
+      v-model="searchNewGamesDialog"
+      max-width="550px"
+      scrollable
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+      transition="dialog-bottom-transition"
+    >
+      <SearchNewGame v-on:close-modal="searchNewGamesDialog = false"/>
+    </v-dialog>
+
+
     <!-- Table and Search -->
 
     <v-card-title>
@@ -14,7 +29,7 @@
       :items="games"
       :search="search"
       mobile-breakpoint=""
-      @click:row="handleClick"
+      @click:row="handleDetailClick"
     >
 
     </v-data-table>
@@ -22,13 +37,13 @@
 
     <!-- Dialog/Modal with additional information -->
     <v-dialog
-      v-model="dialog"
+      v-model="detailDialog"
       max-width="550px"
       scrollable
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <GameDetails :game="detailGame" v-on:close-modal="dialog = false"/>
+      <GameDetails :game="detailGame" v-on:close-modal="detailDialog = false"/>
     </v-dialog>
 
   </v-container>
@@ -36,18 +51,21 @@
 
 <script>
 import GameDetails from "@/components/GameDetails.vue";
+import SearchNewGame from "@/components/SearchNewGame.vue";
 // import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 export default {
   name: "Shelf",
   components: {
     GameDetails,
+    SearchNewGame,
   },
   // mixins: [HistoryFunctions],
   data() {
     return {
       search: "",
-      dialog: false,
+      detailDialog: false,
+      searchNewGamesDialog: false,
       detailGame: null,
       headers: [
         { text: "Game", value: 'name'},
@@ -72,10 +90,12 @@ export default {
     }
   },
   methods: {
-    handleClick(item) {
-      console.log(item.fullName);
+    handleDetailClick(item) {
       this.detailGame = item;
-      this.dialog = true;
+      this.detailDialog = true;
+    },
+    searchNewButtonClick() {
+      this.searchNewGamesDialog = true;
     },
   }
 };

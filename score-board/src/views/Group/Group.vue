@@ -14,7 +14,7 @@
       :items="members"
       :search="search"
       mobile-breakpoint=""
-      @click:row="handleClick"
+      @click:row="handleDetailClick"
     >
 
     </v-data-table>
@@ -22,13 +22,13 @@
 
     <!-- Dialog/Modal with additional information -->
     <v-dialog
-      v-model="dialog"
+      v-model="detailDialog"
       max-width="550px"
       scrollable
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <MemberDetails :member="detailMember" v-on:close-modal="dialog = false"/>
+      <MemberDetails :member="detailMember" v-on:close-modal="detailDialog = false"/>
     </v-dialog>
 
   </v-container>
@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       search: "",
-      dialog: false,
+      detailDialog: false,
+      searchNewGamesDialog: false,
       detailMember: null,
       headers: [
         { text: "Joined", value: 'readableDate', hide: 'xsOnly' },
@@ -72,10 +73,10 @@ export default {
     }
   },
   methods: {
-    handleClick(item) {
-      console.log(item.fullName);
+    handleDetailClick(item) {
+      // console.log(item.fullName);                  // Delete me
       this.detailMember = item;
-      this.dialog = true;
+      this.detailDialog = true;
     },
     readableDate(date) {
       return date.toLocaleDateString("en-US", {
