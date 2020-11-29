@@ -4,8 +4,20 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    recordPlayers: [],
+  },
+  getters: {
+    recordPlayers: (state) => state.recordPlayers,
+  },
+  mutations: {
+    updateRecordPlayers(state, members) {
+      state.recordPlayers = members;
+    },
+    clearRecordValues(state) {
+      state.recordPlayers = [];
+    },
+  },
   actions: {},
   modules: {}
 });

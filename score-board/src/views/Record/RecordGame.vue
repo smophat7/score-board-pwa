@@ -55,7 +55,7 @@
           </v-stepper-content>
 
           <v-stepper-content step="2" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <SelectPlayers :members="members"/>
           </v-stepper-content>
 
           <v-stepper-content step="3" class="stepper-contents">
@@ -88,12 +88,22 @@
 </template>
 
 <script>
+import SelectPlayers from "@/components/Record/SelectPlayers.vue";
+
   export default {
     name: "RecordGame",
+    components: {
+      SelectPlayers,
+    },
     data () {
       return {
         e1: 1,
         showDialog: true,
+      }
+    },
+    computed: {
+      members() {
+        return this.$root.$data.members;
       }
     },
     methods: {
