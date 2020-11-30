@@ -11,19 +11,21 @@
       </div>
       <v-spacer></v-spacer>
       <!-- Profile picture + dropdown menu -->
-      <v-menu v-model="profileDropdown" close-on-click close-on-content-click offset-y>
+      <v-menu v-model="profileDropdown" close-on-click close-on-content-click offset-y transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">          
           <v-avatar v-bind="attrs" v-on="on">
             <v-img class="profile-picture-border" src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
           </v-avatar>
         </template>
         <v-list>
-          <v-list-item @click="">
-            Settings
+          <v-list-item @click="" class="px-4">
+            <v-icon class="pr-3">mdi-cog</v-icon>
+            <span class="mx-auto">Settings</span>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item @click="">
-            Log out
+          <v-list-item @click="" class="px-4">
+            <v-icon class="pr-3">mdi-logout</v-icon>
+            <span class="mx-auto">Log Out</span>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -32,26 +34,69 @@
     <!-- Side Navigation Drawer on Large Devices -->
     <!-- Account Selection -->
     <v-navigation-drawer app clipped v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
-      <v-list-item class="px-2">
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-title>John Leider</v-list-item-title>
+      <!-- Group Selection Dropdown -->
+      <v-list-item v-if="!mini" class="group-select-item-height">
+        <v-menu v-model="groupSelectDropdown"
+          close-on-click close-on-content-click
+          offset-y class="group-menu-align"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" block color="secondary">
+              Group Name
+              <v-icon v-if="groupSelectDropdown">mdi-chevron-up</v-icon>
+              <v-icon v-else>mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="" class="px-4">
+              <span>Other Group Name</span>
+            </v-list-item>
+            <v-list-item @click="" class="px-4">
+              <span>Third Name Here</span>
+            </v-list-item>
+            <v-list-item @click="" class="px-4">
+              <span>Why Not Four?</span>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item @click="" class="px-4">
+              <v-icon class="pr-3">mdi-account-arrow-right</v-icon>
+              <span class="mx-auto">Join a Group</span>
+            </v-list-item>
+            <v-list-item @click="" class="px-4">
+              <v-icon class="pr-3">mdi-plus</v-icon>
+              <span class="mx-auto">Create a Group</span>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-list-item>
+      <v-list-item v-else class="group-select-padding group-select-item-height">
+        <v-menu v-model="groupSelectDropdown"
+          close-on-click close-on-content-click
+          offset-y class="group-menu-align"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon class="mx-auto">
+              <v-avatar v-bind="attrs" v-on="on" color="secondary">
+                <span class="group-coloring">GN</span>
+              </v-avatar>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="" class="px-4">
+              <v-icon class="pr-3">mdi-cog</v-icon>
+              <span class="mx-auto">Settings</span>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item @click="" class="px-4">
+              <v-icon class="pr-3">mdi-logout</v-icon>
+              <span class="mx-auto">Log Out</span>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-list-item>
       <v-divider></v-divider>
-      <!-- Record Button -->
-      <v-list dense>
-        <v-list-item class="d-flex-wrap justify-center">
-          <v-btn v-show="mini" to="/record" color="secondary" dark small fab>
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-          <v-scroll-x-transition>
-            <v-btn v-show="!mini"  to="/record" color="secondary" dark small>
-              <v-icon>mdi-plus</v-icon>
-              <span>Record Game</span>
-            </v-btn>
-          </v-scroll-x-transition>
-        </v-list-item>
+
+      <v-list>
         <!-- Side Menu Items -->
         <v-list-item v-for="item in items" :key="item.title" link :to="item.path">
           <v-list-item-icon>
@@ -80,17 +125,17 @@
 
     <!-- Main Content of App -->
     <v-main>
-      <v-fade-transition mode="out-in">
-      <router-view/>
-      </v-fade-transition>
+      <!-- <v-fade-transition mode="out-in"> -->
+        <router-view/>
+      <!-- </v-fade-transition> -->
     </v-main>
 
     <!-- Mobile FAB -->
-      <v-fab-transition>
+      <!-- <v-fab-transition>
         <v-btn class="d-sm-none fab-mobile" to="/record" color="secondary" fab large dark>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
-      </v-fab-transition>
+      </v-fab-transition> -->
 
     <!-- More menu -->
     <v-bottom-sheet v-model="mobileDrawerBotom" class="d-sm-none">
@@ -127,6 +172,7 @@ export default {
   },
   data: () => ({
     profileDropdown: false,
+    groupSelectDropdown: false,
     mobileDrawerBotom: false,
     notDisabled: false,
     sideDrawer: null,
@@ -158,16 +204,36 @@ export default {
 };
 </script>
 
-<style scoped>
+
+<style>
+/* Globally applied styles */
 
 .profile-picture-border {
   border: solid 1.5px white;
 }
 
+.group-select-padding {
+  padding: 5px !important;
+}
+
+.group-select-item-height {
+  height: 58px;
+}
+
+.group-coloring {
+  color: white;
+}
+
 .fab-mobile {
   position: fixed;
-  bottom: calc(56px + 20px);
-  left: 20px;
+  bottom: calc(56px + 12px);
+  right: 12px;
+}
+
+@media (max-width: 600px){
+  .margin-bottom-for-fab {
+    margin-bottom: 50px;
+  }
 }
 
 /* CSS fix from https://github.com/vuetifyjs/vuetify/issues/8067 */

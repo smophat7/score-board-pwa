@@ -5,7 +5,7 @@
     <!-- Table and Search -->
 
     <v-card-title>
-      <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+      <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable label="Search" single-line hide-details></v-text-field>
     </v-card-title>
 
     <!-- mobile-breakpoint="" eliminates the mobile table view option as I'm doing custom column visibility instead -->
@@ -16,7 +16,6 @@
       mobile-breakpoint=""
       @click:row="handleDetailClick"
     >
-
     </v-data-table>
 
 

@@ -1,15 +1,35 @@
 <template>
   <v-container>
-    <h1>History</h1>
+    <v-container>
+      <v-row>
+        <h1>Play History</h1>
+        <v-spacer></v-spacer>
+
+        <!-- Desktop Action Button (stays at the top) -->
+          <v-btn class="hidden-xs-only my-auto" color="secondary" rounded to="/record">
+            <v-icon>mdi-plus</v-icon>
+            Record Play
+          </v-btn>
+
+        <!-- Mobile FAB (position:fixed) -->
+        <v-fab-transition>
+          <v-btn class="d-sm-none fab-mobile" color="secondary" fab fixed to="/record">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-fab-transition>
+
+      </v-row>
+    </v-container>
 
     <!-- Table and Search -->
 
     <v-card-title>
-      <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+      <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable label="Search" single-line hide-details></v-text-field>
     </v-card-title>
 
     <!-- mobile-breakpoint="" eliminates the mobile table view option as I'm doing custom column visibility instead -->
     <v-data-table
+      class="margin-bottom-for-fab"
       :headers="computedHeaders"
       :items="plays"
       :search="search"

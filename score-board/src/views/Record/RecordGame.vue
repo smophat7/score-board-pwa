@@ -1,15 +1,15 @@
 <template>
   <v-dialog fullscreen v-model="showDialog" @input="cancel">
-    <v-app-bar id="top" app clipped-left dense color="primary" dark>
-      <v-toolbar-title>Record New Gameplay</v-toolbar-title>
+    <v-toolbar id="top" class="fixed" clipped-left dense color="primary" dark>
+      <v-toolbar-title>Record Game Play</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn color="error" @click="cancel">
+      <v-btn color="error" @click="cancel" small>
         <v-icon>mdi-close</v-icon>
         Cancel
       </v-btn>
-    </v-app-bar>
+    </v-toolbar>
 
     <v-card>
 
@@ -134,6 +134,10 @@ import SelectPlayers from "@/components/Record/SelectPlayers.vue";
 </script>
 
 <style scoped>
+.fixed {
+  position: fixed;
+  z-index: 10;
+}
 
 .fixed-stepper-header {
   position: fixed;
