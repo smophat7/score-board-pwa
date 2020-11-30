@@ -38,7 +38,8 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn block color="secondary" text @click="$emit('close-modal')">
+      <v-btn block color="error" text @click="$emit('close-modal')">
+        <v-icon left color="error">mdi-close-circle</v-icon>
         Close
       </v-btn>
     </v-card-actions>

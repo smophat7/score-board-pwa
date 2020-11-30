@@ -3,16 +3,30 @@
 
     <!-- Top App Bar -->
     <v-app-bar app clipped-left color="primary" dark>
+      <!-- Logo/Brand -->
       <div class="d-flex align-center">
         <v-img alt="Vuetify Logo" class="shrink mr-2" contain
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png" transition="scale-transition" width="40" />
         ScoreBoard
       </div>
       <v-spacer></v-spacer>
-      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <!-- Profile picture + dropdown menu -->
+      <v-menu v-model="profileDropdown" close-on-click close-on-content-click offset-y>
+        <template v-slot:activator="{ on, attrs }">          
+          <v-avatar v-bind="attrs" v-on="on">
+            <v-img class="profile-picture-border" src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
+          </v-avatar>
+        </template>
+        <v-list>
+          <v-list-item @click="">
+            Settings
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item @click="">
+            Log out
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <!-- Side Navigation Drawer on Large Devices -->
@@ -23,9 +37,6 @@
           <v-img src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
         </v-list-item-avatar>
         <v-list-item-title>John Leider</v-list-item-title>
-        <v-btn icon @click.stop="mini = !mini">
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
       </v-list-item>
       <v-divider></v-divider>
       <!-- Record Button -->
@@ -50,6 +61,20 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider></v-divider>
+        <v-row>
+          <v-spacer v-if="!mini"></v-spacer>
+          <v-col v-if="!mini" class="text-right">
+            <v-btn icon @click.stop="mini = !mini">
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col v-else class="text-center">
+            <v-btn icon @click.stop="mini = !mini">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-list>
     </v-navigation-drawer>
 
@@ -98,11 +123,10 @@
 
 export default {
   name: "App",
-
   components: {
   },
-
   data: () => ({
+    profileDropdown: false,
     mobileDrawerBotom: false,
     notDisabled: false,
     sideDrawer: null,
@@ -118,13 +142,13 @@ export default {
 
       },
       {
-        title: 'Shelf',
+        title: 'Collection',
         icon: 'mdi-dice-multiple',
         path: '/shelf'
 
       },
       {
-        title: 'History',
+        title: 'Plays',
         icon: 'mdi-history',
         path: '/history'
       },
@@ -135,6 +159,11 @@ export default {
 </script>
 
 <style scoped>
+
+.profile-picture-border {
+  border: solid 1.5px white;
+}
+
 .fab-mobile {
   position: fixed;
   bottom: calc(56px + 20px);

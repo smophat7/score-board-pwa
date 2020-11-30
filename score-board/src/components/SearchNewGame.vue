@@ -9,7 +9,7 @@
 
     <v-card-text>
       <div class="px-3">
-        <v-form class="game-search-form mb-5" id="gameSearchForm">
+        <v-form v-on:submit.prevent="searchGames" class="game-search-form mb-5" id="gameSearchForm">
           <v-row align="center" justify-center>
             <v-col cols="8">
               <v-text-field v-model="searchValue" label="Search from 120,000+ games" @keydown.enter="searchGames"
@@ -76,6 +76,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn block color="error" text @click="$emit('close-modal')">
+        <v-icon left color="error">mdi-close-circle</v-icon>
         Close
       </v-btn>
     </v-card-actions>
