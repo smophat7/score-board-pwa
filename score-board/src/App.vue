@@ -32,72 +32,19 @@
     </v-app-bar>
 
     <!-- Side Navigation Drawer on Large Devices -->
-    <!-- Account Selection -->
-    <v-navigation-drawer app clipped v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
+    <v-navigation-drawer app clipped disable-route-watcher v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
+      
       <!-- Group Selection Dropdown -->
       <v-list-item v-if="!mini" class="group-select-item-height">
-        <v-menu v-model="groupSelectDropdown"
-          close-on-click close-on-content-click
-          offset-y class="group-menu-align"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" block color="secondary">
-              Group Name
-              <v-icon v-if="groupSelectDropdown">mdi-chevron-up</v-icon>
-              <v-icon v-else>mdi-chevron-down</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="" class="px-4">
-              <span>Other Group Name</span>
-            </v-list-item>
-            <v-list-item @click="" class="px-4">
-              <span>Third Name Here</span>
-            </v-list-item>
-            <v-list-item @click="" class="px-4">
-              <span>Why Not Four?</span>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item @click="" class="px-4">
-              <v-icon class="pr-3">mdi-account-arrow-right</v-icon>
-              <span class="mx-auto">Join a Group</span>
-            </v-list-item>
-            <v-list-item @click="" class="px-4">
-              <v-icon class="pr-3">mdi-plus</v-icon>
-              <span class="mx-auto">Create a Group</span>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+        <GroupSelectExpanded :dropBelow="true" :dropAbove="false" />
       </v-list-item>
       <v-list-item v-else class="group-select-padding group-select-item-height">
-        <v-menu v-model="groupSelectDropdown"
-          close-on-click close-on-content-click
-          offset-y class="group-menu-align"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon class="mx-auto">
-              <v-avatar v-bind="attrs" v-on="on" color="secondary">
-                <span class="group-coloring">GN</span>
-              </v-avatar>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="" class="px-4">
-              <v-icon class="pr-3">mdi-cog</v-icon>
-              <span class="mx-auto">Settings</span>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item @click="" class="px-4">
-              <v-icon class="pr-3">mdi-logout</v-icon>
-              <span class="mx-auto">Log Out</span>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+        <GroupSelectShrunk :dropBelow="true" :dropAbove="false" />
       </v-list-item>
       <v-divider></v-divider>
 
+      <!-- Side Menu Items -->
       <v-list>
-        <!-- Side Menu Items -->
         <v-list-item v-for="item in items" :key="item.title" link :to="item.path">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -125,9 +72,9 @@
 
     <!-- Main Content of App -->
     <v-main>
-      <!-- <v-fade-transition mode="out-in"> -->
+      <v-fade-transition mode="out-in" duration="150">
         <router-view/>
-      <!-- </v-fade-transition> -->
+      </v-fade-transition>
     </v-main>
 
     <!-- Mobile FAB -->
@@ -139,13 +86,16 @@
 
     <!-- More menu -->
     <v-bottom-sheet v-model="mobileDrawerBotom" class="d-sm-none">
-      <v-sheet class="text-center" height="150px">
-        <v-btn class="mt-6" text color="red" @click="mobileDrawerBotom = !mobileDrawerBotom">
-          Close
-        </v-btn>
+      <v-sheet class="text-center" height="200px">
+        <v-container>
+          <GroupSelectExpanded :dropBelow="false" :dropAbove="true" />
+        </v-container>
         <div class="py-3">
           More options, pages, and account controls can go here
         </div>
+        <v-btn class="mt-6" text color="red" @click="mobileDrawerBotom = !mobileDrawerBotom">
+          Close
+        </v-btn>
       </v-sheet>
     </v-bottom-sheet>
 
@@ -165,14 +115,17 @@
 </template>
 
 <script>
+import GroupSelectExpanded from "@/components/AppView/GroupSelectExpanded";
+import GroupSelectShrunk from "@/components/AppView/GroupSelectShrunk";
 
 export default {
   name: "App",
   components: {
+    GroupSelectExpanded,
+    GroupSelectShrunk,
   },
   data: () => ({
     profileDropdown: false,
-    groupSelectDropdown: false,
     mobileDrawerBotom: false,
     notDisabled: false,
     sideDrawer: null,
