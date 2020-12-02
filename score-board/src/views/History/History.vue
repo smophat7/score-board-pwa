@@ -7,7 +7,7 @@
 
         <!-- Desktop Action Button (stays at the top) -->
           <v-btn class="hidden-xs-only my-auto" color="secondary" rounded to="/record">
-            <v-icon>mdi-plus</v-icon>
+            <v-icon class="mr-2">mdi-plus</v-icon>
             Record Play
           </v-btn>
 

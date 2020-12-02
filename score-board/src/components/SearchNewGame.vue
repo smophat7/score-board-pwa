@@ -12,11 +12,11 @@
         <v-form v-on:submit.prevent="searchGames" class="game-search-form mb-5" id="gameSearchForm">
           <v-row align="center" justify-center>
             <v-col cols="8">
-              <v-text-field v-model="searchValue" label="Search from 120,000+ games" @keydown.enter="searchGames"
+              <v-text-field v-model="searchValue" label="Search from 120,000+ games"
                 required clearable></v-text-field>
             </v-col>
             <v-col cols="4">
-              <v-btn color="primary" @click="searchGames" block>
+              <v-btn color="primary" type="submit" block>
                 Search
               </v-btn>
             </v-col>

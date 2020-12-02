@@ -1,6 +1,35 @@
 <template>
   <v-container>
-    <h1>Group</h1>
+    <v-container>
+      <v-row>
+        <h1>Group</h1>
+        <v-spacer></v-spacer>
+
+        <!-- Desktop Action Button (stays at the top) -->
+          <v-btn class="hidden-xs-only my-auto" color="secondary" rounded @click="addNewMemberClick">
+            <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+            Add Member
+          </v-btn>
+
+        <!-- Mobile FAB (position:fixed) -->
+        <v-fab-transition>
+          <v-btn class="d-sm-none fab-mobile" color="secondary" fab fixed @click="addNewMemberClick">
+            <v-icon>mdi-account-multiple-plus</v-icon>
+          </v-btn>
+        </v-fab-transition>
+
+      </v-row>
+    </v-container>
+
+<v-dialog
+      v-model="addNewMemberDialog"
+      max-width="550px"
+      scrollable
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+      transition="dialog-bottom-transition"
+    >
+      <AddNewMember v-on:close-modal="addNewMemberDialog = false"/>
+    </v-dialog>
 
     <!-- Table and Search -->
 
@@ -35,19 +64,21 @@
 
 <script>
 import MemberDetails from "@/components/MemberDetails.vue";
+import AddNewMember from "@/components/AddNewMember.vue";
 // import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 export default {
   name: "Group",
   components: {
     MemberDetails,
+    AddNewMember,
   },
   // mixins: [HistoryFunctions],
   data() {
     return {
       search: "",
       detailDialog: false,
-      searchNewGamesDialog: false,
+      addNewMemberDialog: false,
       detailMember: null,
       headers: [
         { text: "Joined", value: 'readableDate', hide: 'xsOnly' },
@@ -73,9 +104,11 @@ export default {
   },
   methods: {
     handleDetailClick(item) {
-      // console.log(item.fullName);                  // Delete me
       this.detailMember = item;
       this.detailDialog = true;
+    },
+    addNewMemberClick() {
+      this.addNewMemberDialog = true;
     },
     readableDate(date) {
       return date.toLocaleDateString("en-US", {
