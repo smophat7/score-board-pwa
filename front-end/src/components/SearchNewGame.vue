@@ -86,6 +86,7 @@
 
 <script>
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
+import axios from "axios";
 
 export default {
   name: "SearchNewGame",
@@ -143,8 +144,16 @@ export default {
           this.oldSearchValue = this.searchValue;
         });
     },
-    addToShelf(game) {
-      this.$root.$data.shelf.push(game);
+    async addToShelf(game) {
+      // this.$root.$data.shelf.push(game);
+
+      let url = "http://localhost:3000/collection";
+      try {
+        let response = await axios.post(url, game);
+      }
+      catch (error) {
+        console.log(error);
+      }
     },
     removeFromShelf(game) {
       this.$root.$data.shelf.splice(

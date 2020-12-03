@@ -8,7 +8,11 @@
     </v-card-title>
 
     <v-card-text>
-      <h4 class="my-5">This is where the content of this form and such will go.</h4>
+      <v-form v-on:submit.prevent="addMember">
+        <v-text-field label="First Name" v-model="firstName" required></v-text-field>
+        <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
+        <v-btn color="success" type="submit" block :disabled="!allFieldsFilled">Add to Group</v-btn>
+      </v-form>
     </v-card-text>
 
     <v-spacer></v-spacer>
@@ -26,13 +30,39 @@
 </template>
 
 <script>
+import axios from "axios";
 
 export default {
   name: "AddNewMember",
   data() {
-    return {  };
+    return {
+      firstName: "",
+      lastName: "",
+    };
   },
-  computed: {  },
-  methods: {  },
+  computed: {
+    allFieldsFilled() {
+      return (this.firstName !== "" && this.lastName !== "");
+    }
+  },
+  methods: {
+    async addMember() {
+      let newMember = new Object({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        profilePicture: "default-profile.jpg",       // EDIT to supply individualized URL or picture data
+      });
+      let url = "http://localhost:3000/members";
+      try {
+        let response = await axios.post(url, newMember);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      this.firstName = "";
+      this.lastName = "";
+      this.$emit("added-member");
+    },
+  },
 };
 </script>

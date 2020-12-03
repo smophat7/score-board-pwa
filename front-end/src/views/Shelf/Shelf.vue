@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     async getCollection() {
-      let url = "http://localhost:3000/collection/";
+      let url = "http://localhost:3000/collection";
       // let url = "/collection";
       // const response = await fetch(url);
       // this.gameList = response.json();

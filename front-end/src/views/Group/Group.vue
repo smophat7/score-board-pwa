@@ -28,7 +28,7 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <AddNewMember v-on:close-modal="addNewMemberDialog = false"/>
+      <AddNewMember v-on:close-modal="addNewMemberDialog = false" v-on:added-member="getMembers"/>
     </v-dialog>
 
     <!-- Table and Search -->
@@ -67,6 +67,8 @@ import MemberDetails from "@/components/MemberDetails.vue";
 import AddNewMember from "@/components/AddNewMember.vue";
 // import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
+import axios from "axios";
+
 export default {
   name: "Group",
   components: {
@@ -76,6 +78,7 @@ export default {
   // mixins: [HistoryFunctions],
   data() {
     return {
+      members: [],
       search: "",
       detailDialog: false,
       addNewMemberDialog: false,
@@ -89,20 +92,40 @@ export default {
       ]
     };
   },
+  created() {
+    this.getMembers();
+  },
   computed: {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
-    members() {
-      return this.$root.$data.members.map(person => {
-        return {
-          ...person,
-          readableDate: this.readableDate(person.dateJoined),
-        }
-      });
-    }
+    // members() {
+    //   return this.$root.$data.members.map(person => {
+    //     return {
+    //       ...person,
+    //       readableDate: this.readableDate(person.dateJoined),
+    //     }
+    //   });
+    // }
   },
   methods: {
+    async getMembers() {
+      console.log("getting members!");
+      let url = "http://localhost:3000/members";
+      try {
+        let response = await axios.get(url);
+        console.log(response.data);
+        let memberList = response.data;
+        this.members = memberList.map(member => {
+          return {
+            ...member,
+          }
+        });
+      }
+      catch (error) {
+        console.log(error)
+      }
+    },
     handleDetailClick(item) {
       this.detailMember = item;
       this.detailDialog = true;

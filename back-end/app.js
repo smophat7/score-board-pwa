@@ -5,10 +5,20 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');                             // Use in development on local machine, don't know if I need it in production (security issue if I don't set proper whitelist)
 
+// Connecting MongoDB / Mongoose
+var mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/scoreboard-dev", { useNewUrlParser: true, useUnifiedTopology: true });
+var db = mongoose.connection; // Suggested by https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
+db.on("error", console.error.bind(console, "MongoDB connection error:")); // Suggested by https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
+require("./models/Game");
+require("./models/Member");
+
+
 // Custom routes (mini-apps)
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var collectionRouter = require("./routes/collection");
+var membersRouter = require("./routes/members");
 
 var app = express();
 
@@ -27,6 +37,7 @@ app.use(cors());                                        // Use in development on
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/collection", collectionRouter);
+app.use("/members", membersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

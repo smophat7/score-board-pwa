@@ -1,11 +1,29 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require("mongoose");
+var Game = mongoose.model("Game");
 
 
-router.get("/", (req, res) => {
-  res.send(mockShelf);
+// Returns an array of Games (the collection)
+router.get("/", (req, res, next) => {
+  Game.find(function(err, games) {
+    if (err) { return next(err); }
+    res.json(games);
+  });
 });
 
+// Saves a new Game to the DB and returns the newly created Game
+router.post("/", (req, res, next) => {
+  let newGame = new Game(req.body);
+  newGame.save(function(err, game) {
+    if (err) { return next(err); }
+    res.json(game);
+  });
+});
+
+
+
+// Shouldn't need anymore
 let mockShelf = [
   {
     id: "EL3YmDLY6W",
@@ -523,7 +541,7 @@ let mockShelf = [
     historical_low_date: "2019-03-07T12:20:03.570Z",
     rank: 545,
     trending_rank: 843,
-  },
+  }
 ];
 
 module.exports = router;
