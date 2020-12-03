@@ -10,5 +10,9 @@ module.exports = {
     manifestOptions: {
       background_color: '#3949ab',
     }
+  },
+  devServer: {
+    proxy: 'http://localhost:3000',
+    disableHostCheck: true
   }
 };

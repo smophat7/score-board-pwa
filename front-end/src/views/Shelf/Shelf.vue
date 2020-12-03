@@ -65,6 +65,8 @@ import GameDetails from "@/components/GameDetails.vue";
 import SearchNewGame from "@/components/SearchNewGame.vue";
 // import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
+import axios from "axios";
+
 export default {
   name: "Shelf",
   components: {
@@ -74,6 +76,8 @@ export default {
   // mixins: [HistoryFunctions],
   data() {
     return {
+      // gameList: [],
+      games: [],
       search: "",
       detailDialog: false,
       searchNewGamesDialog: false,
@@ -88,19 +92,38 @@ export default {
       ]
     };
   },
+  created() {
+    this.getCollection();
+  },
   computed: {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
-    games() {
-      return this.$root.$data.shelf.map(game => {
+    // games() {
+    //   // return this.$root.$data.shelf.map(game => {
+    //   return this.gameList.map(game => {
+    //     return {
+    //       ...game,
+    //     }
+    //   });
+    // },
+  },
+  methods: {
+    async getCollection() {
+      let url = "http://localhost:3000/collection/";
+      // let url = "/collection";
+      // const response = await fetch(url);
+      // this.gameList = response.json();
+
+      let response = await axios.get(url);
+      console.log(response.data);
+      let gameList = response.data;
+      this.games = gameList.map(game => {
         return {
           ...game,
         }
       });
-    }
-  },
-  methods: {
+    },
     handleDetailClick(item) {
       this.detailGame = item;
       this.detailDialog = true;
