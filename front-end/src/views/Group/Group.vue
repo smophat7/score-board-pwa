@@ -21,14 +21,14 @@
       </v-row>
     </v-container>
 
-<v-dialog
+    <v-dialog
       v-model="addNewMemberDialog"
       max-width="550px"
       scrollable
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <AddNewMember v-on:close-modal="addNewMemberDialog = false" v-on:added-member="getMembers"/>
+      <AddNewMember v-on:close-modal="addNewMemberDialog = false" v-on:change-to-group="getMembers"/>
     </v-dialog>
 
     <!-- Table and Search -->
@@ -56,7 +56,7 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <MemberDetails :member="detailMember" v-on:close-modal="detailDialog = false"/>
+      <MemberDetails :member="detailMember" v-on:close-modal="detailDialog = false" @change-to-group="getMembers"/>
     </v-dialog>
 
   </v-container>
@@ -99,6 +99,9 @@ export default {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
+    ifGroupDataChanged() {
+      return this.$store.state.ifGroupChanged;
+    }
     // members() {
     //   return this.$root.$data.members.map(person => {
     //     return {
@@ -108,17 +111,24 @@ export default {
     //   });
     // }
   },
+  watch: {
+    ifGroupDataChanged() {
+      if (this.$store.state.ifGroupChanged === true) {
+        this.getMembers();
+        this.$store.commit('setIfGroupChanged', false);
+      }
+    }
+  },
   methods: {
     async getMembers() {
-      console.log("getting members!");
       let url = "http://localhost:3000/members";
       try {
         let response = await axios.get(url);
-        console.log(response.data);
         let memberList = response.data;
         this.members = memberList.map(member => {
           return {
             ...member,
+            readableDate: this.readableDate(member.dateJoined),
           }
         });
       }
@@ -134,7 +144,7 @@ export default {
       this.addNewMemberDialog = true;
     },
     readableDate(date) {
-      return date.toLocaleDateString("en-US", {
+      return new Date(date).toLocaleDateString("en-US", {
         year: "2-digit",
         month: "2-digit",
         day: "2-digit",

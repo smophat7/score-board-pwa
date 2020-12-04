@@ -33,5 +33,10 @@
 <script>
 export default {
   name: "GroupSelectShrunk",
+  data() {
+    return {
+      groupSelectDropdown: false,
+    };
+  },
 }
 </script>

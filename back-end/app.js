@@ -7,7 +7,7 @@ var cors = require('cors');                             // Use in development on
 
 // Connecting MongoDB / Mongoose
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/scoreboard-dev", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost/scoreboard-dev", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 var db = mongoose.connection; // Suggested by https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 db.on("error", console.error.bind(console, "MongoDB connection error:")); // Suggested by https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 require("./models/Game");

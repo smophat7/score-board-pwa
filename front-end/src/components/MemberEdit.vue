@@ -1,18 +1,23 @@
 <template>
-  <v-card class="d-flex flex-column">
-
+  <v-card class="d-flex flex-column full-screen-modal">
+    
     <v-card-title class="secondary headline">
-      <div class="white--text">
-        New Group Member
+      <div class="d-flex clickable-pointer" @click="backToStats">
+        <!-- <v-btn icon color="white"> -->
+          <v-icon color="white">mdi-arrow-left</v-icon>
+        <!-- </v-btn> -->
+        <div class="ml-2 white--text">
+          Back to Details
+        </div>
       </div>
     </v-card-title>
 
     <v-card-text>
       <v-container>
-        <v-form v-on:submit.prevent="addMember">
+        <v-form v-on:submit.prevent="updateMember">
           <v-text-field label="First Name" v-model="firstName" required></v-text-field>
           <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
-          <v-btn color="success" type="submit" block :disabled="!allFieldsFilled">Add to Group</v-btn>
+          <v-btn color="success" type="submit" block :disabled="!allFieldsFilled">Save Changes</v-btn>
         </v-form>
       </v-container>
     </v-card-text>
@@ -35,11 +40,14 @@
 import axios from "axios";
 
 export default {
-  name: "AddNewMember",
+  name: "MemberEdit",
+  props: {
+    member: Object,
+  },
   data() {
     return {
-      firstName: "",
-      lastName: "",
+      firstName: this.member.firstName,
+      lastName: this.member.lastName,
     };
   },
   computed: {
@@ -48,15 +56,16 @@ export default {
     }
   },
   methods: {
-    async addMember() {
-      let newMember = new Object({
+    async updateMember() {
+      console.log("about to try query");
+      let newMemberVersion = new Object({
         firstName: this.firstName,
         lastName: this.lastName,
-        profilePicture: "default-profile.jpg",       // EDIT to supply individualized URL or picture data
       });
-      let url = "http://localhost:3000/members";
+      let url = "http://localhost:3000/members/" + this.member.id;
       try {
-        let response = await axios.post(url, newMember);
+        let response = await axios.put(url, newMemberVersion);
+        console.log("Finished query");
       }
       catch (error) {
         console.log(error);
@@ -64,8 +73,21 @@ export default {
       this.firstName = "";
       this.lastName = "";
       this.$store.commit('setIfGroupChanged', true);
-      this.$emit("close-modal");
+    },
+    backToStats() {
+      console.log("backToStats");
+      this.$store.commit('setIfMemberEditComponent', false);
     },
   },
-};
+}
 </script>
+
+<style scoped>
+.full-screen-modal {
+  height: 100%;
+}
+
+.clickable-pointer {
+  cursor: pointer;
+}
+</style>
