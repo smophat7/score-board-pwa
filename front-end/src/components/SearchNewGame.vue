@@ -12,23 +12,22 @@
         <v-form v-on:submit.prevent="searchGames" class="game-search-form mb-5" id="gameSearchForm">
           <v-row align="center" justify-center>
             <v-col cols="8">
-              <v-text-field v-model="searchValue" label="Search from 120,000+ games"
+              <v-text-field v-model="searchValue" autofocus label="Search from 120,000+ games"
                 required clearable></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-btn color="primary" type="submit" block>
-                Search
+                <v-progress-circular v-if="loading" class="mr-3"
+                  indeterminate
+                  color="white"
+                ></v-progress-circular>
+                <div v-if="!loading">
+                  Search
+                </div>
               </v-btn>
             </v-col>
           </v-row>
         </v-form>
-
-        <div v-if="loading" class="d-flex justify-content-center">
-          <v-progress-circular
-            indeterminate
-            color="secondary"
-          ></v-progress-circular>
-        </div>
       </div>
 
       <div v-if="!loading">

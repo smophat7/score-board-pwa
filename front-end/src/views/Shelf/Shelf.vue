@@ -33,7 +33,7 @@
 
     <!-- Table and Search -->
     <div v-if="loadingGames" class="d-flex loader-container">
-      <RingLoader class="my-auto mx-auto" :loading="loadingMembers" color="#3949ab" :size=200 />
+      <RingLoader class="my-auto mx-auto" :loading="loadingGames" color="#3949ab" :size=200 />
     </div>
     <div v-if="!loadingGames">
       <v-card-title>
@@ -125,9 +125,13 @@ export default {
         this.$store.commit('setIfCollectionChanged', false);
       }
     },
+    detailDialog() {
+      this.$store.commit('setIfGameEditComponent', false);
+    },
   },
   methods: {
     async getCollection() {
+      this.loadingGames = true;
       let url = "http://localhost:3000/collection";
 
       try {

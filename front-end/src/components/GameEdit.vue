@@ -13,7 +13,7 @@
     <v-card-text>
       <v-container>
         <v-form v-on:submit.prevent="updateGame">
-          <v-text-field label="Preferred Title" v-model="prefName" required></v-text-field>
+          <v-text-field label="Preferred Title" v-model="prefName" autofocus required></v-text-field>
           <v-btn v-if="updateLoading" color="success" block>
             <v-progress-circular small v-if="updateLoading" class="mr-2"
             indeterminate
@@ -86,9 +86,9 @@ export default {
 </script>
 
 <style scoped>
-.full-screen-modal {
+/* .full-screen-modal {
   height: 100%;
-}
+} */
 
 .clickable-pointer {
   cursor: pointer;

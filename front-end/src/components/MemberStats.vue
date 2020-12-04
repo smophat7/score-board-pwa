@@ -91,9 +91,9 @@ export default {
 </script>
 
 <style scoped>
-.full-screen-modal {
+/* .full-screen-modal {
   height: 100%;
-}
+} */
 
 .member-stats {
   width: 200px;

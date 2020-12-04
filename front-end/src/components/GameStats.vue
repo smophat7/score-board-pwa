@@ -46,11 +46,11 @@
       </v-row>
       
       <v-row justify="space-around" class="pb-4">
-        <v-btn width="125px" :href="game.official_url" target="_blank" color="primary">Offical Site</v-btn>
-        <v-btn width="100px" :href="game.rules_url" target="_blank" color="primary">Rule Book</v-btn>
+        <v-btn v-if="game.official_url != null" width="125px" :href="game.official_url" target="_blank" color="primary">Offical Site</v-btn>
+        <v-btn v-if="game.rules_url != null" width="100px" :href="game.rules_url" target="_blank" color="primary">Rule Book</v-btn>
       </v-row>
 
-      <p><strong>Description:</strong> {{ game.description_preview }}</p>
+      <p v-if="game.description_preview != ''"><strong>Description:</strong> {{ game.description_preview }}</p>
     </v-card-text>
 
     <v-spacer></v-spacer>
@@ -101,9 +101,9 @@ export default {
 </script>
 
 <style scoped>
-.full-screen-modal {
+/* .full-screen-modal {
   height: 100%;
-}
+} */
 
 @media (max-width: 600px) {
   .img-size {

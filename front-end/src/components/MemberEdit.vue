@@ -13,7 +13,7 @@
     <v-card-text>
       <v-container>
         <v-form v-on:submit.prevent="updateMember">
-          <v-text-field label="First Name" v-model="firstName" required></v-text-field>
+          <v-text-field label="First Name" v-model="firstName" autofocus required></v-text-field>
           <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
           <v-btn v-if="updateLoading" color="success" block>
             <v-progress-circular small v-if="updateLoading" class="mr-2"
@@ -90,9 +90,9 @@ export default {
 </script>
 
 <style scoped>
-.full-screen-modal {
+/* .full-screen-modal {
   height: 100%;
-}
+} */
 
 .clickable-pointer {
   cursor: pointer;
