@@ -47,7 +47,7 @@ router.delete("/:id", (req, res, next) => {
 });
 
 router.put("/:id", (req, res, next) => {
-  Member.findByIdAndUpdate(req.params.id, req.body, function(err, foundItem) {
+  Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
     if (err) { return next(err); }
     res.send(JSON.parse(JSON.stringify(foundItem)));
   });

@@ -17,7 +17,14 @@
         <v-form v-on:submit.prevent="updateMember">
           <v-text-field label="First Name" v-model="firstName" required></v-text-field>
           <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
-          <v-btn color="success" type="submit" block :disabled="!allFieldsFilled">Save Changes</v-btn>
+          <v-btn v-if="updateLoading" color="success" block>
+            <v-progress-circular small v-if="updateLoading" class="mr-2"
+            indeterminate
+            color="white"
+            ></v-progress-circular>
+            Saving Changes
+          </v-btn>
+          <v-btn v-else color="success" type="submit" block :disabled="!somethingDifferent">Save Changes</v-btn>
         </v-form>
       </v-container>
     </v-card-text>
@@ -46,18 +53,20 @@ export default {
   },
   data() {
     return {
+      memberLocal: this.member,
       firstName: this.member.firstName,
       lastName: this.member.lastName,
+      updateLoading: false,
     };
   },
   computed: {
-    allFieldsFilled() {
-      return (this.firstName !== "" && this.lastName !== "");
+    somethingDifferent() {
+      return (this.firstName !== this.memberLocal.firstName || this.lastName !== this.memberLocal.lastName);
     }
   },
   methods: {
     async updateMember() {
-      console.log("about to try query");
+      this.updateLoading = true;
       let newMemberVersion = new Object({
         firstName: this.firstName,
         lastName: this.lastName,
@@ -65,17 +74,17 @@ export default {
       let url = "http://localhost:3000/members/" + this.member.id;
       try {
         let response = await axios.put(url, newMemberVersion);
-        console.log("Finished query");
+        this.memberLocal = response.data;
       }
       catch (error) {
         console.log(error);
       }
-      this.firstName = "";
-      this.lastName = "";
+      this.firstName = this.memberLocal.firstName,
+      this.lastName = this.memberLocal.lastName,
       this.$store.commit('setIfGroupChanged', true);
+      this.updateLoading = false;
     },
     backToStats() {
-      console.log("backToStats");
       this.$store.commit('setIfMemberEditComponent', false);
     },
   },

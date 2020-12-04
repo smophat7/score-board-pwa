@@ -5,9 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    recordPlayers: [],
-    ifMemberEditComponent: false,
-    ifGroupChanged: false,
+    recordPlayers: [],                // Players in the game play being recorded
+    ifMemberEditComponent: false,     // Controls view of MemberDetails.vue
+    ifGroupChanged: false,            // Set to true on changes to the members Mongo collection to trigger an API get request
   },
   getters: {
     recordPlayers: (state) => state.recordPlayers,
