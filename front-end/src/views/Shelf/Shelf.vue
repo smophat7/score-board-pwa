@@ -32,19 +32,25 @@
     </v-dialog>
 
     <!-- Table and Search -->
-    <v-card-title>
-      <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable label="Search" single-line hide-details></v-text-field>
-    </v-card-title>
-    <!-- mobile-breakpoint="" eliminates the mobile table view option as I'm doing custom column visibility instead -->
-    <v-data-table
-      class="margin-bottom-for-fab"
-      :headers="computedHeaders"
-      :items="games"
-      :search="search"
-      mobile-breakpoint=""
-      @click:row="handleDetailClick"
-    >
-    </v-data-table>
+    <div v-if="loadingGames" class="d-flex loader-container">
+      <RingLoader class="my-auto mx-auto" :loading="loadingMembers" color="#3949ab" :size=200 />
+    </div>
+    <div v-if="!loadingGames">
+      <v-card-title>
+        <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable label="Search" single-line hide-details></v-text-field>
+      </v-card-title>
+
+      <!-- mobile-breakpoint="" eliminates the mobile table view option as I'm doing custom column visibility instead -->
+      <v-data-table
+        class="margin-bottom-for-fab"
+        :headers="computedHeaders"
+        :items="games"
+        :search="search"
+        mobile-breakpoint=""
+        @click:row="handleDetailClick"
+      >
+      </v-data-table>
+    </div>
 
     <!-- Dialog/Modal with additional information -->
     <v-dialog
@@ -66,18 +72,19 @@ import SearchNewGame from "@/components/SearchNewGame.vue";
 // import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 import axios from "axios";
+import { RingLoader } from "@saeris/vue-spinners";
 
 export default {
   name: "Shelf",
   components: {
     GameDetails,
     SearchNewGame,
+    RingLoader,
   },
-  // mixins: [HistoryFunctions],
   data() {
     return {
-      // gameList: [],
       games: [],
+      loadingGames: false,
       search: "",
       detailDialog: false,
       searchNewGamesDialog: false,
@@ -99,6 +106,9 @@ export default {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
+    ifCollectionDataChanged() {
+      return this.$store.state.ifCollectionChanged;
+    }
     // games() {
     //   // return this.$root.$data.shelf.map(game => {
     //   return this.gameList.map(game => {
@@ -108,21 +118,31 @@ export default {
     //   });
     // },
   },
+  watch: {
+    ifCollectionDataChanged() {
+      if (this.$store.state.ifCollectionChanged === true) {
+        this.getCollection();
+        this.$store.commit('setIfCollectionChanged', false);
+      }
+    },
+  },
   methods: {
     async getCollection() {
       let url = "http://localhost:3000/collection";
-      // let url = "/collection";
-      // const response = await fetch(url);
-      // this.gameList = response.json();
 
-      let response = await axios.get(url);
-      console.log(response.data);
-      let gameList = response.data;
-      this.games = gameList.map(game => {
-        return {
-          ...game,
-        }
-      });
+      try {
+        let response = await axios.get(url);
+        let gameList = response.data;
+        this.games = gameList.map(game => {
+          return {
+            ...game,
+          }
+        });
+        this.loadingGames = false;
+      }
+      catch (error) {
+        console.log(error)
+      }
     },
     handleDetailClick(item) {
       this.detailGame = item;
@@ -136,6 +156,10 @@ export default {
 </script>
 
 <style scoped>
+.loader-container {
+  height: calc(100vh - 208px);
+}
+
 @media (max-width: 600px){
   .mobile-invisible-column {
     display: none !important;

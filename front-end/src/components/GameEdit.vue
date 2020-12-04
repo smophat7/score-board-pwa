@@ -12,9 +12,8 @@
 
     <v-card-text>
       <v-container>
-        <v-form v-on:submit.prevent="updateMember">
-          <v-text-field label="First Name" v-model="firstName" required></v-text-field>
-          <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
+        <v-form v-on:submit.prevent="updateGame">
+          <v-text-field label="Preferred Title" v-model="prefName" required></v-text-field>
           <v-btn v-if="updateLoading" color="success" block>
             <v-progress-circular small v-if="updateLoading" class="mr-2"
             indeterminate
@@ -45,45 +44,42 @@
 import axios from "axios";
 
 export default {
-  name: "MemberEdit",
+  name: "GameEdit",
   props: {
-    member: Object,
+    game: Object,
   },
   data() {
     return {
-      memberLocal: this.member,
-      firstName: this.member.firstName,
-      lastName: this.member.lastName,
+      gameLocal: this.game,
+      prefName: this.game.name,
       updateLoading: false,
     };
   },
   computed: {
     somethingDifferent() {
-      return (this.firstName !== this.memberLocal.firstName || this.lastName !== this.memberLocal.lastName);
+      return (this.prefName !== this.gameLocal.name);
     },
   },
   methods: {
-    async updateMember() {
+    async updateGame() {
       this.updateLoading = true;
-      let newMemberVersion = new Object({
-        firstName: this.firstName,
-        lastName: this.lastName,
+      let newGameVersion = new Object({
+        name: this.prefName,
       });
-      let url = "http://localhost:3000/members/" + this.member.id;
+      let url = "http://localhost:3000/collection/" + this.game._id;
       try {
-        let response = await axios.put(url, newMemberVersion);
-        this.memberLocal = response.data;
+        let response = await axios.put(url, newGameVersion);
+        this.gameLocal = response.data;
       }
       catch (error) {
         console.log(error);
       }
-      this.firstName = this.memberLocal.firstName,
-      this.lastName = this.memberLocal.lastName,
-      this.$store.commit('setIfGroupChanged', true);
+      this.prefName = this.gameLocal.name,
+      this.$store.commit('setIfCollectionChanged', true);
       this.updateLoading = false;
     },
     backToStats() {
-      this.$store.commit('setIfMemberEditComponent', false);
+      this.$store.commit('setIfGameEditComponent', false);
     },
   },
 }

@@ -6,18 +6,6 @@ var Member = mongoose.model("Member");
 // Must use toJSON() instead of res.json() in order to have virtuals returned (lastName in this case)
 
 
-// // Middleware for a :member parameter in other route
-// router.param("member", function(req, res, next, id) {
-//   let query = Member.findById(id);
-//   query.exec(function(err, comment) {
-//     if (err) { return next(err); }
-//     if (!member) { return next(new Error("Can't find mem by id")); }
-//     req.member = member;
-//     return next();
-//   });
-// });
-
-
 // Sends back an array of Members
 router.get("/", (req, res, next) => {
   Member.find(function(err, members) {
@@ -46,6 +34,8 @@ router.delete("/:id", (req, res, next) => {
   });
 });
 
+
+// Updates a Member and sends back the updated version (because "{ new: true }")
 router.put("/:id", (req, res, next) => {
   Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
     if (err) { return next(err); }

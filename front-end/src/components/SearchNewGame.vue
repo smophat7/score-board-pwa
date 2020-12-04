@@ -137,7 +137,6 @@ export default {
           return response.json();
         })
         .then((json) => {
-          // API response as JSON
           this.searchResults.push(...json.games);
           this.loading = false;
           this.searched = true;
@@ -145,15 +144,15 @@ export default {
         });
     },
     async addToShelf(game) {
-      // this.$root.$data.shelf.push(game);
-
+      let formattedGame = this.formatGame(game);
       let url = "http://localhost:3000/collection";
       try {
-        let response = await axios.post(url, game);
+        let response = await axios.post(url, formattedGame);
       }
       catch (error) {
         console.log(error);
       }
+      this.$store.commit('setIfCollectionChanged', true);
     },
     removeFromShelf(game) {
       this.$root.$data.shelf.splice(
@@ -163,6 +162,20 @@ export default {
         ),
         1
       );
+    },
+    // Eliminates parts of the BoardGame Atlas API objects that might cause issus
+    // in MongoDB (have their own IDs and such) and renames the id property
+    // to board_game_id
+    formatGame(game) {
+      game.board_game_id = game.id;                           // I think this is the only thing that's useful
+      game.primary_publisher = game.primary_publisher.name;   // I think this is the only thing that's useful
+      game.name_original = game.name;                         // I think this is the only thing that's useful
+      delete game.id;
+      delete game.mechanics;
+      delete game.categories;
+      delete game.matches_specs;
+      delete game.spec;
+      return game;
     },
     gameOnShelf(game) {
       return this.$root.$data.shelf.some((item) => item.id === game.id);

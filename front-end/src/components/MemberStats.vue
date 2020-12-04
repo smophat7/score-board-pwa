@@ -27,6 +27,14 @@
         <v-col cols="12" sm="6" class="py-2">
           <div class="member-stats mx-auto">
             <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
+            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
             <!-- <p>Wins: <strong>{{ member.totalWins }}</strong></p>
             <p>Plays: <strong>{{ member.gamesPlayed }}</strong></p>
             <p>Win Rate: <strong>{{ percentWin(member.totalWins, member.gamesPlayed) }}%</strong></p> -->
@@ -56,16 +64,10 @@ export default {
   props: {
     member: Object,
   },
-  // mixins: [HistoryFunctions],
   data() {
     return {
       deleteLoading: false,
     }
-  },
-  computed: {
-    // isCoop() {
-    //   return this.play.type === this.$root.$data.enumGameType.CO_OP;
-    // }
   },
   methods: {
     async deleteMember() {

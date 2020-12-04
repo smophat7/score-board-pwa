@@ -115,7 +115,7 @@ export default {
         this.getMembers();
         this.$store.commit('setIfGroupChanged', false);
       }
-    }
+    },
   },
   methods: {
     async getMembers() {
