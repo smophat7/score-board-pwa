@@ -7,7 +7,7 @@
 
         <!-- Desktop Action Button (stays at the top) -->
           <v-btn class="hidden-xs-only my-auto" color="secondary" rounded to="/record">
-            <v-icon class="mr-2">mdi-plus</v-icon>
+          <v-icon>mdi-plus</v-icon>
             Record Play
           </v-btn>
 
@@ -34,6 +34,8 @@
       :items="plays"
       :search="search"
       mobile-breakpoint=""
+      no-data-text="You have no recorded plays... yet!"
+      no-results-text="Nothing found... try searching someting else?"
       @click:row="handleClick"
     >
      

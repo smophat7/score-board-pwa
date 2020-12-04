@@ -90,11 +90,15 @@ import axios from "axios";
 export default {
   name: "SearchNewGame",
   mixins: [HistoryFunctions],
+  props: {
+    collection: Array,
+  },
   data() {
     return {
       searchValue: "",
       oldSearchValue: "",
       searchResults: [],
+      deleteLoading: false,
       loading: false,
       searched: false,
     };
@@ -141,6 +145,7 @@ export default {
           this.searched = true;
           this.oldSearchValue = this.searchValue;
         });
+        console.log(this.searchResults);                    // Delete me
     },
     async addToShelf(game) {
       let formattedGame = this.formatGame(game);
@@ -153,15 +158,35 @@ export default {
       }
       this.$store.commit('setIfCollectionChanged', true);
     },
-    removeFromShelf(game) {
-      this.$root.$data.shelf.splice(
-        this.$root.$data.shelf.indexOf(
-          this.$root.$data.shelf.find((item) => item.id === game.id),
-          0
-        ),
-        1
-      );
+    // removeFromShelf(game) {
+    //   this.$root.$data.shelf.splice(
+    //     this.$root.$data.shelf.indexOf(
+    //       this.$root.$data.shelf.find((item) => item.id === game.id),
+    //       0
+    //     ),
+    //     1
+    //   );
+    // },
+    async removeFromShelf(game) {
+      this.deleteLoading = true;
+
+      // Because this is based off of the BoardGame Atlas API results which have
+      // different id values
+      let mongoDoc = this.collection.find(item => {
+        return item.board_game_id = game.id;
+      });
+
+      let url = "http://localhost:3000/collection/" + mongoDoc._id;
+      try {
+        await axios.delete(url);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      this.deleteLoading = false;
+      this.$store.commit('setIfCollectionChanged', true);
     },
+
     // Eliminates parts of the BoardGame Atlas API objects that might cause issus
     // in MongoDB (have their own IDs and such) and renames the id property
     // to board_game_id
@@ -177,7 +202,8 @@ export default {
       return game;
     },
     gameOnShelf(game) {
-      return this.$root.$data.shelf.some((item) => item.id === game.id);
+      // return this.$root.$data.shelf.some((item) => item.id === game.id);
+      return this.collection.some((item) => item.board_game_id === game.id);
     },
   },
 };

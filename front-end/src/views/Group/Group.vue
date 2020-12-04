@@ -46,6 +46,8 @@
         :items="members"
         :search="search"
         mobile-breakpoint=""
+        no-data-text="There are no members in this group... yet!"
+        no-results-text="Nothing found... try searching someting else?"
         @click:row="handleDetailClick"
       >
       </v-data-table>
