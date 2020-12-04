@@ -72,7 +72,7 @@ export default {
   methods: {
     async deleteMember() {
       this.deleteLoading = true;
-      let url = "http://localhost:3000/members/" + this.member.id;
+      let url = "/api/members/" + this.member.id;
       try {
         await axios.delete(url);
       }

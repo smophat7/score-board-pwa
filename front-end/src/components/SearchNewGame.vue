@@ -145,7 +145,7 @@ export default {
     },
     async addToShelf(game) {
       let formattedGame = this.formatGame(game);
-      let url = "http://localhost:3000/collection";
+      let url = "/api/collection";
       try {
         let response = await axios.post(url, formattedGame);
       }

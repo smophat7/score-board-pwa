@@ -120,7 +120,7 @@ export default {
   methods: {
     async getMembers() {
       this.loadingMembers = true;
-      let url = "http://localhost:3000/members";
+      let url = "/api/members";
       try {
         let response = await axios.get(url);
         let memberList = response.data;

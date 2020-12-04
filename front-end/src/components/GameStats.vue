@@ -85,7 +85,7 @@ export default {
   methods: {
     async deleteGame() {
       this.deleteLoading = true;
-      let url = "http://localhost:3000/collection/" + this.game._id;
+      let url = "/api/collection/" + this.game._id;
       try {
         await axios.delete(url);
       }

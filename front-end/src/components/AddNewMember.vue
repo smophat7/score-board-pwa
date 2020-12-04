@@ -54,7 +54,7 @@ export default {
         lastName: this.lastName,
         profilePicture: "default-profile.jpg",       // EDIT to supply individualized URL or picture data
       });
-      let url = "http://localhost:3000/members";
+      let url = "/api/members";
       try {
         let response = await axios.post(url, newMember);
       }

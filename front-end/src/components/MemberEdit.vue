@@ -69,7 +69,7 @@ export default {
         firstName: this.firstName,
         lastName: this.lastName,
       });
-      let url = "http://localhost:3000/members/" + this.member.id;
+      let url = "/api/members/" + this.member.id;
       try {
         let response = await axios.put(url, newMemberVersion);
         this.memberLocal = response.data;
