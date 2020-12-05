@@ -48,22 +48,19 @@
         <!-- Individual step content cards -->
         <v-stepper-items id="stepper-content" class="relative-stepper-content">
           <v-stepper-content step="1" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
-            <br>
-            <br>
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <SelectGame />
           </v-stepper-content>
 
           <v-stepper-content step="2" class="stepper-contents">
-            <SelectPlayers :members="members"/>
+            <SelectPlayers />
           </v-stepper-content>
 
           <v-stepper-content step="3" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <SelectGameType />
           </v-stepper-content>
 
           <v-stepper-content step="4" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <DetermineStandings />
           </v-stepper-content>
 
           <v-stepper-content step="5" class="stepper-contents">
@@ -75,10 +72,11 @@
 
     <div class="fixed-bottom">
       <v-row justify="space-between" no-gutters class="px-3 py-3">
-        <v-btn color="primary" @click="back()">
+        <v-btn v-if="e1 != 1" color="primary" @click="back()">
           Back
         </v-btn>
-        <v-btn color="primary" @click="next()">
+        <v-spacer v-else></v-spacer>
+        <v-btn color="primary" :disabled="!ifCanAdvance" @click="next()">
           Next
         </v-btn>
       </v-row>
@@ -88,12 +86,13 @@
 </template>
 
 <script>
-import SelectPlayers from "@/components/Record/SelectPlayers.vue";
-
   export default {
     name: "RecordGame",
     components: {
-      SelectPlayers,
+      SelectGame: () => import ("@/components/Record/SelectGame.vue"),
+      SelectPlayers: () => import ("@/components/Record/SelectPlayers.vue"),
+      SelectGameType: () => import ("@/components/Record/SelectGameType.vue"),
+      DetermineStandings: () => import ("@/components/Record/DetermineStandings.vue"),
     },
     data () {
       return {
@@ -102,9 +101,9 @@ import SelectPlayers from "@/components/Record/SelectPlayers.vue";
       }
     },
     computed: {
-      members() {
-        return this.$root.$data.members;
-      }
+      ifCanAdvance() {
+        return this.$store.state.recordStep > this.e1;
+      },
     },
     methods: {
       cancel() {

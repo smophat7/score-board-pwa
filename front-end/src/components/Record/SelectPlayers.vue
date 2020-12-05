@@ -50,16 +50,20 @@
 
 
 <script>
+import axios from "axios";
+
 export default {
   name: "SelectPlayers",
-  props: {
-    members: Array,
-  },
   data() {
     return {
+      members: [],
+      loadingMembers: false,
       selected: this.$store.state.recordPlayers,
       search: "",
-    }
+    };
+  },
+  created() {
+    this.getMembers();
   },
   computed: {
     allSelected() {
@@ -81,13 +85,35 @@ export default {
     },
   },
   methods: {
-
+    async getMembers() {
+      this.loadingMembers = true;
+      let url = "http://localhost:3000/members";
+      try {
+        let response = await axios.get(url);
+        let memberList = response.data;
+        this.members = memberList.map(member => {
+          return {
+            ...member,
+          }
+        });
+        this.loadingMembers = false;
+      }
+      catch (error) {
+        console.log(error)
+      }
+    },
   },
   watch: {
     // Reset search bar text if one is selected
     selected() {
       this.search = "";
       this.$store.commit("updateRecordPlayers", this.selected);
+      if (this.selected.length === 0) {
+        this.$store.commit("changeRecordStep", 2);
+      }
+      else {
+        this.$store.commit("changeRecordStep", 3);
+        }
     },
   },
 }
