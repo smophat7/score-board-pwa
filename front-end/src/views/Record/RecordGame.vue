@@ -64,7 +64,7 @@
           </v-stepper-content>
 
           <v-stepper-content step="5" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <RecordDetails />
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -76,8 +76,11 @@
           Back
         </v-btn>
         <v-spacer v-else></v-spacer>
-        <v-btn color="primary" :disabled="!ifCanAdvance" @click="next()">
+        <v-btn v-if="e1 !=5" color="primary" :disabled="!ifCanAdvance" @click="next()">
           Next
+        </v-btn>
+        <v-btn v-else color="success" @click="submit()">
+          Save Play
         </v-btn>
       </v-row>
     </div>
@@ -93,6 +96,7 @@
       SelectPlayers: () => import ("@/components/Record/SelectPlayers.vue"),
       SelectGameType: () => import ("@/components/Record/SelectGameType.vue"),
       DetermineStandings: () => import ("@/components/Record/DetermineStandings.vue"),
+      RecordDetails: () => import ("@/components/Record/RecordDetails.vue"),
     },
     data () {
       return {
@@ -113,6 +117,7 @@
       },
       back() {
         if (this.e1 !== 1) {
+          console.log("back()");
           this.e1--;
         }
         // this.scrollToTop();
@@ -120,14 +125,12 @@
       next() {
         if (this.e1 !== 5) {
           this.e1++;
+          console.log("next()");
         }
-        // this.scrollToTop();
       },
-      // scrollToTop() {
-      //   console.log("scrollToTop()");
-      //   // $vuetify.goTo('#top', {duration: 500, offset: 0});
-      //   document.getElementById("stepper-content").scroll(0, 0);
-      // }
+      submit() {
+        console.log("submit()");
+      }
     }
   }
 </script>
