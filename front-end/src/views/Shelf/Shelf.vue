@@ -77,7 +77,6 @@
 <script>
 import GameDetails from "@/components/GameDetails.vue";
 import SearchNewGame from "@/components/SearchNewGame.vue";
-// import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 import axios from "axios";
 import { RingLoader } from "@saeris/vue-spinners";
