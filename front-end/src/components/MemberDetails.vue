@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <MemberEdit v-if="ifShowEdit" :member="member" @close-modal="modalClosed"/>
-    <MemberStats v-else :member="member" @close-modal="modalClosed"/>
-  </div>
+  <MemberEdit v-if="ifShowEdit" :member="member" @close-modal="modalClosed"/>
+  <MemberStats v-else :member="member" @close-modal="modalClosed"/>
 </template>
 
 <script>

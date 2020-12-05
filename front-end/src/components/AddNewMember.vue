@@ -10,7 +10,7 @@
     <v-card-text>
       <v-container>
         <v-form v-on:submit.prevent="addMember">
-          <v-text-field label="First Name" v-model="firstName" required></v-text-field>
+          <v-text-field label="First Name" v-model="firstName" autofocus required></v-text-field>
           <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
           <v-btn color="success" type="submit" block :disabled="!allFieldsFilled">Add to Group</v-btn>
         </v-form>

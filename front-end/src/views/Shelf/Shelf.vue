@@ -7,14 +7,20 @@
 
         <!-- Desktop Action Button (stays at the top) -->
           <v-btn class="hidden-xs-only my-auto" color="secondary" rounded @click="searchNewButtonClick">
-            <v-icon class="mr-2">mdi-plus</v-icon>
+            <font-awesome-layers class="mr-2">
+              <font-awesome-icon icon="chess-rook" class="fa-lg" transform="right-1"/>
+              <font-awesome-icon icon="plus" class="fa-xs" transform="left-15 down-3 shrink-3" />
+            </font-awesome-layers>
             Add Game
           </v-btn>
 
         <!-- Mobile FAB (position:fixed) -->
         <v-fab-transition>
           <v-btn class="d-sm-none fab-mobile" color="secondary" fab fixed @click="searchNewButtonClick">
-            <v-icon>mdi-plus</v-icon>
+            <font-awesome-layers>
+              <font-awesome-icon icon="chess-rook" class="fa-lg" transform="right-1"/>
+              <font-awesome-icon icon="plus" class="fa-xs" transform="left-15 down-3 shrink-3" />
+            </font-awesome-layers>
           </v-btn>
         </v-fab-transition>
 
@@ -28,12 +34,12 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <SearchNewGame v-on:close-modal="searchNewGamesDialog = false"/>
+      <SearchNewGame :collection="games" @close-modal="searchNewGamesDialog = false"/>
     </v-dialog>
 
     <!-- Table and Search -->
     <div v-if="loadingGames" class="d-flex loader-container">
-      <RingLoader class="my-auto mx-auto" :loading="loadingMembers" color="#3949ab" :size=200 />
+      <RingLoader class="my-auto mx-auto" :loading="loadingGames" color="#3949ab" :size=200 />
     </div>
     <div v-if="!loadingGames">
       <v-card-title>
@@ -47,6 +53,8 @@
         :items="games"
         :search="search"
         mobile-breakpoint=""
+        no-data-text="You have no games in your collection... yet!"
+        no-results-text="Nothing found... try searching someting else?"
         @click:row="handleDetailClick"
       >
       </v-data-table>
@@ -125,11 +133,14 @@ export default {
         this.$store.commit('setIfCollectionChanged', false);
       }
     },
+    detailDialog() {
+      this.$store.commit('setIfGameEditComponent', false);
+    },
   },
   methods: {
     async getCollection() {
+      this.loadingGames = true;
       let url = "/api/collection";
-
       try {
         let response = await axios.get(url);
         let gameList = response.data;

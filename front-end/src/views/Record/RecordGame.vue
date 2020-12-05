@@ -1,6 +1,6 @@
 <template>
   <v-dialog fullscreen v-model="showDialog" @input="cancel">
-    <v-toolbar id="top" class="fixed" clipped-left dense color="primary" dark>
+    <v-app-bar id="top" class="fixed" clipped-left dense color="primary" dark>
       <v-toolbar-title>Record Game Play</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -9,7 +9,7 @@
         <v-icon>mdi-close</v-icon>
         Cancel
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
 
     <v-card>
 

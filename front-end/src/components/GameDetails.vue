@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <GameEdit v-if="ifShowEdit" :game="game" @close-modal="modalClosed"/>
-    <GameStats v-else :game="game" @close-modal="modalClosed"/>
-  </div>
+  <GameEdit v-if="ifShowEdit" :game="game" @close-modal="modalClosed"/>
+  <GameStats v-else :game="game" @close-modal="modalClosed"/>
 </template>
 
 <script>
