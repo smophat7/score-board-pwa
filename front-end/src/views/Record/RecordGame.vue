@@ -14,27 +14,27 @@
     <v-card>
 
       <!-- Step overview at the top -->
-      <v-stepper v-model="e1">
+      <v-stepper v-model="activeStep">
         <v-stepper-header class="fixed-stepper-header">
-          <v-stepper-step :complete="e1 > 1" step="1">
+          <v-stepper-step :complete="activeStep > 1" step="1">
             Game Played
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="e1 > 2" step="2">
+          <v-stepper-step :complete="activeStep > 2" step="2">
             Players
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="e1 > 3" step="3">
+          <v-stepper-step :complete="activeStep > 3" step="3">
             Game Type
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="e1 > 4" step="4">
+          <v-stepper-step :complete="activeStep > 4" step="4">
             Winner
           </v-stepper-step>
 
@@ -47,23 +47,23 @@
 
         <!-- Individual step content cards -->
         <v-stepper-items id="stepper-content" class="relative-stepper-content">
-          <v-stepper-content step="1" class="stepper-contents">
+          <v-stepper-content step="1" class="stepper-contents ">
             <SelectGame />
           </v-stepper-content>
 
-          <v-stepper-content step="2" class="stepper-contents">
+          <v-stepper-content step="2" class="stepper-contents ">
             <SelectPlayers />
           </v-stepper-content>
 
-          <v-stepper-content step="3" class="stepper-contents">
+          <v-stepper-content step="3" class="stepper-contents ">
             <SelectGameType />
           </v-stepper-content>
 
-          <v-stepper-content step="4" class="stepper-contents">
+          <v-stepper-content step="4" class="stepper-contents ">
             <DetermineStandings />
           </v-stepper-content>
 
-          <v-stepper-content step="5" class="stepper-contents">
+          <v-stepper-content step="5" class="stepper-contents ">
             <RecordDetails />
           </v-stepper-content>
         </v-stepper-items>
@@ -72,14 +72,18 @@
 
     <div class="fixed-bottom">
       <v-row justify="space-between" no-gutters class="px-3 py-3">
-        <v-btn v-if="e1 != 1" color="primary" @click="back()">
+        <v-btn v-if="activeStep != 1" color="primary" @click="back()">
           Back
         </v-btn>
         <v-spacer v-else></v-spacer>
-        <v-btn v-if="e1 !=5" color="primary" :disabled="!ifCanAdvance" @click="next()">
+        <v-btn v-if="activeStep !=5" color="primary" :disabled="!ifCanAdvance" @click="next()">
           Next
         </v-btn>
         <v-btn v-else color="success" @click="submit()">
+          <v-progress-circular small v-if="loadingSubmit" class="mr-2"
+            indeterminate
+            color="white"
+            ></v-progress-circular>
           Save Play
         </v-btn>
       </v-row>
@@ -103,34 +107,35 @@ import axios from "axios";
     },
     data () {
       return {
-        e1: 1,
+        activeStep: 1,
+        loadingSubmit: false,
         showDialog: true,
       }
     },
     computed: {
       ifCanAdvance() {
-        return this.$store.state.recordStep > this.e1;
+        return this.$store.state.recordStep > this.activeStep;
       },
     },
     methods: {
       cancel() {
+        this.$store.commit("clearRecordState");
         this.showDialog = !this.showDialog;
         // Go back to previous page
         this.$router.go(-1);
       },
       back() {
-        if (this.e1 !== 1) {
-          this.e1--;
+        if (this.activeStep !== 1) {
+          this.activeStep--;
         }
-        // this.scrollToTop();
       },
       next() {
-        if (this.e1 !== 5) {
-          this.e1++;
+        if (this.activeStep !== 5) {
+          this.activeStep++;
         }
       },
       async submit() {
-        console.log("submit()");
+        this.loadingSubmit = true;
 
         // Create array of member ids instead of member objects to include in newPlay for DB
         let gamePlayers = this.$store.state.recordPlayers.map(playerObj => {
@@ -149,6 +154,8 @@ import axios from "axios";
           // date: parseISO(this.$store.state.datePlayed),
           date: parseISO(this.$store.state.recordDate, 'YYYY-MM-DD', new Date()),
         };
+
+        // Post to MongoDB
         let url = "http://localhost:3000/plays";
         try {
           let response = await axios.post(url, newPlay);
@@ -156,6 +163,12 @@ import axios from "axios";
         catch(error) {
           console.log(error);
         }
+
+        this.loadingSubmit = false,
+        this.$store.commit("clearRecordState");
+
+        // Navigate back to play history page
+        this.$router.go(-1);
       }
     }
   }
@@ -182,7 +195,8 @@ import axios from "axios";
 }
 
 .stepper-contents {
-  padding-bottom: 200px;
+  padding-bottom: 100px;
+  min-height:100vh;
 }
 
 .fixed-bottom {

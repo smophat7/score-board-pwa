@@ -6,9 +6,8 @@ var Play = mongoose.model("Play");
 
 // Returns an array of all of the Plays
 router.get("/", (req, res, next) => {
-  Play.find().lean().populate("game").exec(function(err, play) {
+  Play.find().lean().populate("game").sort({date: -1}).exec(function(err, play) {
     if (err) { return next(err); }
-    console.log(play);
     res.json(play)
   });
 });

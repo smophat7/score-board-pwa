@@ -14,7 +14,7 @@ export default new Vuex.Store({
     recordRank: null,                 // In ranked game, something??? idk how this one will work yet
     recordCoopWin: false,             // In co-op, true if the players won
     recordDescription: "",            // What written description is to be recorded
-    recordDate: new Date(),                 // Date the game was played
+    recordDate: new Date(),           // Date the game was played
 
     ifMemberEditComponent: false,     // Controls what to view within MemberDetails.vue
     ifGroupChanged: false,            // Set to true on changes to the members Mongo collection to trigger an API get request
@@ -66,7 +66,16 @@ export default new Vuex.Store({
     updateRecordDate(state, date) {
       state.recordDate = date;
     },
-    
+    clearRecordState(state) {
+      state.recordStep = 1;
+      state.recordPlayers = [];
+      state.recordGame = null;
+      state.recordRank = null;
+      state.recordCoopWin = false;
+      state.recordDescription = "";
+      state.recordDate = new Date();
+    },
+  
     setIfMemberEditComponent(state, isEditing) {
       state.ifMemberEditComponent = isEditing;
     },

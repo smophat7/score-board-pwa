@@ -14,7 +14,7 @@
           <h2>{{ play.game.name }}</h2>
           <h4>{{ play.readableDate }}</h4> 
         </v-col>
-        <v-col cols="12" sm="6" class="py-2">
+        <!-- <v-col cols="12" sm="6" class="py-2"> -->
 
           <!-- <div v-if="isCoop">
             <h3>Players</h3>
@@ -39,7 +39,7 @@
               </v-list-item>
             </v-list>
           </div> -->
-        </v-col>
+        <!-- </v-col> -->
       </v-row>
 
       <p><strong>Description:</strong> {{ play.description }}</p>

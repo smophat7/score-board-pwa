@@ -1,25 +1,14 @@
 <template>
   <div>
     <h2>Select Game Type</h2>
+    <h3 style="color:red;">At the moment, only the "Points" option is functional.</h3>
     <v-container>
-      <v-chip v-if="selected != ''" label close @click:close="removeSelection">
-        {{ printReadable(selected) }}
-      </v-chip>
+      <v-btn-toggle v-model="selection" rounded>
+        <v-btn>Points</v-btn>
+        <v-btn>Ranked</v-btn>
+        <v-btn>Co-op</v-btn>
+      </v-btn-toggle>
     </v-container>
-
-    <v-divider></v-divider>
-
-    <v-list>
-      <v-list-item v-if="selected != points" @click="makeSelection(points)" :key="points">
-        <v-list-item-title>{{ printReadable(points) }}</v-list-item-title>
-      </v-list-item>
-      <v-list-item v-if="selected != ranked" @click="makeSelection(ranked)" :key="ranked">
-        <v-list-item-title>{{ printReadable(ranked) }}</v-list-item-title>
-      </v-list-item>
-      <v-list-item v-if="selected != coop" @click="makeSelection(coop)" :key="coop">
-        <v-list-item-title>{{ printReadable(coop) }}</v-list-item-title>
-      </v-list-item>
-    </v-list>
   </div>
 </template>
 
@@ -28,39 +17,72 @@ export default {
   name: "SelectGameType",
   data() {
     return {
-      points: this.$root.$data.enumGameType.POINTS.HIGH_WINS,       // default to high wins, user can change in points assignment step
-      ranked: this.$root.$data.enumGameType.RANKED,
-      coop: this.$root.$data.enumGameType.CO_OP,
-      selected: this.$store.state.recordGameType,
+      // points: this.$root.$data.enumGameType.POINTS.HIGH_WINS,       // default to high wins, user can change in points assignment step
+      // ranked: this.$root.$data.enumGameType.RANKED,
+      // coop: this.$root.$data.enumGameType.CO_OP,
+      // selected: this.$store.state.recordGameType,
+
+      selection: null,
+
     };
   },
   methods: {
-    makeSelection(type) {
-      this.selected = type;
-    },
-    removeSelection() {
-      this.selected = "";
-    },
-    printReadable(type) {
-      switch (type) {
-        case this.$root.$data.enumGameType.POINTS.HIGH_WINS:
-          return "Points";
-        case this.$root.$data.enumGameType.RANKED:
-          return "Ranked";
-        case this.$root.$data.enumGameType.CO_OP:
-          return "Co-op";
+    makeSelection(typeNum) {
+      // this.selected = type;
+
+      let enumType = "";
+      switch (typeNum) {
+        case 0:
+          enumType = this.$root.$data.enumGameType.POINTS.HIGH_WINS;
+          this.$store.commit("updateRecordGameType", enumType);
+          break;
+        case 1:
+          enumType = this.$root.$data.enumGameType.RANKED;
+          this.$store.commit("updateRecordGameType", enumType);
+          break;
+        case 2:
+          enumType = this.$root.$data.enumGameType.CO_OP;
+          this.$store.commit("updateRecordGameType", enumType);
+          break;
+        default:
+          break;
       }
     },
+    // removeSelection() {
+    //   this.selected = "";
+    // },
+    // printReadable(type) {
+    //   switch (type) {
+    //     case this.$root.$data.enumGameType.POINTS.HIGH_WINS:
+    //       return "Points";
+    //     case this.$root.$data.enumGameType.RANKED:
+    //       return "Ranked";
+    //     case this.$root.$data.enumGameType.CO_OP:
+    //       return "Co-op";
+    //   }
+    // },
   },
   watch: {
-    selected() {
-      this.$store.commit("updateRecordGameType", this.selected);
-      if (this.selected === "") {
-        this.$store.commit("changeRecordStep", 3);
-      }
-      else {
-        this.$store.commit("changeRecordStep", 4);
-      }
+    // selected() {
+    //   this.$store.commit("updateRecordGameType", this.selected);
+    //   if (this.selected === "") {
+    //     this.$store.commit("changeRecordStep", 3);
+    //   }
+    //   else {
+    //     this.$store.commit("changeRecordStep", 4);
+    //   }
+    // },
+    selection: {
+      immediate: true,
+      handler: function() {
+        this.makeSelection(this.selection);
+        if (this.selection === null) {
+          this.$store.commit("changeRecordStep", 3);
+        }
+        else {
+          this.$store.commit("changeRecordStep", 4);
+        }
+      },
     },
   },
 }
