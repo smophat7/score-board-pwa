@@ -48,26 +48,23 @@
         <!-- Individual step content cards -->
         <v-stepper-items id="stepper-content" class="relative-stepper-content">
           <v-stepper-content step="1" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
-            <br>
-            <br>
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <SelectGame />
           </v-stepper-content>
 
           <v-stepper-content step="2" class="stepper-contents">
-            <SelectPlayers :members="members"/>
+            <SelectPlayers />
           </v-stepper-content>
 
           <v-stepper-content step="3" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <SelectGameType />
           </v-stepper-content>
 
           <v-stepper-content step="4" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <DetermineStandings />
           </v-stepper-content>
 
           <v-stepper-content step="5" class="stepper-contents">
-            <v-card color="grey lighten-1" height="400px"></v-card>
+            <RecordDetails />
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -75,11 +72,15 @@
 
     <div class="fixed-bottom">
       <v-row justify="space-between" no-gutters class="px-3 py-3">
-        <v-btn color="primary" @click="back()">
+        <v-btn v-if="e1 != 1" color="primary" @click="back()">
           Back
         </v-btn>
-        <v-btn color="primary" @click="next()">
+        <v-spacer v-else></v-spacer>
+        <v-btn v-if="e1 !=5" color="primary" :disabled="!ifCanAdvance" @click="next()">
           Next
+        </v-btn>
+        <v-btn v-else color="success" @click="submit()">
+          Save Play
         </v-btn>
       </v-row>
     </div>
@@ -88,12 +89,14 @@
 </template>
 
 <script>
-import SelectPlayers from "@/components/Record/SelectPlayers.vue";
-
   export default {
     name: "RecordGame",
     components: {
-      SelectPlayers,
+      SelectGame: () => import ("@/components/Record/SelectGame.vue"),
+      SelectPlayers: () => import ("@/components/Record/SelectPlayers.vue"),
+      SelectGameType: () => import ("@/components/Record/SelectGameType.vue"),
+      DetermineStandings: () => import ("@/components/Record/DetermineStandings.vue"),
+      RecordDetails: () => import ("@/components/Record/RecordDetails.vue"),
     },
     data () {
       return {
@@ -102,9 +105,9 @@ import SelectPlayers from "@/components/Record/SelectPlayers.vue";
       }
     },
     computed: {
-      members() {
-        return this.$root.$data.members;
-      }
+      ifCanAdvance() {
+        return this.$store.state.recordStep > this.e1;
+      },
     },
     methods: {
       cancel() {
@@ -114,6 +117,7 @@ import SelectPlayers from "@/components/Record/SelectPlayers.vue";
       },
       back() {
         if (this.e1 !== 1) {
+          console.log("back()");
           this.e1--;
         }
         // this.scrollToTop();
@@ -121,14 +125,12 @@ import SelectPlayers from "@/components/Record/SelectPlayers.vue";
       next() {
         if (this.e1 !== 5) {
           this.e1++;
+          console.log("next()");
         }
-        // this.scrollToTop();
       },
-      // scrollToTop() {
-      //   console.log("scrollToTop()");
-      //   // $vuetify.goTo('#top', {duration: 500, offset: 0});
-      //   document.getElementById("stepper-content").scroll(0, 0);
-      // }
+      submit() {
+        console.log("submit()");
+      }
     }
   }
 </script>

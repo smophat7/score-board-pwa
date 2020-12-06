@@ -145,7 +145,6 @@ export default {
           this.searched = true;
           this.oldSearchValue = this.searchValue;
         });
-        console.log(this.searchResults);                    // Delete me
     },
     async addToShelf(game) {
       let formattedGame = this.formatGame(game);
@@ -158,15 +157,6 @@ export default {
       }
       this.$store.commit('setIfCollectionChanged', true);
     },
-    // removeFromShelf(game) {
-    //   this.$root.$data.shelf.splice(
-    //     this.$root.$data.shelf.indexOf(
-    //       this.$root.$data.shelf.find((item) => item.id === game.id),
-    //       0
-    //     ),
-    //     1
-    //   );
-    // },
     async removeFromShelf(game) {
       this.deleteLoading = true;
 
@@ -203,6 +193,9 @@ export default {
     },
     gameOnShelf(game) {
       // return this.$root.$data.shelf.some((item) => item.id === game.id);
+      // console.log(this.collection.some((item) => item.board_game_id === game.id));
+      // For some reason, keeping the above stuff in here (although commented out) makes
+      // the whole make-it-red-if-it's-on-the-shelf thing in the search results work? Idk
       return this.collection.some((item) => item.board_game_id === game.id);
     },
   },
