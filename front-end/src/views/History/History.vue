@@ -21,6 +21,7 @@
       </v-row>
     </v-container>
 
+
     <!-- Table and Search -->
 
     <v-card-title>
@@ -38,29 +39,6 @@
       no-results-text="Nothing found... try searching someting else?"
       @click:row="handleClick"
     >
-     
-      <!-- <template v-slot:body>
-        <tr v-for="play in plays" :key="play.id">
-          <td>{{ readableDate(play.datePlayed) }}</td>
-          <td>{{ gameName(play.boardGameId) }}</td>
-          <td>{{ playWinnerMember(play.winnerId, play.type, play.boardWin) }}</td>
-          <td>{{ play.winnerId }}</td>
-        </tr>
-      </template> -->
-
-      <!-- <template v-slot:item.datePlayed=" { item }">
-        {{ readableDate(item.datePlayed) }}
-      </template>
-      <template v-slot:item.boardGameId=" { item }">
-        {{ gameName(item.boardGameId) }}
-      </template>
-      <template v-slot:item.winnerId=" { item }">
-        {{ playWinnerMember(item.winnerId, item.type, item.boardWin) }}
-      </template>
-      <template v-slot:item.playersId=" { item }">
-        {{ numPlayers(item.playersId) }}
-      </template> -->
-
     </v-data-table>
 
 
@@ -79,6 +57,8 @@
 </template>
 
 <script>
+import axios from "axios";
+import { formatISO, parseISO } from 'date-fns';
 import HistoryDetails from "@/components/HistoryDetails.vue";
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
@@ -91,64 +71,55 @@ export default {
   data() {
     return {
       search: "",
+      plays: [],
+      loadingPlays: false,
       dialog: false,
       detailPlay: null,
       headers: [
         { text: "Date", value: 'readableDate' },
-        { text: "Game", value: 'boardGameName' },
-        { text: "Winner", value: 'winnerDisplay' },
-        { text: "# Players", value: 'numPlayers', hide: 'smAndDown'},
+        { text: "Game", value: 'game.name' },
+        // { text: "Winner", value: 'winnerDisplay' },
+        { text: "# Players", value: 'numPlayers', hide: 'xsAndDown'},
 
         // The space after in the align: makes it so the class mobile-invisible-column is applied
         // { text: '', value: 'data-table-expand', hide: "smAndDown"},
       ]
     };
   },
+  created() {
+    this.getPlays();
+  },
   computed: {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
-
-    // Takes the root data array of play objects and maps them to a new array
-    // the ... operator is like Object.assign() and is creating new objects (and
-    // then modifying some properties for History.vue's purposes) so that this 
-    // returned list does not edit the objects stored in the root data. While 
-    // mapping does create a new array, it is stil referencing the same objects.
-    plays() {
-      return this.$root.$data.history.map(play => {
-        return {
-          ...play,
-          readableDate: this.readableDate(play.datePlayed),
-          boardGameName: this.gameName(play.boardGameId),
-          winnerDisplay: this.playWinnerMember(play.winnerId, play.type, play.boardWin),
-          numPlayers: this.numPlayers(play.playersId),
-        };
-      });
-    },
-
-    // plays() {
-    //   let plays = this.deepCopy(this.$root.$data.history);
-    //   // console.log("root");
-    //   // console.log(this.$root.$data.history);
-    //   // console.log("plays before");
-    //   console.log(plays);
-    //   plays.forEach(play => {
-    //     // play.datePlayed = this.readableDate(play.datePlayed);
-    //     play.boardGameId = this.gameName(play.boardGameId);
-    //     play.winnerId = this.playWinnerMember(play.winnerId, play.type, play.boardWin);
-    //   });
-    //   // console.log("plays after");
-    //   // console.log(plays);
-    //   return plays;
-    // }
   },
   methods: {
     handleClick(item) {
-      // console.log("Handle click = " + item.boardGameId);
       this.detailPlay = item;
       this.dialog = true;
-      // this.highlightClickedRow(value);
-      // this.viewDetails(value);
+    },
+    async getPlays() {
+      this.loadingPlays = true;
+      let url = "http://localhost:3000/plays";
+
+      try {
+        let response = await axios.get(url);
+        let playList = response.data;
+        this.plays = playList.map(play => {
+          return {
+            ...play,
+            readableDate: formatISO(parseISO(play.date, 'YYYY-MM-DD', new Date()), {representation: 'date'}),
+            // winnerDisplay: this.playWinnerMember(play.winnerId, play.type, play.boardWin),
+            numPlayers: this.numPlayers(play.players),
+          }
+        });
+        
+        this.loadingPlays = false;
+      }
+      catch (error) {
+        console.log(error)
+      }
     },
   }
 };

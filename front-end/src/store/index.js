@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     recordStep: 1,                    // Which step of the record game wizard the user is in
+    
     recordPlayers: [],                // Players in the game play being recorded
     recordGame: null,                 // Which game is being recorded
     recordGameType: "",               // Which game type is being recorded
@@ -13,7 +14,7 @@ export default new Vuex.Store({
     recordRank: null,                 // In ranked game, something??? idk how this one will work yet
     recordCoopWin: false,             // In co-op, true if the players won
     recordDescription: "",            // What written description is to be recorded
-    recordDate: Date,                 // Date the game was played
+    recordDate: new Date(),                 // Date the game was played
 
     ifMemberEditComponent: false,     // Controls what to view within MemberDetails.vue
     ifGroupChanged: false,            // Set to true on changes to the members Mongo collection to trigger an API get request
@@ -30,7 +31,7 @@ export default new Vuex.Store({
     ifGameEditComponent: (state) => state.ifGameEditComponent,
     recordPoints: (state) => state.recordPoints,
     recordRank: (state) => state.recordRank,
-    racordCoopWin: (state) => state.racordCoopWin,
+    recordCoopWin: (state) => state.racordCoopWin,
     recordDescription: (state) => state.recordDescription,
     recordDate: (state) => state.recordDate,
   },

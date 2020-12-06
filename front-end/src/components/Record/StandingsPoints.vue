@@ -74,7 +74,6 @@ export default {
       handler: function() {
         this.$store.commit("updateRecordPoints", this.pointAssignment);
         if (this.allFilled()) {
-          console.log("standing points changing record step to 5")
           this.$store.commit("changeRecordStep", 5);
         }
         else {

@@ -89,6 +89,9 @@
 </template>
 
 <script>
+import { parseISO, parse, toDate } from "date-fns";
+import axios from "axios";
+
   export default {
     name: "RecordGame",
     components: {
@@ -117,7 +120,6 @@
       },
       back() {
         if (this.e1 !== 1) {
-          console.log("back()");
           this.e1--;
         }
         // this.scrollToTop();
@@ -125,11 +127,35 @@
       next() {
         if (this.e1 !== 5) {
           this.e1++;
-          console.log("next()");
         }
       },
-      submit() {
+      async submit() {
         console.log("submit()");
+
+        // Create array of member ids instead of member objects to include in newPlay for DB
+        let gamePlayers = this.$store.state.recordPlayers.map(playerObj => {
+          return playerObj.id;
+        });
+
+        // Create new play object to post to DB
+        let newPlay = {
+          players: gamePlayers,
+          game: this.$store.state.recordGame._id,         // maybe just the id, idk
+          type: this.$store.state.recordGameType,
+          points: this.$store.state.recordPoints,
+          ranking: {},      // no idea yet
+          coopWin: this.$store.state.recordCoopWin,
+          description: this.$store.state.recordDescription,
+          // date: parseISO(this.$store.state.datePlayed),
+          date: parseISO(this.$store.state.recordDate, 'YYYY-MM-DD', new Date()),
+        };
+        let url = "http://localhost:3000/plays";
+        try {
+          let response = await axios.post(url, newPlay);
+        }
+        catch(error) {
+          console.log(error);
+        }
       }
     }
   }

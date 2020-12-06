@@ -1,7 +1,6 @@
 export default {
   methods: {
     readableDate(date) {
-      // console.log(date);
       return date.toLocaleDateString("en-US", {
         year: "2-digit",
         month: "2-digit",
