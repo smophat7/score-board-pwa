@@ -38,14 +38,9 @@ app.use(cors());                                        // Use in development on
 // Custom routes (mini-apps)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-<<<<<<< HEAD
 app.use("/api/collection", collectionRouter);
 app.use("/api/members", membersRouter);
-=======
-app.use("/collection", collectionRouter);
-app.use("/members", membersRouter);
-app.use("/plays", playsRouter);
->>>>>>> main
+app.use("/api/plays", playsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
