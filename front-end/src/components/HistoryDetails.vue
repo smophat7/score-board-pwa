@@ -2,27 +2,29 @@
   <v-card class="d-flex flex-column">
     <v-card-title class="secondary headline">
       <div class="text-truncate white--text">
-        {{readableDate(play.datePlayed)}} - {{ gameName(play.boardGameId) }}
+        Play Details
       </div>
+      <v-spacer></v-spacer>
+      <v-btn color="error" @click="deletePlay">
+        <v-progress-circular v-if="deleteLoading"
+          indeterminate
+          color="white"
+        ></v-progress-circular>
+        <v-icon v-else color="white">mdi-delete-forever</v-icon>
+      </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <h2 class="mt-5 mb-3 text-center">Winner(s): {{ playWinnerMember(play.winnerId, play.type, play.boardWin) }}</h2>
+      <!-- <h2 class="mt-5 mb-3 text-center">Winner(s): {{ playWinnerMember(play.winnerId, play.type, play.boardWin) }}</h2> -->
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="6" class="py-2">
-          <v-img class="img-size mx-auto" :src="gameImageSrc(play.boardGameId)" :alt="gameName(play.boardGameId) + ' game cover'">
-            <!-- <template v-slot:placeholder>
-              <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-              </v-row>
-            </template> -->
-          </v-img>
+        <v-col cols="12" sm="6" class="text-center">
+          <v-img class="img-size mx-auto my-5" :src="play.game.images.medium" :alt="play.game.name + ' game cover'"></v-img>
+          <h2>{{ play.game.name }}</h2>
+          <h4>{{ play.readableDate }}</h4> 
         </v-col>
-        <!-- <v-col class="d-sm-none">
-          <v-divider ></v-divider>
-        </v-col> -->
-        <v-col cols="12" sm="6" class="py-2">
-          <div v-if="isCoop">
+        <!-- <v-col cols="12" sm="6" class="py-2"> -->
+
+          <!-- <div v-if="isCoop">
             <h3>Players</h3>
             <v-list>
               <v-list-item v-for="memberId in play.playersId" :key="memberId">
@@ -31,28 +33,25 @@
                 </v-list-item-content>
               </v-list-item>
             </v-list>
-            
-          </div>
-          <div v-else>
+          </div> -->
+
+          <!-- <div v-else> -->
+          <!-- <div>
             <h3>Standings</h3>
             <v-list>
               <v-list-item v-for="(ids, index) in play.rankWinToLose" :key="ids">
                 <span class="mr-2">{{ index + 1 }}. </span>
-
-                <!-- <v-list-item-avatar>
-                <v-img :src="idToMember(ids).profilePicture"></v-img>
-              </v-list-item-avatar> -->
-
                 <v-list-item-content>
                   <v-list-item-title v-text="playerRankings(ids, play)"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
-          </div>
-        </v-col>
+          </div> -->
+        <!-- </v-col> -->
       </v-row>
 
       <p><strong>Description:</strong> {{ play.description }}</p>
+      <p><em>More details about the game (who won, how many points people get, etc.) will be here too. Just didn't have time to figure all that out just yet!</em></p>
     </v-card-text>
 
     <v-spacer></v-spacer>
@@ -70,6 +69,7 @@
 
 <script>
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
+import axios from "axios";
 
 export default {
   name: "HistoryDetails",
@@ -77,12 +77,31 @@ export default {
     play: Object,
   },
   mixins: [HistoryFunctions],
-  computed: {
-    isCoop() {
-      return this.play.type === this.$root.$data.enumGameType.CO_OP;
+  data() {
+    return {
+      deleteLoading: false,
     }
   },
-  methods: {},
+  computed: {
+    // isCoop() {
+    //   return this.play.type === this.$root.$data.enumGameType.CO_OP;
+    // }
+  },
+  methods: {
+    async deletePlay() {
+      this.deleteLoading = true;
+      let url = "http://localhost:3000/plays/" + this.play._id;
+      try {
+        await axios.delete(url);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      this.deleteLoading = false;
+      this.$store.commit('setIfPlaysChanged', true);
+      this.$emit("close-modal");
+    },
+  },
 };
 </script>
 

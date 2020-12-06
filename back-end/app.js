@@ -12,6 +12,7 @@ var db = mongoose.connection; // Suggested by https://developer.mozilla.org/en-U
 db.on("error", console.error.bind(console, "MongoDB connection error:")); // Suggested by https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 require("./models/Game");
 require("./models/Member");
+require("./models/Play");
 
 
 // Custom routes (mini-apps)
@@ -19,6 +20,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var collectionRouter = require("./routes/collection");
 var membersRouter = require("./routes/members");
+var playsRouter = require("./routes/plays");
 
 var app = express();
 
@@ -36,8 +38,14 @@ app.use(cors());                                        // Use in development on
 // Custom routes (mini-apps)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+<<<<<<< HEAD
 app.use("/api/collection", collectionRouter);
 app.use("/api/members", membersRouter);
+=======
+app.use("/collection", collectionRouter);
+app.use("/members", membersRouter);
+app.use("/plays", playsRouter);
+>>>>>>> main
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
