@@ -19,7 +19,8 @@ export default new Vuex.Store({
     ifMemberEditComponent: false,     // Controls what to view within MemberDetails.vue
     ifGroupChanged: false,            // Set to true on changes to the members Mongo collection to trigger an API get request
     ifGameEditComponent: false,       // Controls what to view within GameDetails.vue
-    ifCollectionChanged: false,       // Set to true on changes to the members Mongo collection to trigger an API get request
+    ifCollectionChanged: false,       // Set to true on changes to the collection Mongo collection to trigger an API get request
+    ifPlaysChanged: false,            // Set to true on changes to the plays Mongo collection to trigger an API get request
   },
   getters: {
     recordStep: (state) => state.recordStep,
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     ifMemberEditComponent: (state) => state.ifMemberEditComponent,
     ifGroupChanged: (state) => state.ifGroupChanged,
     ifGameEditComponent: (state) => state.ifGameEditComponent,
+    ifPlaysChanged: (state) => state.ifGroupChanged,
     recordPoints: (state) => state.recordPoints,
     recordRank: (state) => state.recordRank,
     recordCoopWin: (state) => state.racordCoopWin,
@@ -87,6 +89,9 @@ export default new Vuex.Store({
     },
     setIfCollectionChanged(state, ifChanged) {
       state.ifCollectionChanged = ifChanged;
+    },
+    setIfPlaysChanged(state, ifChanged) {
+      state.ifPlaysChanged = ifChanged;
     },
   },
   actions: {},

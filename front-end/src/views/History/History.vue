@@ -99,6 +99,17 @@ export default {
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
+    ifPlaysDataChanged() {
+      return this.$store.state.ifPlaysChanged;
+    }
+  },
+  watch: {
+    ifPlaysDataChanged() {
+      if (this.$store.state.ifPlaysChanged === true) {
+        this.getPlays();
+        this.$store.commit('setIfPlaysChanged', false);
+      }
+    },
   },
   methods: {
     handleClick(item) {

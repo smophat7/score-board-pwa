@@ -16,11 +16,8 @@ router.get("/", (req, res, next) => {
 // Saves a new Play to the DB and returns the newly created Play
 router.post("/", (req, res, next) => {
   let newPlay = new Play(req.body);
-  console.log("newPlay in plays.js route: " + newPlay);
   newPlay.save(function(err, play) {
-    console.log("inside save, before if (err)");
     if (err) { return next(err); }
-    // console.log("play.json() = " + play.json());
     res.json(play);
   });
 });

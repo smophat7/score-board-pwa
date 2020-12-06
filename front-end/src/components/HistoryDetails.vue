@@ -4,6 +4,14 @@
       <div class="text-truncate white--text">
         Play Details
       </div>
+      <v-spacer></v-spacer>
+      <v-btn color="error" @click="deletePlay">
+        <v-progress-circular v-if="deleteLoading"
+          indeterminate
+          color="white"
+        ></v-progress-circular>
+        <v-icon v-else color="white">mdi-delete-forever</v-icon>
+      </v-btn>
     </v-card-title>
 
     <v-card-text>
@@ -61,6 +69,7 @@
 
 <script>
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
+import axios from "axios";
 
 export default {
   name: "HistoryDetails",
@@ -68,12 +77,31 @@ export default {
     play: Object,
   },
   mixins: [HistoryFunctions],
+  data() {
+    return {
+      deleteLoading: false,
+    }
+  },
   computed: {
     // isCoop() {
     //   return this.play.type === this.$root.$data.enumGameType.CO_OP;
     // }
   },
-  methods: {},
+  methods: {
+    async deletePlay() {
+      this.deleteLoading = true;
+      let url = "http://localhost:3000/plays/" + this.play._id;
+      try {
+        await axios.delete(url);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      this.deleteLoading = false;
+      this.$store.commit('setIfPlaysChanged', true);
+      this.$emit("close-modal");
+    },
+  },
 };
 </script>
 
