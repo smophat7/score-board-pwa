@@ -195,7 +195,7 @@ import axios from "axios";
 }
 
 .stepper-contents {
-  padding-bottom: 100px;
+  padding-bottom: 200px;
   min-height:100vh;
 }
 
