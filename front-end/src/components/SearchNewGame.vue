@@ -166,7 +166,7 @@ export default {
         return item.board_game_id = game.id;
       });
 
-      let url = "http://localhost:3000/collection/" + mongoDoc._id;
+      let url = "/api/collection/" + mongoDoc._id;
       try {
         await axios.delete(url);
       }
