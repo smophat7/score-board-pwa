@@ -4,6 +4,9 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
+  { path: '/',
+    redirect: { name: 'Shelf' },
+  },
   {
     path: '/analytics',
     name: 'Analytics',

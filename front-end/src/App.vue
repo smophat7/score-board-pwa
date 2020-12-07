@@ -5,9 +5,8 @@
     <v-app-bar app clipped-left color="primary" dark>
       <!-- Logo/Brand -->
       <div class="d-flex align-center">
-        <v-img alt="Vuetify Logo" class="shrink mr-2" contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png" transition="scale-transition" width="40" />
-        ScoreBoard
+        <v-img alt="ScoreBoard Logo" class="shrink mr-2" contain
+          :src="'../img/logo/default_2.png'" transition="scale-transition" width="160" />
       </div>
       <v-spacer></v-spacer>
       <!-- Profile picture + dropdown menu -->
@@ -73,8 +72,20 @@
     <!-- Main Content of App -->
     <v-main>
       <v-fade-transition mode="out-in" duration="150">
-        <router-view/>
+        <router-view class="full-screen" />
       </v-fade-transition>
+      <v-footer color="primary">
+        <v-row justify="center"></v-row>
+        <v-col cols="12" class="text-center py-0">
+          <v-btn icon color="white" exact href="https://github.com/smophat7/score-board-pwa" target="_blank">
+            <v-icon>mdi-github</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols="12" class="text-center py-0">
+          <p style="color:white" class="my-auto">© 2020 Spencer Moffat</p>
+        </v-col>
+        <br>
+      </v-footer>
     </v-main>
 
     <!-- Mobile FAB -->
@@ -181,6 +192,10 @@ export default {
   position: fixed;
   bottom: calc(56px + 12px);
   right: 12px;
+}
+
+.full-screen {
+  min-height: calc(100vh - 56px);
 }
 
 @media (max-width: 600px){
