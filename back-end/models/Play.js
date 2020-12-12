@@ -6,6 +6,7 @@ var PlaySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Member",
   }],
+  numPlayers: Number,
   winners: [{                                  // Array of members (even if there is only 1) that were in first place
     type: mongoose.Schema.Types.ObjectId,
     ref: "Member",

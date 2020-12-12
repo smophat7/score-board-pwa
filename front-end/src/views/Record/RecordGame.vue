@@ -145,6 +145,7 @@ import axios from "axios";
         // Create new play object to post to DB
         let newPlay = {
           players: gamePlayers,
+          numPlayers: gamePlayers.length,
           game: this.$store.state.recordGame._id,         // maybe just the id, idk
           type: this.$store.state.recordGameType,
           points: this.$store.state.recordPoints,

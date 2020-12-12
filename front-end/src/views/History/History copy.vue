@@ -62,7 +62,7 @@
 
 <script>
 import axios from "axios";
-// import { formatISO, parseISO } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
 import { RingLoader } from "@saeris/vue-spinners";
 import HistoryDetails from "@/components/HistoryDetails.vue";
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
@@ -77,22 +77,15 @@ export default {
   data() {
     return {
       search: "",
+      plays: [],
+      loadingPlays: false,
       dialog: false,
       detailPlay: null,
-      headers: [{
-          text: "Date",
-          value: 'readableDate'
-        },
-        {
-          text: "Game",
-          value: 'game.name'
-        },
+      headers: [
+        { text: "Date", value: 'readableDate' },
+        { text: "Game", value: 'game.name' },
         // { text: "Winner", value: 'winnerDisplay' },
-        {
-          text: "# Players",
-          value: 'numPlayers',
-          hide: 'xsAndDown'
-        },
+        { text: "# Players", value: 'numPlayers', hide: 'xsAndDown'},
 
         // The space after in the align: makes it so the class mobile-invisible-column is applied
         // { text: '', value: 'data-table-expand', hide: "smAndDown"},
@@ -100,19 +93,50 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("plays/fetch");
+    this.getPlays();
   },
   computed: {
-    plays() { return this.$store.getters["plays/plays"]; },
-    loadingPlays() { return this.$store.state.plays.loadingPlays; },
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
+    },
+    ifPlaysDataChanged() {
+      return this.$store.state.ifPlaysChanged;
+    }
+  },
+  watch: {
+    ifPlaysDataChanged() {
+      if (this.$store.state.ifPlaysChanged === true) {
+        this.getPlays();
+        this.$store.commit('setIfPlaysChanged', false);
+      }
     },
   },
   methods: {
     handleClick(item) {
       this.detailPlay = item;
       this.dialog = true;
+    },
+    async getPlays() {
+      this.loadingPlays = true;
+      let url = "http://localhost:3000/plays";
+
+      try {
+        let response = await axios.get(url);
+        let playList = response.data;
+        this.plays = playList.map(play => {
+          return {
+            ...play,
+            readableDate: formatISO(parseISO(play.date, 'YYYY-MM-DD', new Date()), {representation: 'date'}),
+            // winnerDisplay: this.playWinnerMember(play.winnerId, play.type, play.boardWin),
+            numPlayers: this.numPlayers(play.players),
+          }
+        });
+        
+        this.loadingPlays = false;
+      }
+      catch (error) {
+        console.log(error)
+      }
     },
   }
 };

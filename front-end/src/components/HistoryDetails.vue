@@ -6,7 +6,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn color="error" @click="deletePlay">
-        <v-progress-circular v-if="deleteLoading"
+        <v-progress-circular v-if="loadingDelete"
           indeterminate
           color="white"
         ></v-progress-circular>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import HistoryFunctions from "@/mixins/HistoryFunctions.js";
+// import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 import axios from "axios";
 
 export default {
@@ -76,31 +76,15 @@ export default {
   props: {
     play: Object,
   },
-  mixins: [HistoryFunctions],
-  data() {
-    return {
-      deleteLoading: false,
-    }
-  },
+  // mixins: [HistoryFunctions],
   computed: {
-    // isCoop() {
-    //   return this.play.type === this.$root.$data.enumGameType.CO_OP;
-    // }
+    loadingDelete() { return this.$store.state.plays.loadingDelete; },
   },
   methods: {
-    async deletePlay() {
-      this.deleteLoading = true;
-      let url = "http://localhost:3000/plays/" + this.play._id;
-      try {
-        await axios.delete(url);
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.deleteLoading = false;
-      this.$store.commit('setIfPlaysChanged', true);
+    deletePlay() {
+      this.$store.dispatch("plays/delete", this.play);
       this.$emit("close-modal");
-    },
+    }
   },
 };
 </script>
