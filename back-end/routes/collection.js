@@ -23,7 +23,15 @@ router.post("/", (req, res, next) => {
 
 
 // Deletes a Game permanently from the database and sends back the deleted Game
+// There's some pre middleware that removes all associated plays defined in Game.js
+// before the mongoose.model();
 router.delete("/:id", (req, res, next) => {
+  // if (req.params.id == null) {
+  //   console.log("404 on its way!");
+  //   res.sendStatus(404);
+  // }
+
+  // Delete the recorded game itself
   Game.findByIdAndDelete(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
     res.json(foundItem);

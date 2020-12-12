@@ -32,4 +32,25 @@ router.delete("/:id", (req, res, next) => {
 });
 
 
+// Deletes all the plays that reference the given Member id and returns confirmation
+router.delete("/fromMembers/:id", (req, res, next) => {
+  Play.deleteMany({ players: req.params.id }, function(err, result) {
+    if (err) { return next(err); }
+    res.json(result);
+  });
+});
+
+
+// Deletes all the plays that reference the given Game id and returns confirmation
+router.delete("/fromGames/:id", (req, res, next) => {
+  Play.deleteMany({ game: req.params.id }, function(err, result) {
+    if (err) { return next(err); }
+    res.json(result);
+  });
+});
+
+
+
+
+
 module.exports = router;

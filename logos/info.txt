@@ -1,0 +1,18 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: norwester
+font link: http://jamiewilson.io/norwester/
+font author: Jamie Wilson
+font author site: http://jamiewilson.io/
+
+
+icon designer: Red Cross Red Crescent Climate Centre
+icon designer link: /RCCC
+        
+
+fontColor: {"hex":"#ffffff"}
+bgColor: {"hex":"#3949ab"}
+iconColor: {"hex":"#ffffff"}
+
+      

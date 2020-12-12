@@ -85,13 +85,26 @@ export default {
   methods: {
     async deleteGame() {
       this.deleteLoading = true;
-      let url = "http://localhost:3000/collection/" + this.game._id;
+
+
+      // Delete any Plays that reference this Game
+      let url = "http://localhost:3000/plays/fromGames/" + this.game._id;
       try {
         await axios.delete(url);
       }
       catch (error) {
         console.log(error);
       }
+
+      // Delete the Game itself
+      url = "http://localhost:3000/collection/" + this.game._id;
+      try {
+        await axios.delete(url);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      
       this.deleteLoading = false;
       this.$store.commit('setIfCollectionChanged', true);
       this.$emit("close-modal");

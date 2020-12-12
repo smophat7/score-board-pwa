@@ -72,7 +72,19 @@ export default {
   methods: {
     async deleteMember() {
       this.deleteLoading = true;
-      let url = "http://localhost:3000/members/" + this.member.id;
+
+
+      // Delete any Plays that reference this Member
+      let url = "http://localhost:3000/plays/fromMembers/" + this.member._id;
+      try {
+        await axios.delete(url);
+      }
+      catch (error) {
+        console.log(error);
+      }
+
+      // Delete the Member itself
+      url = "http://localhost:3000/members/" + this.member.id;
       try {
         await axios.delete(url);
       }
