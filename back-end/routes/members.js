@@ -11,10 +11,17 @@ router.get("/", (req, res, next) => {
   Member.find(function(err, members) {
     if (err) { return next(err); }
     res.send(JSON.parse(JSON.stringify(members)));  // Should be able to do just res.send(toJSON(members)); but it said toJSON() is not a function
-    // console.log(games.toJSON().fullName);
   });
 });
 
+
+router.get("/:id", (req, res, next) => {
+  Member.findById(req.params.id, function(err, foundItem) {
+    if (err) { return next(err); }
+    // res.send(JSON.parse(JSON.stringify(foundItem)));
+    res.json(foundItem);
+  });
+});
 
 // Saves a new Member to the DB and sends back the newly created Member
 router.post("/", (req, res, next) => {
@@ -39,6 +46,7 @@ router.delete("/:id", (req, res, next) => {
 router.put("/:id", (req, res, next) => {
   Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
     if (err) { return next(err); }
+    console.log(foundItem);
     res.send(JSON.parse(JSON.stringify(foundItem)));
   });
 });

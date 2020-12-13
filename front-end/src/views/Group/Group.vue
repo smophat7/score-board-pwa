@@ -28,7 +28,8 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <AddNewMember v-on:close-modal="addNewMemberDialog = false" v-on:change-to-group="getMembers"/>
+      <!-- <AddNewMember v-on:close-modal="addNewMemberDialog = false" v-on:change-to-group="getMembers"/> -->
+      <AddNewMember v-on:close-modal="addNewMemberDialog = false" />
     </v-dialog>
 
     <!-- Table and Search -->
@@ -62,7 +63,9 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <MemberDetails :member="detailMember" v-on:close-modal="detailDialog = false" @change-to-group="getMembers"/>
+      <!-- <MemberDetails :member="detailMember" v-on:close-modal="detailDialog = false" @change-to-group="getMembers"/> -->
+      <!-- <MemberDetails :member="detailMember" v-on:close-modal="detailDialog = false" /> -->
+      <MemberDetails v-on:close-modal="detailDialog = false" />
     </v-dialog>
 
   </v-container>
@@ -85,8 +88,8 @@ export default {
   },
   data() {
     return {
-      members: [],
-      loadingMembers: false,
+      // members: [],
+      // loadingMembers: false,
       search: "",
       detailDialog: false,
       addNewMemberDialog: false,
@@ -101,57 +104,39 @@ export default {
     };
   },
   created() {
-    this.getMembers();
+    this.$store.dispatch("members/fetch");
   },
   computed: {
+    members() { return this.$store.getters["members/members"]; },
+    loadingMembers() { return this.$store.state.members.loadingMembers; },
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
-    ifGroupDataChanged() {
-      return this.$store.state.ifGroupChanged;
-    }
   },
-  watch: {
-    ifGroupDataChanged() {
-      if (this.$store.state.ifGroupChanged === true) {
-        this.getMembers();
-        this.$store.commit('setIfGroupChanged', false);
-      }
-    },
-  },
+  // watch: {
+  //   ifGroupDataChanged() {
+  //     if (this.$store.state.ifGroupChanged === true) {
+  //       this.getMembers();
+  //       this.$store.commit('setIfGroupChanged', false);
+  //     }
+  //   },
+  // },
   methods: {
-    async getMembers() {
-      this.loadingMembers = true;
-      let url = "http://localhost:3000/members";
-      try {
-        let response = await axios.get(url);
-        let memberList = response.data;
-        this.members = memberList.map(member => {
-          return {
-            ...member,
-            readableDate: this.readableDate(member.dateJoined),
-          }
-        });
-        this.loadingMembers = false;
-      }
-      catch (error) {
-        console.log(error)
-      }
-    },
     handleDetailClick(item) {
-      this.detailMember = item;
+      // this.detailMember = item;
+      this.$store.dispatch("members/fetchOneForDetail", item.id);
       this.detailDialog = true;
     },
     addNewMemberClick() {
       this.addNewMemberDialog = true;
     },
-    readableDate(date) {
-      return new Date(date).toLocaleDateString("en-US", {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      });
-    },
+    // readableDate(date) {
+    //   return new Date(date).toLocaleDateString("en-US", {
+    //     year: "2-digit",
+    //     month: "2-digit",
+    //     day: "2-digit",
+    //   });
+    // },
   }
 };
 </script>

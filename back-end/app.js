@@ -36,11 +36,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());                                        // Use in development on local machine, don't know if I need it in production (security issue if I don't set proper whitelist)
 
 // Custom routes (mini-apps)
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use("/collection", collectionRouter);
-app.use("/members", membersRouter);
-app.use("/plays", playsRouter);
+app.use('/api/', indexRouter);
+app.use('/api/users', usersRouter);
+app.use("/api/collection", collectionRouter);
+app.use("/api/members", membersRouter);
+app.use("/api/plays", playsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

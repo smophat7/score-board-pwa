@@ -66,7 +66,7 @@ export default {
       let newGameVersion = new Object({
         name: this.prefName,
       });
-      let url = "http://localhost:3000/collection/" + this.game._id;
+      let url = "/api/collection/" + this.game._id;
       try {
         let response = await axios.put(url, newGameVersion);
         this.gameLocal = response.data;

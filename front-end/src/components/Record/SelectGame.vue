@@ -67,7 +67,7 @@ export default {
   methods: {
     async getCollection() {
       this.loadingGames = true;
-      let url = "http://localhost:3000/collection";
+      let url = "/api/collection";
 
       try {
         let response = await axios.get(url);

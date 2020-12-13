@@ -118,7 +118,7 @@ export default {
     },
     async getPlays() {
       this.loadingPlays = true;
-      let url = "http://localhost:3000/plays";
+      let url = "/api/plays";
 
       try {
         let response = await axios.get(url);

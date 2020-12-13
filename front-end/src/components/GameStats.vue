@@ -88,7 +88,7 @@ export default {
 
 
       // Delete any Plays that reference this Game
-      let url = "http://localhost:3000/plays/fromGames/" + this.game._id;
+      let url = "/api/plays/fromGames/" + this.game._id;
       try {
         await axios.delete(url);
       }
@@ -97,7 +97,7 @@ export default {
       }
 
       // Delete the Game itself
-      url = "http://localhost:3000/collection/" + this.game._id;
+      url = "/api/collection/" + this.game._id;
       try {
         await axios.delete(url);
       }

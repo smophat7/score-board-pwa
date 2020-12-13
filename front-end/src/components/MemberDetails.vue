@@ -1,13 +1,15 @@
 <template>
-  <MemberEdit v-if="ifShowEdit" :member="member" @close-modal="modalClosed"/>
-  <MemberStats v-else :member="member" @close-modal="modalClosed"/>
+  <!-- <MemberEdit v-if="ifShowEdit" :member="member" @close-modal="modalClosed"/> -->
+  <MemberEdit v-if="ifShowEdit" @close-modal="modalClosed"/>
+  <!-- <MemberStats v-else :member="member" @close-modal="modalClosed"/> -->
+  <MemberStats v-else @close-modal="modalClosed"/>
 </template>
 
 <script>
 export default {
   name: "MemberDetails",
   props: {
-    member: Object,
+    // member: Object,
   },
   components: {
     MemberEdit: () => import("@/components/MemberEdit.vue"),

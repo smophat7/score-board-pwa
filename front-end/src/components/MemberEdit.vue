@@ -15,8 +15,8 @@
         <v-form v-on:submit.prevent="updateMember">
           <v-text-field label="First Name" v-model="firstName" autofocus required></v-text-field>
           <v-text-field label="Last Name" v-model="lastName" required></v-text-field>
-          <v-btn v-if="updateLoading" color="success" block>
-            <v-progress-circular small v-if="updateLoading" class="mr-2"
+          <v-btn v-if="loadingUpdate" color="success" block>
+            <v-progress-circular small v-if="loadingUpdate" class="mr-2"
             indeterminate
             color="white"
             ></v-progress-circular>
@@ -47,40 +47,42 @@ import axios from "axios";
 export default {
   name: "MemberEdit",
   props: {
-    member: Object,
+    // member: Object,
   },
   data() {
     return {
-      memberLocal: this.member,
-      firstName: this.member.firstName,
-      lastName: this.member.lastName,
-      updateLoading: false,
+      memberLocal: null,
+      firstName: "",
+      lastName: "",
     };
   },
+  created() {
+    this.memberLocal = this.member,
+    this.firstName = this.member.firstName;
+    this.lastName = this.member.lastName;
+  },
   computed: {
+    member() { return this.$store.getters["members/detailMember"]; },
+    loadingUpdate() { return this.$store.state.members.loadingUpdate },
     somethingDifferent() {
       return (this.firstName !== this.memberLocal.firstName || this.lastName !== this.memberLocal.lastName);
     },
   },
   methods: {
     async updateMember() {
-      this.updateLoading = true;
       let newMemberVersion = new Object({
         firstName: this.firstName,
         lastName: this.lastName,
       });
-      let url = "http://localhost:3000/members/" + this.member.id;
-      try {
-        let response = await axios.put(url, newMemberVersion);
-        this.memberLocal = response.data;
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.firstName = this.memberLocal.firstName,
-      this.lastName = this.memberLocal.lastName,
-      this.$store.commit('setIfGroupChanged', true);
-      this.updateLoading = false;
+      console.log("newMemberVersion: " + newMemberVersion);
+      await this.$store.dispatch("members/update", {
+        currentMemberId: this.member.id,
+        updatedMember: newMemberVersion
+      });
+      this.memberLocal = this.member;
+      
+      // this.firstName = this.memberLocal.firstName,
+      // this.lastName = this.memberLocal.lastName,
     },
     backToStats() {
       this.$store.commit('setIfMemberEditComponent', false);

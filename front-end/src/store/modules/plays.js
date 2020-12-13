@@ -32,7 +32,7 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_PLAYS", true);
-      let url = "http://localhost:3000/plays";
+      let url = "/api/plays";
       try {
         let response = await axios.get(url);
         context.commit("SAVE_PLAYS", response.data);
@@ -44,7 +44,7 @@ export default {
     },
     async delete(context, playToDelete) {
       context.commit("LOADING_STATUS_DELETE", true);
-      let url = "http://localhost:3000/plays/" + playToDelete._id;
+      let url = "/api/plays/" + playToDelete._id;
       try {
         await axios.delete(url);
         context.commit("LOADING_STATUS_DELETE", false);
@@ -54,5 +54,17 @@ export default {
       }
       context.dispatch("fetch");
     },
+    async deleteFromMember(context, memberToDelete) {
+      context.commit("LOADING_STATUS_DELETE", true);
+      let url = "/api/plays/fromMembers/" + memberToDelete._id;
+      try {
+        await axios.delete(url);
+        context.commit("LOADING_STATUS_DELETE", false);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      context.dispatch("fetch");
+    }
   }
 }

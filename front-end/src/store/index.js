@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 
 import plays from "./modules/plays";
+import members from "./modules/members";
 
 Vue.use(Vuex);
 
@@ -100,5 +101,6 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     plays,
+    members,
   },
 });

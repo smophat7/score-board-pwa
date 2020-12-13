@@ -7,7 +7,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn color="error" class="mr-5" @click="deleteMember">
-        <v-progress-circular v-if="deleteLoading"
+        <v-progress-circular v-if="loadingDelete"
             indeterminate
             color="white"
           ></v-progress-circular>
@@ -26,10 +26,6 @@
         </v-col>
         <v-col cols="12" sm="6" class="py-2">
           <div class="member-stats mx-auto">
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
             <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
             <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
             <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
@@ -62,37 +58,15 @@ import axios from "axios";
 export default {
   name: "MemberStats",
   props: {
-    member: Object,
+    // member: Object,
   },
-  data() {
-    return {
-      deleteLoading: false,
-    }
+  computed: {
+    member() { return this.$store.getters["members/detailMember"]; },
+    loadingDelete() { return this.$store.state.members.loadingDelete; },
   },
   methods: {
     async deleteMember() {
-      this.deleteLoading = true;
-
-
-      // Delete any Plays that reference this Member
-      let url = "http://localhost:3000/plays/fromMembers/" + this.member._id;
-      try {
-        await axios.delete(url);
-      }
-      catch (error) {
-        console.log(error);
-      }
-
-      // Delete the Member itself
-      url = "http://localhost:3000/members/" + this.member.id;
-      try {
-        await axios.delete(url);
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.deleteLoading = false;
-      this.$store.commit('setIfGroupChanged', true);
+      await this.$store.dispatch("members/cascadeDelete", this.member);
       this.$emit("close-modal");
     },
     percentWin(won, total) {

@@ -157,7 +157,7 @@ import axios from "axios";
         };
 
         // Post to MongoDB
-        let url = "http://localhost:3000/plays";
+        let url = "/api/plays";
         try {
           let response = await axios.post(url, newPlay);
         }

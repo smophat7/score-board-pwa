@@ -148,7 +148,7 @@ export default {
     },
     async addToShelf(game) {
       let formattedGame = this.formatGame(game);
-      let url = "http://localhost:3000/collection";
+      let url = "/api/collection";
       try {
         let response = await axios.post(url, formattedGame);
       }
@@ -166,7 +166,7 @@ export default {
         return item.board_game_id = game.id;
       });
 
-      let url = "http://localhost:3000/collection/" + mongoDoc._id;
+      let url = "/api/collection/" + mongoDoc._id;
       try {
         await axios.delete(url);
       }
