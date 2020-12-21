@@ -36,22 +36,22 @@ export default {
       try {
         let response = await axios.get(url);
         context.commit("SAVE_PLAYS", response.data);
-        context.commit("LOADING_STATUS_PLAYS", false);
       }
       catch (error) {
         console.log(error);
       }
+      context.commit("LOADING_STATUS_PLAYS", false);
     },
     async delete(context, playToDelete) {
       context.commit("LOADING_STATUS_DELETE", true);
       let url = "/api/plays/" + playToDelete._id;
       try {
         await axios.delete(url);
-        context.commit("LOADING_STATUS_DELETE", false);
       }
       catch (error) {
         console.log(error);
       }
+      context.commit("LOADING_STATUS_DELETE", false);
       context.dispatch("fetch");
     },
     async deleteFromMember(context, memberToDelete) {
@@ -59,11 +59,23 @@ export default {
       let url = "/api/plays/fromMembers/" + memberToDelete._id;
       try {
         await axios.delete(url);
-        context.commit("LOADING_STATUS_DELETE", false);
       }
       catch (error) {
         console.log(error);
       }
+      context.commit("LOADING_STATUS_DELETE", false);
+      context.dispatch("fetch");
+    },
+    async deleteFromGame(context, gameToDelete) {
+      context.commit("LOADING_STATUS_DELETE", true);
+      let url = "/api/plays/fromGames/" + gameToDelete._id;
+      try {
+        await axios.delete(url);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      context.commit("LOADING_STATUS_DELETE", false);
       context.dispatch("fetch");
     }
   }

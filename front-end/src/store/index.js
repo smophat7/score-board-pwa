@@ -4,6 +4,7 @@ import Vuex from "vuex";
 
 import plays from "./modules/plays";
 import members from "./modules/members";
+import collection from "./modules/collection";
 
 Vue.use(Vuex);
 
@@ -21,20 +22,20 @@ export default new Vuex.Store({
     recordDate: new Date(),           // Date the game was played
 
     ifMemberEditComponent: false,     // Controls what to view within MemberDetails.vue
-    ifGroupChanged: false,            // Set to true on changes to the members Mongo collection to trigger an API get request
+    // ifGroupChanged: false,            // Set to true on changes to the members Mongo collection to trigger an API get request
     ifGameEditComponent: false,       // Controls what to view within GameDetails.vue
-    ifCollectionChanged: false,       // Set to true on changes to the collection Mongo collection to trigger an API get request
-    ifPlaysChanged: false,            // Set to true on changes to the plays Mongo collection to trigger an API get request
+    // ifCollectionChanged: false,       // Set to true on changes to the collection Mongo collection to trigger an API get request
+    // ifPlaysChanged: false,            // Set to true on changes to the plays Mongo collection to trigger an API get request
   },
   getters: {
     recordStep: (state) => state.recordStep,
     recordPlayers: (state) => state.recordPlayers,
     recordGame: (state) => state.recordGame,
     recordGameType: (state) => state.recordGameType,
-    ifMemberEditComponent: (state) => state.ifMemberEditComponent,
-    ifGroupChanged: (state) => state.ifGroupChanged,
-    ifGameEditComponent: (state) => state.ifGameEditComponent,
-    ifPlaysChanged: (state) => state.ifGroupChanged,
+    // ifMemberEditComponent: (state) => state.ifMemberEditComponent,
+    // ifGroupChanged: (state) => state.ifGroupChanged,
+    // ifGameEditComponent: (state) => state.ifGameEditComponent,
+    // ifPlaysChanged: (state) => state.ifGroupChanged,
     recordPoints: (state) => state.recordPoints,
     recordRank: (state) => state.recordRank,
     recordCoopWin: (state) => state.racordCoopWin,
@@ -85,22 +86,23 @@ export default new Vuex.Store({
     setIfMemberEditComponent(state, isEditing) {
       state.ifMemberEditComponent = isEditing;
     },
-    setIfGroupChanged(state, ifChanged) {
-      state.ifGroupChanged = ifChanged;
-    },
+    // setIfGroupChanged(state, ifChanged) {
+    //   state.ifGroupChanged = ifChanged;
+    // },
     setIfGameEditComponent(state, isEditing) {
       state.ifGameEditComponent = isEditing;
     },
-    setIfCollectionChanged(state, ifChanged) {
-      state.ifCollectionChanged = ifChanged;
-    },
-    setIfPlaysChanged(state, ifChanged) {
-      state.ifPlaysChanged = ifChanged;
-    },
+    // setIfCollectionChanged(state, ifChanged) {
+    //   state.ifCollectionChanged = ifChanged;
+    // },
+    // setIfPlaysChanged(state, ifChanged) {
+    //   state.ifPlaysChanged = ifChanged;
+    // },
   },
   actions: {},
   modules: {
     plays,
     members,
+    collection,
   },
 });

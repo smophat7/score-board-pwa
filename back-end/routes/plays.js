@@ -50,7 +50,4 @@ router.delete("/fromGames/:id", (req, res, next) => {
 });
 
 
-
-
-
 module.exports = router;

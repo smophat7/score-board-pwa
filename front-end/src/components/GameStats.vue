@@ -7,7 +7,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn color="error" class="mr-5" @click="deleteGame">
-        <v-progress-circular v-if="deleteLoading"
+        <v-progress-circular v-if="loadingDelete"
             indeterminate
             color="white"
           ></v-progress-circular>
@@ -73,40 +73,14 @@ import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 export default {
   name: "GameStats",
-  props: {
-    game: Object,
-  },
   mixins: [HistoryFunctions],
-  data() {
-    return {
-      deleteLoading: false,
-    }
+  computed: {
+    game() { return this.$store.state.collection.detailGame; },
+    loadingDelete() { return this.$store.state.collection.loadingDelete; },
   },
   methods: {
     async deleteGame() {
-      this.deleteLoading = true;
-
-
-      // Delete any Plays that reference this Game
-      let url = "/api/plays/fromGames/" + this.game._id;
-      try {
-        await axios.delete(url);
-      }
-      catch (error) {
-        console.log(error);
-      }
-
-      // Delete the Game itself
-      url = "/api/collection/" + this.game._id;
-      try {
-        await axios.delete(url);
-      }
-      catch (error) {
-        console.log(error);
-      }
-      
-      this.deleteLoading = false;
-      this.$store.commit('setIfCollectionChanged', true);
+      await this.$store.dispatch("collection/cascadeDelete", this.game);
       this.$emit("close-modal");
     },
   },
@@ -114,10 +88,6 @@ export default {
 </script>
 
 <style scoped>
-/* .full-screen-modal {
-  height: 100%;
-} */
-
 @media (max-width: 600px) {
   .img-size {
     max-width: 200px;

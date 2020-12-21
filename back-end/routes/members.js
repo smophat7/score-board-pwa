@@ -15,10 +15,10 @@ router.get("/", (req, res, next) => {
 });
 
 
+// Returns one Member for detailed viewing
 router.get("/:id", (req, res, next) => {
   Member.findById(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
-    // res.send(JSON.parse(JSON.stringify(foundItem)));
     res.json(foundItem);
   });
 });
@@ -46,7 +46,6 @@ router.delete("/:id", (req, res, next) => {
 router.put("/:id", (req, res, next) => {
   Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
     if (err) { return next(err); }
-    console.log(foundItem);
     res.send(JSON.parse(JSON.stringify(foundItem)));
   });
 });

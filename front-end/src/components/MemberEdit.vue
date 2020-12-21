@@ -74,15 +74,11 @@ export default {
         firstName: this.firstName,
         lastName: this.lastName,
       });
-      console.log("newMemberVersion: " + newMemberVersion);
       await this.$store.dispatch("members/update", {
         currentMemberId: this.member.id,
         updatedMember: newMemberVersion
       });
       this.memberLocal = this.member;
-      
-      // this.firstName = this.memberLocal.firstName,
-      // this.lastName = this.memberLocal.lastName,
     },
     backToStats() {
       this.$store.commit('setIfMemberEditComponent', false);
@@ -92,9 +88,6 @@ export default {
 </script>
 
 <style scoped>
-/* .full-screen-modal {
-  height: 100%;
-} */
 
 .clickable-pointer {
   cursor: pointer;

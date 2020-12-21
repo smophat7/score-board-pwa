@@ -52,20 +52,13 @@ export default {
       let newMember = new Object({
         firstName: this.firstName,
         lastName: this.lastName,
-        profilePicture: "default-profile.jpg",       // EDIT to supply individualized URL or picture data
+        profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
       });
-      let url = "/api/members";
-      try {
-        let response = await axios.post(url, newMember);
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.firstName = "";
-      this.lastName = "";
-      this.$store.commit('setIfGroupChanged', true);
+      await this.$store.dispatch("members/add", newMember);
+      this.firstName = "",
+      this.lastName = "",
       this.$emit("close-modal");
-    },
+    }
   },
 };
 </script>

@@ -1,14 +1,13 @@
 <template>
-  <GameEdit v-if="ifShowEdit" :game="game" @close-modal="modalClosed"/>
-  <GameStats v-else :game="game" @close-modal="modalClosed"/>
+  <!-- <GameEdit v-if="ifShowEdit" :game="game" @close-modal="modalClosed"/> -->
+  <GameEdit v-if="ifShowEdit" @close-modal="modalClosed"/>
+  <!-- <GameStats v-else :game="game" @close-modal="modalClosed"/> -->
+  <GameStats v-else @close-modal="modalClosed"/>
 </template>
 
 <script>
 export default {
   name: "GameDetails",
-  props: {
-    game: Object,
-  },
   components: {
     GameEdit: () => import("@/components/GameEdit.vue"),
     GameStats: () => import('@/components/GameStats.vue')

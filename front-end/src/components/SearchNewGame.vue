@@ -90,9 +90,6 @@ import axios from "axios";
 export default {
   name: "SearchNewGame",
   mixins: [HistoryFunctions],
-  props: {
-    collection: Array,
-  },
   data() {
     return {
       searchValue: "",
@@ -104,6 +101,9 @@ export default {
     };
   },
   computed: {
+    collection() { return this.$store.state.collection.games; },
+    loadingAddNew() { return this.$store.state.collection.loadingAddNew; },
+    loadingDelete() { return this.$store.state.collection.loadingDelete; },
     sameSearchTerm() {
       if (this.oldSearchValue !== "") {
         return this.searchValue === this.oldSearchValue;
@@ -124,17 +124,13 @@ export default {
       if (this.searchValue === "" || this.sameSearchTerm) {
         return;
       }
-
       this.searchResults = [];
-
       // My client_id: "xPJ2LwITlm"
       let url =
         "https://api.boardgameatlas.com/api/search?name=" +
         this.searchValue +
         "&fuzzy_match=true&order_by=popularity&limit=21&client_id=xPJ2LwITlm";
-
       this.loading = true;
-
       fetch(url)
         .then((response) => {
           return response.json();
@@ -147,55 +143,17 @@ export default {
         });
     },
     async addToShelf(game) {
-      let formattedGame = this.formatGame(game);
-      let url = "/api/collection";
-      try {
-        let response = await axios.post(url, formattedGame);
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.$store.commit('setIfCollectionChanged', true);
+      await this.$store.dispatch("collection/add", game);
     },
     async removeFromShelf(game) {
-      this.deleteLoading = true;
-
-      // Because this is based off of the BoardGame Atlas API results which have
+      // Because this list is based off of the BoardGame Atlas API results which have
       // different id values
       let mongoDoc = this.collection.find(item => {
-        return item.board_game_id = game.id;
+        return item.board_game_id === game.id;
       });
-
-      let url = "/api/collection/" + mongoDoc._id;
-      try {
-        await axios.delete(url);
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.deleteLoading = false;
-      this.$store.commit('setIfCollectionChanged', true);
-    },
-
-    // Eliminates parts of the BoardGame Atlas API objects that might cause issus
-    // in MongoDB (have their own IDs and such) and renames the id property
-    // to board_game_id
-    formatGame(game) {
-      game.board_game_id = game.id;                           // I think this is the only thing that's useful
-      game.primary_publisher = game.primary_publisher.name;   // I think this is the only thing that's useful
-      game.name_original = game.name;                         // I think this is the only thing that's useful
-      delete game.id;
-      delete game.mechanics;
-      delete game.categories;
-      delete game.matches_specs;
-      delete game.spec;
-      return game;
+      await this.$store.dispatch("collection/cascadeDelete", mongoDoc);
     },
     gameOnShelf(game) {
-      // return this.$root.$data.shelf.some((item) => item.id === game.id);
-      // console.log(this.collection.some((item) => item.board_game_id === game.id));
-      // For some reason, keeping the above stuff in here (although commented out) makes
-      // the whole make-it-red-if-it's-on-the-shelf thing in the search results work? Idk
       return this.collection.some((item) => item.board_game_id === game.id);
     },
   },

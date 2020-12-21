@@ -12,6 +12,16 @@ router.get("/", (req, res, next) => {
   });
 });
 
+
+// Returns one Game for detailed viewing
+router.get("/:id", (req, res, next) => {
+  Game.findById(req.params.id, function(err, foundItem) {
+    if (err) { return next(err); }
+    res.json(foundItem);
+  });
+});
+
+
 // Saves a new Game to the DB and returns the newly created Game
 router.post("/", (req, res, next) => {
   let newGame = new Game(req.body);
@@ -23,15 +33,7 @@ router.post("/", (req, res, next) => {
 
 
 // Deletes a Game permanently from the database and sends back the deleted Game
-// There's some pre middleware that removes all associated plays defined in Game.js
-// before the mongoose.model();
 router.delete("/:id", (req, res, next) => {
-  // if (req.params.id == null) {
-  //   console.log("404 on its way!");
-  //   res.sendStatus(404);
-  // }
-
-  // Delete the recorded game itself
   Game.findByIdAndDelete(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
     res.json(foundItem);

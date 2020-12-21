@@ -14,8 +14,8 @@
       <v-container>
         <v-form v-on:submit.prevent="updateGame">
           <v-text-field label="Preferred Title" v-model="prefName" autofocus required></v-text-field>
-          <v-btn v-if="updateLoading" color="success" block>
-            <v-progress-circular small v-if="updateLoading" class="mr-2"
+          <v-btn v-if="loadingUpdate" color="success" block>
+            <v-progress-circular small v-if="loadingUpdate" class="mr-2"
             indeterminate
             color="white"
             ></v-progress-circular>
@@ -45,38 +45,33 @@ import axios from "axios";
 
 export default {
   name: "GameEdit",
-  props: {
-    game: Object,
-  },
   data() {
     return {
-      gameLocal: this.game,
-      prefName: this.game.name,
-      updateLoading: false,
+      gameLocal: null,
+      prefName: "",
     };
   },
+  created() {
+    this.gameLocal = this.game,
+    this.prefName = this.game.name;
+  },
   computed: {
+    game() { return this.$store.state.collection.detailGame; },
+    loadingUpdate() { return this.$store.state.collection.loadingUpdate },
     somethingDifferent() {
       return (this.prefName !== this.gameLocal.name);
     },
   },
   methods: {
     async updateGame() {
-      this.updateLoading = true;
       let newGameVersion = new Object({
         name: this.prefName,
       });
-      let url = "/api/collection/" + this.game._id;
-      try {
-        let response = await axios.put(url, newGameVersion);
-        this.gameLocal = response.data;
-      }
-      catch (error) {
-        console.log(error);
-      }
-      this.prefName = this.gameLocal.name,
-      this.$store.commit('setIfCollectionChanged', true);
-      this.updateLoading = false;
+      await this.$store.dispatch("collection/update", {
+        currentGameId: this.game._id,
+        updatedGame: newGameVersion,
+      });
+      this.gameLocal = this.game;
     },
     backToStats() {
       this.$store.commit('setIfGameEditComponent', false);
@@ -86,9 +81,6 @@ export default {
 </script>
 
 <style scoped>
-/* .full-screen-modal {
-  height: 100%;
-} */
 
 .clickable-pointer {
   cursor: pointer;

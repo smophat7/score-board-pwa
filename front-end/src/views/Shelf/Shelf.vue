@@ -34,7 +34,7 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <SearchNewGame :collection="games" @close-modal="searchNewGamesDialog = false"/>
+      <SearchNewGame @close-modal="searchNewGamesDialog = false"/>
     </v-dialog>
 
     <!-- Table and Search -->
@@ -68,7 +68,7 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <GameDetails :game="detailGame" v-on:close-modal="detailDialog = false"/>
+      <GameDetails v-on:close-modal="detailDialog = false"/>
     </v-dialog>
 
   </v-container>
@@ -90,12 +90,9 @@ export default {
   },
   data() {
     return {
-      games: [],
-      loadingGames: false,
       search: "",
       detailDialog: false,
       searchNewGamesDialog: false,
-      detailGame: null,
       headers: [
         { text: "Game", value: 'name'},
         { text: "Min. Players", value: 'min_players' },
@@ -107,56 +104,18 @@ export default {
     };
   },
   created() {
-    this.getCollection();
+    this.$store.dispatch("collection/fetch");
   },
   computed: {
+    games() { return this.$store.state.collection.games; },
+    loadingGames() { return this.$store.state.collection.loadingGames; },
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
-    ifCollectionDataChanged() {
-      return this.$store.state.ifCollectionChanged;
-    }
-    // games() {
-    //   // return this.$root.$data.shelf.map(game => {
-    //   return this.gameList.map(game => {
-    //     return {
-    //       ...game,
-    //     }
-    //   });
-    // },
-  },
-  watch: {
-    ifCollectionDataChanged() {
-      if (this.$store.state.ifCollectionChanged === true) {
-        this.getCollection();
-        this.$store.commit('setIfCollectionChanged', false);
-      }
-    },
-    detailDialog() {
-      this.$store.commit('setIfGameEditComponent', false);
-    },
   },
   methods: {
-    async getCollection() {
-      this.loadingGames = true;
-      let url = "/api/collection";
-
-      try {
-        let response = await axios.get(url);
-        let gameList = response.data;
-        this.games = gameList.map(game => {
-          return {
-            ...game,
-          }
-        });
-        this.loadingGames = false;
-      }
-      catch (error) {
-        console.log(error)
-      }
-    },
     handleDetailClick(item) {
-      this.detailGame = item;
+      this.$store.dispatch("collection/fetchOneForDetail", item._id);
       this.detailDialog = true;
     },
     searchNewButtonClick() {
