@@ -40,16 +40,23 @@ export default {
   name: "SelectGame",
   data() {
     return {
-      games: [],
-      loadingGames: false,
-      selected: this.$store.state.recordGame,
       search: "",
     };
   },
   created() {
-    this.getCollection();
+    this.$store.dispatch("collection/fetch");
   },
   computed: {
+    games() { return this.$store.state.collection.games; },
+    selected: {
+      set(selected) {
+        this.$store.commit("record/updateGame", selected);
+      },
+      get() {
+        return this.$store.state.record.game;
+      },
+    },
+    loadingGames() { return this.$store.state.collection.loadingGames; },
     searchFilteredGames() {
       const search = this.search.toLowerCase();
 
@@ -65,24 +72,6 @@ export default {
     },
   },
   methods: {
-    async getCollection() {
-      this.loadingGames = true;
-      let url = "/api/collection";
-
-      try {
-        let response = await axios.get(url);
-        let gameList = response.data;
-        this.games = gameList.map(game => {
-          return {
-            ...game,
-          }
-        });
-        this.loadingGames = false;
-      }
-      catch (error) {
-        console.log(error)
-      }
-    },
     makeSelection(game) {
       this.selected = game;
       // this.$store.commit("changeRecordStep", 2);
@@ -96,13 +85,13 @@ export default {
     // Reset search bar text if one is selected
     selected() {
       this.search = "";
-      this.$store.commit("updateRecordGame", this.selected);
-      if (this.selected === null) {
-        this.$store.commit("changeRecordStep", 1);
-      }
-      else {
-        this.$store.commit("changeRecordStep", 2);
-      }
+      // this.$store.commit("updateRecordGame", this.selected);
+      // if (this.selected === null) {
+      //   this.$store.commit("changeRecordStep", 1);
+      // }
+      // else {
+      //   this.$store.commit("changeRecordStep", 2);
+      // }
     },
   },
 }

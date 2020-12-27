@@ -46,9 +46,6 @@ import axios from "axios";
 
 export default {
   name: "MemberEdit",
-  props: {
-    // member: Object,
-  },
   data() {
     return {
       memberLocal: null,

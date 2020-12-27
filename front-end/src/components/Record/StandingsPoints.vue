@@ -38,9 +38,9 @@ export default {
   },
   methods: {
     initializeData() {
-      this.players = this.$store.state.recordPlayers;
+      this.players = this.$store.state.record.players;
       
-      if (this.$store.state.recordGameType === this.$root.$data.enumGameType.POINTS.HIGH_WINS) {
+      if (this.$store.state.record.recordGameType === this.$root.$data.enumGameType.POINTS.HIGH_WINS) {
         this.isLowWins = true;
       }
       
@@ -67,18 +67,18 @@ export default {
         if (this.isLowWins === 1) {
           gameType = this.$root.$data.enumGameType.POINTS.LOW_WINS;
         }
-        this.$store.commit("updateRecordGameType", gameType)
+        this.$store.commit("record/updateRecordGameType", gameType)
       }
     },
     pointAssignment: {
       handler: function() {
-        this.$store.commit("updateRecordPoints", this.pointAssignment);
-        if (this.allFilled()) {
-          this.$store.commit("changeRecordStep", 5);
-        }
-        else {
-          this.$store.commit("changeRecordStep", 4);
-        }
+        this.$store.commit("record/updateRecordPoints", this.pointAssignment);
+        // if (this.allFilled()) {
+        //   this.$store.commit("changeRecordStep", 5);
+        // }
+        // else {
+        //   this.$store.commit("changeRecordStep", 4);
+        // }
       },
       deep: true,                                          // Needed to watch for object property changes
     }

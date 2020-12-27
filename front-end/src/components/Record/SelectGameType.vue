@@ -21,28 +21,24 @@ export default {
       // ranked: this.$root.$data.enumGameType.RANKED,
       // coop: this.$root.$data.enumGameType.CO_OP,
       // selected: this.$store.state.recordGameType,
-
       selection: null,
-
     };
   },
   methods: {
     makeSelection(typeNum) {
-      // this.selected = type;
-
       let enumType = "";
       switch (typeNum) {
         case 0:
           enumType = this.$root.$data.enumGameType.POINTS.HIGH_WINS;
-          this.$store.commit("updateRecordGameType", enumType);
+          this.$store.commit("record/updateRecordGameType", enumType);
           break;
         case 1:
           enumType = this.$root.$data.enumGameType.RANKED;
-          this.$store.commit("updateRecordGameType", enumType);
+          this.$store.commit("record/updateRecordGameType", enumType);
           break;
         case 2:
           enumType = this.$root.$data.enumGameType.CO_OP;
-          this.$store.commit("updateRecordGameType", enumType);
+          this.$store.commit("record/updateRecordGameType", enumType);
           break;
         default:
           break;
@@ -76,12 +72,12 @@ export default {
       immediate: true,
       handler: function() {
         this.makeSelection(this.selection);
-        if (this.selection === null) {
-          this.$store.commit("changeRecordStep", 3);
-        }
-        else {
-          this.$store.commit("changeRecordStep", 4);
-        }
+        // if (this.selection === null) {
+        //   this.$store.commit("changeRecordStep", 3);
+        // }
+        // else {
+        //   this.$store.commit("changeRecordStep", 4);
+        // }
       },
     },
   },

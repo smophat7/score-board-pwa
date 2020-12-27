@@ -14,27 +14,27 @@
     <v-card>
 
       <!-- Step overview at the top -->
-      <v-stepper v-model="activeStep">
+      <v-stepper v-model="recordStep">
         <v-stepper-header class="fixed-stepper-header">
-          <v-stepper-step :complete="activeStep > 1" step="1">
+          <v-stepper-step :complete="recordStep > 1" step="1">
             Game Played
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="activeStep > 2" step="2">
+          <v-stepper-step :complete="recordStep > 2" step="2">
             Players
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="activeStep > 3" step="3">
+          <v-stepper-step :complete="recordStep > 3" step="3">
             Game Type
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="activeStep > 4" step="4">
+          <v-stepper-step :complete="recordStep > 4" step="4">
             Winner
           </v-stepper-step>
 
@@ -72,11 +72,11 @@
 
     <div class="fixed-bottom">
       <v-row justify="space-between" no-gutters class="px-3 py-3">
-        <v-btn v-if="activeStep != 1" color="primary" @click="back()">
+        <v-btn v-if="recordStep != 1" color="primary" @click="back()">
           Back
         </v-btn>
         <v-spacer v-else></v-spacer>
-        <v-btn v-if="activeStep !=5" color="primary" :disabled="!ifCanAdvance" @click="next()">
+        <v-btn v-if="recordStep !=5" color="primary" :disabled="!ifCanAdvance" @click="next()">
           Next
         </v-btn>
         <v-btn v-else color="success" @click="submit()">
@@ -107,66 +107,43 @@ import axios from "axios";
     },
     data () {
       return {
-        activeStep: 1,
         loadingSubmit: false,
         showDialog: true,
       }
     },
     computed: {
+      recordStep: {
+        set(recordStep) {
+          this.$store.commit("record/updateRecordStep", recordStep);
+        },
+        get() {
+          return this.$store.state.record.recordStep;
+        },
+      },
       ifCanAdvance() {
-        return this.$store.state.recordStep > this.activeStep;
+        return this.$store.getters["record/ifCanAdvance"];
       },
     },
     methods: {
       cancel() {
         this.$store.commit("clearRecordState");
         this.showDialog = !this.showDialog;
+        
         // Go back to previous page
         this.$router.go(-1);
       },
       back() {
-        if (this.activeStep !== 1) {
-          this.activeStep--;
+        if (this.recordStep !== 1) {
+          this.recordStep = this.recordStep - 1;
         }
       },
       next() {
-        if (this.activeStep !== 5) {
-          this.activeStep++;
+        if (this.recordStep !== 5) {
+          this.recordStep = this.recordStep + 1;
         }
       },
       async submit() {
-        this.loadingSubmit = true;
-
-        // Create array of member ids instead of member objects to include in newPlay for DB
-        let gamePlayers = this.$store.state.recordPlayers.map(playerObj => {
-          return playerObj.id;
-        });
-
-        // Create new play object to post to DB
-        let newPlay = {
-          players: gamePlayers,
-          numPlayers: gamePlayers.length,
-          game: this.$store.state.recordGame._id,         // maybe just the id, idk
-          type: this.$store.state.recordGameType,
-          points: this.$store.state.recordPoints,
-          ranking: {},      // no idea yet
-          coopWin: this.$store.state.recordCoopWin,
-          description: this.$store.state.recordDescription,
-          // date: parseISO(this.$store.state.datePlayed),
-          date: parseISO(this.$store.state.recordDate, 'YYYY-MM-DD', new Date()),
-        };
-
-        // Post to MongoDB
-        let url = "/api/plays";
-        try {
-          let response = await axios.post(url, newPlay);
-        }
-        catch(error) {
-          console.log(error);
-        }
-
-        this.loadingSubmit = false,
-        this.$store.commit("clearRecordState");
+        this.$store.dispatch("record/add");
 
         // Navigate back to play history page
         this.$router.go(-1);

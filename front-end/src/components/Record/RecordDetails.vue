@@ -34,12 +34,12 @@ export default {
   },
   watch: {
     description() {
-      this.$store.commit("updateRecordDescription", this.description);
+      this.$store.commit("record/updateRecordDescription", this.description);
     },
     datePlayed: {
       immediate: true,
       handler() {
-        this.$store.commit("updateRecordDate", this.datePlayed);
+        this.$store.commit("record/updateRecordDate", this.datePlayed);
       }
     },
   }

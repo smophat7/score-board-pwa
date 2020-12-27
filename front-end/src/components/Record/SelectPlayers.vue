@@ -6,8 +6,8 @@
     <v-container>
       <v-row align="center" justify="start">
         <!-- Selected players -->
-        <v-col v-for="(player, i) in selected" :key="player.id">
-          <v-chip label close @click:close="selected.splice(i, 1)">
+        <v-col v-for="(player) in selected" :key="player.id">
+          <v-chip label close @click:close="removeFromSelection(player)">
             <v-avatar left>
               <v-img :src="'../img/profiles/' + player.profilePicture" :alt="player.fullName + ' avatar icon'"></v-img>
             </v-avatar>
@@ -36,7 +36,7 @@
     <!-- Unselected players in list -->
     <v-list>
       <template v-for="member in searchFilteredMembers">
-        <v-list-item v-if="!selected.includes(member)" @click="selected.push(member)" :key="member.id">
+        <v-list-item v-if="!selected.includes(member)" @click="addToSelection(member)" :key="member.id">
           <v-list-item-avatar>
             <v-img :src="'../img/profiles/' + member.profilePicture" :alt="member.fullName + ' avatar icon'"></v-img>
           </v-list-item-avatar>
@@ -50,22 +50,27 @@
 
 
 <script>
-import axios from "axios";
-
 export default {
   name: "SelectPlayers",
   data() {
     return {
-      members: [],
-      loadingMembers: false,
-      selected: this.$store.state.recordPlayers,
       search: "",
     };
   },
   created() {
-    this.getMembers();
+    this.$store.dispatch("members/fetch");
   },
   computed: {
+    members() { return this.$store.getters["members/members"]; },
+    selected: {
+      set(selected) {
+        this.$store.commit("record/updatePlayers", selected);
+      },
+      get() {
+        return this.$store.state.record.players;
+      },
+    },
+    loadingMembers() { return this.$store.state.members.loadingMembers; },
     allSelected() {
       return this.selected.length === this.members.length;
     },
@@ -85,35 +90,32 @@ export default {
     },
   },
   methods: {
-    async getMembers() {
-      this.loadingMembers = true;
-      let url = "/api/members";
-      try {
-        let response = await axios.get(url);
-        let memberList = response.data;
-        this.members = memberList.map(member => {
-          return {
-            ...member,
-          }
-        });
-        this.loadingMembers = false;
-      }
-      catch (error) {
-        console.log(error)
-      }
+    addToSelection(player) {
+      this.selected.push(player);
+      this.selected = this.selected;                // seemingly redundant, but triggers Vue's
+                                                    // reactivity so that the changes are actually made in Vuex
     },
+    removeFromSelection(player) {
+      // this.selected.splice(i, 1)
+      const index = this.selected.indexOf(player);
+      if (index > -1) {
+        this.selected.splice(index, 1);
+        this.selected = this.selected;                // seemingly redundant, but triggers Vue's
+                                                    // reactivity so that the changes are actually made in Vuex
+      }
+    }
   },
   watch: {
     // Reset search bar text if one is selected
     selected() {
       this.search = "";
-      this.$store.commit("updateRecordPlayers", this.selected);
-      if (this.selected.length === 0) {
-        this.$store.commit("changeRecordStep", 2);
-      }
-      else {
-        this.$store.commit("changeRecordStep", 3);
-        }
+      // // this.$store.mutations.record.commit("updateRecordPlayers", this.selected);
+      // if (this.selected.length === 0) {
+      //   this.$store.commit("record/changeRecordStep", 2);
+      // }
+      // else {
+      //   this.$store.commit("record/changeRecordStep", 3);
+      // }
     },
   },
 }

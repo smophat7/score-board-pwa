@@ -13,6 +13,15 @@ router.get("/", (req, res, next) => {
 });
 
 
+// Returns one Play for detailed viewing
+router.get("/:id", (req, res, next) => {
+  Play.findById(req.params.id, function(err, foundItem) {
+    if (err) { return next(err); }
+    res.json(foundItem);
+  });
+});
+
+
 // Saves a new Play to the DB and returns the newly created Play
 router.post("/", (req, res, next) => {
   let newPlay = new Play(req.body);

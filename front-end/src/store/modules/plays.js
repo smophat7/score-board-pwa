@@ -5,7 +5,11 @@ export default {
   namespaced: true,
   state: {
     plays: [],
+    detailGame: null,
     loadingPlays: false,
+    loadingDetailPlay: false,
+    loadingAddNew: false,
+    // loadingUpdate: false,
     loadingDelete: false,
   },
   getters: {
@@ -17,14 +21,30 @@ export default {
         }
       });
     },
+    detailGame: state => {
+      state.detailGame["readableDateJoined"] = formatISO(parseISO(state.detailPlay.date, 'YYYY-MM-DD', new Date()), {representation: 'date'});
+      return state.detailGame;
+    },
   },
   mutations: {
     SAVE_PLAYS(state, plays) {
       state.plays = plays;
     },
+    SET_DETAIL_PLAY(state, play) {
+      state.detailGame = play;
+    },
     LOADING_STATUS_PLAYS(state, ifLoading) {
       state.loadingPlays = ifLoading;
     },
+    LOADING_STATUS_DETAIL_PLAY(state, ifLoading) {
+      state.loadingDetailPlay = ifLoading;
+    },
+    LOADING_STATUS_ADD_NEW(state, ifLoading) {
+      state.loadingAddNew = ifLoading;
+    },
+    // LOADING_STATUS_UPDATE(state, ifLoading) {
+    //   state.loadingUpdate = ifLoading;
+    // },
     LOADING_STATUS_DELETE(state, ifLoading) {
       state.loadingDelete = ifLoading;
     },
@@ -41,6 +61,18 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_PLAYS", false);
+    },
+    async fetchOneForDetail(context, id) {
+      context.commit("LOADING_STATUS_DETAIL_PLAY", true);
+      let url = "/api/plays/" + id;
+      try {
+        let response = await axios.get(url);
+        context.commit("SET_DETAIL_PLAY", response.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+      context.commit("LOADING_STATUS_DETAIL_PLAY", false);
     },
     async delete(context, playToDelete) {
       context.commit("LOADING_STATUS_DELETE", true);

@@ -88,8 +88,6 @@ export default {
   },
   data() {
     return {
-      // members: [],
-      // loadingMembers: false,
       search: "",
       detailDialog: false,
       addNewMemberDialog: false,
