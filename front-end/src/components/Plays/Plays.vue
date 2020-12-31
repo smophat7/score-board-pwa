@@ -54,7 +54,7 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <HistoryDetails :play="detailPlay" v-on:close-modal="dialog = false"/>
+      <PlayDetails :play="detailPlay" v-on:close-modal="dialog = false"/>
     </v-dialog>
 
   </v-container>
@@ -64,13 +64,12 @@
 import axios from "axios";
 // import { formatISO, parseISO } from 'date-fns';
 import { RingLoader } from "@saeris/vue-spinners";
-import HistoryDetails from "@/components/HistoryDetails.vue";
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 export default {
-  name: "History",
+  name: "Play",
   components: {
-    HistoryDetails,
+    PlayDetails: () => import("@/components/Plays/PlayDetails.vue"),
     RingLoader,
   },
   mixins: [HistoryFunctions],

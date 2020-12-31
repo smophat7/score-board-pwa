@@ -57,9 +57,6 @@ import axios from "axios";
 
 export default {
   name: "MemberStats",
-  props: {
-    // member: Object,
-  },
   computed: {
     member() { return this.$store.getters["members/detailMember"]; },
     loadingDelete() { return this.$store.state.members.loadingDelete; },

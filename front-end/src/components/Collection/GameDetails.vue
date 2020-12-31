@@ -9,8 +9,8 @@
 export default {
   name: "GameDetails",
   components: {
-    GameEdit: () => import("@/components/GameEdit.vue"),
-    GameStats: () => import('@/components/GameStats.vue')
+    GameEdit: () => import("@/components/Collection/GameEdit.vue"),
+    GameStats: () => import('@/components/Collection/GameStats.vue')
   },
   computed: {
     ifShowEdit() {

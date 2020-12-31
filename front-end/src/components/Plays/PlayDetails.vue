@@ -72,7 +72,7 @@
 import axios from "axios";
 
 export default {
-  name: "HistoryDetails",
+  name: "PlayDetails",
   props: {
     play: Object,
   },

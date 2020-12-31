@@ -75,17 +75,14 @@
 </template>
 
 <script>
-import GameDetails from "@/components/GameDetails.vue";
-import SearchNewGame from "@/components/SearchNewGame.vue";
-
 import axios from "axios";
 import { RingLoader } from "@saeris/vue-spinners";
 
 export default {
-  name: "Shelf",
+  name: "Collection",
   components: {
-    GameDetails,
-    SearchNewGame,
+    GameDetails: () => import("@/components/Collection/GameDetails.vue"),
+    SearchNewGame: () => import("@/components/Collection/SearchNewGame.vue"),
     RingLoader,
   },
   data() {

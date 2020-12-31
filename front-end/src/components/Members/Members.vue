@@ -72,18 +72,14 @@
 </template>
 
 <script>
-import MemberDetails from "@/components/MemberDetails.vue";
-import AddNewMember from "@/components/AddNewMember.vue";
-// import HistoryFunctions from "@/mixins/HistoryFunctions.js";
-
 import axios from "axios";
 import { RingLoader } from "@saeris/vue-spinners";
 
 export default {
-  name: "Group",
+  name: "Members",
   components: {
-    MemberDetails,
-    AddNewMember,
+    MemberDetails: () => import("@/components/Members/MemberDetails.vue"),
+    AddNewMember: () => import("@/components/Members/AddNewMember.vue"),
     RingLoader,
   },
   data() {

@@ -99,11 +99,11 @@ import axios from "axios";
   export default {
     name: "RecordGame",
     components: {
-      SelectGame: () => import ("@/components/Record/SelectGame.vue"),
-      SelectPlayers: () => import ("@/components/Record/SelectPlayers.vue"),
-      SelectGameType: () => import ("@/components/Record/SelectGameType.vue"),
-      DetermineStandings: () => import ("@/components/Record/DetermineStandings.vue"),
-      RecordDetails: () => import ("@/components/Record/RecordDetails.vue"),
+      SelectGame: () => import ("@/components/Plays/Record/SelectGame.vue"),
+      SelectPlayers: () => import ("@/components/Plays/Record/SelectPlayers.vue"),
+      SelectGameType: () => import ("@/components/Plays/Record/SelectGameType.vue"),
+      DetermineStandings: () => import ("@/components/Plays/Record/DetermineStandings.vue"),
+      RecordDetails: () => import ("@/components/Plays/Record/RecordDetails.vue"),
     },
     data () {
       return {

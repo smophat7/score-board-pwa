@@ -149,19 +149,19 @@ export default {
       {
         title: 'Group',
         icon: 'mdi-account-group',
-        path: '/group'
+        path: '/members'
 
       },
       {
         title: 'Collection',
         icon: 'mdi-dice-multiple',
-        path: '/shelf'
+        path: '/collection'
 
       },
       {
         title: 'Plays',
         icon: 'mdi-history',
-        path: '/history'
+        path: '/plays'
       },
     ],
     mini: false,

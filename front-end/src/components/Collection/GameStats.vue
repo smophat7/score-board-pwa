@@ -68,7 +68,6 @@
 
 <script>
 import axios from "axios";
-
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 export default {

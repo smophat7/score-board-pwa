@@ -12,8 +12,8 @@ export default {
     // member: Object,
   },
   components: {
-    MemberEdit: () => import("@/components/MemberEdit.vue"),
-    MemberStats: () => import('@/components/MemberStats.vue')
+    MemberEdit: () => import("@/components/Members/MemberEdit.vue"),
+    MemberStats: () => import('@/components/Members/MemberStats.vue')
   },
   computed: {
     ifShowEdit() {

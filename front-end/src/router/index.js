@@ -5,32 +5,32 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: '/',
-    redirect: { name: 'Shelf' },
+    redirect: { name: 'Collection' },
   },
   {
     path: '/analytics',
     name: 'Analytics',
-    component: () => import("../views/Analytics/Analytics.vue")
+    component: () => import("../components/Analytics/Analytics.vue")
   },
   {
-    path: '/group',
-    name: 'Group',
-    component: () => import("../views/Group/Group.vue")
+    path: '/members',
+    name: 'Members',
+    component: () => import("../components/Members/Members.vue")
   },
   {
-    path: '/shelf',
-    name: 'Shelf',
-    component: () => import("../views/Shelf/Shelf.vue")
+    path: '/collection',
+    name: 'Collection',
+    component: () => import("../components/Collection/Collection.vue")
   },
   {
-    path: '/history',
-    name: 'History',
-    component: () => import("../views/History/History.vue")
+    path: '/plays',
+    name: 'Plays',
+    component: () => import("../components/Plays/Plays.vue")
   },
   {
     path: '/record',
     name: 'Record',
-    component: () => import("../views/Record/RecordGame.vue")
+    component: () => import("../components/Plays/Record/RecordGame.vue")
   }
 ];
 

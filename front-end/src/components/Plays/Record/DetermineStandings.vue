@@ -10,9 +10,9 @@
 export default {
   name: "DetermineStandings",
   components: {
-    StandingsPoints: () => import("@/components/Record/StandingsPoints.vue"),
-    StandingsRanked: () => import("@/components/Record/StandingsRanked.vue"),
-    StandingsCoop: () => import("@/components/Record/StandingsCoop.vue"),
+    StandingsPoints: () => import("@/components/Plays/Record/StandingsPoints.vue"),
+    StandingsRanked: () => import("@/components/Plays/Record/StandingsRanked.vue"),
+    StandingsCoop: () => import("@/components/Plays/Record/StandingsCoop.vue"),
   },
   data() {
     return {
