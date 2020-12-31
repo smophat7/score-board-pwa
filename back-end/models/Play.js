@@ -15,9 +15,9 @@ var PlaySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Game"
   },
-  type: String,                                 // Matchign the enumGameType defined in the front end
+  type: String,                                 // Matching the enumGameType defined in the front end
   points: mongoose.Schema.Types.Mixed,          // Points object can be anything (described below)
-  ranking: mongoose.Schema.Types.Mixed,         // DON'T KNOW YET?
+  ranking: mongoose.Schema.Types.Mixed,         // Array of arrays, each one being a grouping of members who were ranked in that place
   coopWin: Boolean,                             // true if the group won
   description: String,                          // description of the game
   date: { type: Date, default: Date.now },      // date the game was played

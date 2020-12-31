@@ -99,23 +99,59 @@ export default {
         return playerObj.id;
       });
 
+      // Get an array of the winner(s) - Member IDs
+      let winners = [];
+      switch (context.state.recordGameType) {
+        case "points.high_wins":
+          let points = Object.values(context.state.recordPoints);
+          let highestPoints = Math.max(...points);
+          let keys = Object.keys(context.state.recordPoints);
+          let membersWithWinningPoints = keys.filter(key => {
+            return context.state.recordPoints[key] === highestPoints;
+          })
+          winners = membersWithWinningPoints;
+          break;
+        case "points.low_wins":
+          points = Object.values(context.state.recordPoints);
+          let lowestPoints = Math.min(...points);
+          keys = Object.keys(context.state.recordPoints);
+          membersWithWinningPoints = keys.filter(key => {
+            return context.state.recordPoints[key] === lowestPoints;
+          })
+          winners = membersWithWinningPoints;
+          break;
+        case "ranked":
+          for (let i = 0; i < context.state.recordRank; i++) {
+            if (context.state.recordRank[i] != null) {
+              winners = context.state.recordRank[i]
+              break;
+            }
+          }
+          break;
+        case "co_op":                                                   // DO THIS ONE LATER
+          winners = [];
+          break;
+        default:
+          break;
+      }
+
       // Create new play object to post to DB
       let newPlay = {
         players: gamePlayers,
+        winners: winners,
         numPlayers: gamePlayers.length,
-        game: context.state.game._id,         // maybe just the id, idk
+        game: context.state.game._id,
         type: context.state.recordGameType,
         points: context.state.recordPoints,
-        ranking: {},                        // no idea yet
+        ranking: context.state.recordRank,
         coopWin: context.state.recordCoopWin,
         description: context.state.recordDescription,
-        // date: parseISO(context.state.datePlayed),
         date: parseISO(context.state.recordDate, 'YYYY-MM-DD', new Date()),
       };
 
+      // Post new Pplay object to DB
       let url = "/api/plays";
       try {
-        console.log("newPlay: " + newPlay);
         await axios.post(url, newPlay);
       }
       catch (error) {

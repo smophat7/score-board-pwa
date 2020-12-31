@@ -13,11 +13,33 @@ export default {
     loadingDelete: false,
   },
   getters: {
-    plays: state => {
-      return state.plays.map(play => {
+    plays: (state, getters, rootState, rootGetters) => {
+      // Returns array of Play objects with some added properties for display purposes
+      return state.plays.map(play => {        
+        // Create winnerDisplay ("Multiple", "Group", someone's name, etc.)
+        let winnerDisplay = "";
+        if (play.type === "points.high_wins" || play.type === "points.low_wins" || play.type === "ranked") {
+          if (play.winners.length === 0) {
+            winnerDisplay = "None";
+          }
+          if (play.winners.length === 1) {
+            winnerDisplay = rootGetters["members/members"].find((member) => {
+              return member.id === play.winners[0];
+            }).fullName;
+          }
+          else {
+            winnerDisplay = "Multiple";
+          }
+        }
+        else {                                                // TO-DO: what happens with co-op games?
+          winnerDisplay = "???";
+        }
+
+        // Return the modified Play object
         return {
           ...play,
           readableDate: formatISO(parseISO(play.date, 'YYYY-MM-DD', new Date()), {representation: 'date'}),
+          winnerDisplay: winnerDisplay,
         }
       });
     },

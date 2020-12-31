@@ -75,16 +75,17 @@
         <router-view class="full-screen" />
       </v-fade-transition>
       <v-footer color="primary">
-        <v-row justify="center"></v-row>
-        <v-col cols="12" class="text-center py-0">
-          <v-btn icon color="white" exact href="https://github.com/smophat7/score-board-pwa" target="_blank">
-            <v-icon>mdi-github</v-icon>
-          </v-btn>
-        </v-col>
-        <v-col cols="12" class="text-center py-0">
-          <p style="color:white" class="my-auto">© 2020 Spencer Moffat</p>
-        </v-col>
-        <br>
+        <v-row justify="center">
+          <v-col cols="12" class="text-center py-0">
+            <v-btn icon color="white" exact href="https://github.com/smophat7/score-board-pwa" target="_blank">
+              <v-icon>mdi-github</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="12" class="text-center py-0">
+            <p style="color:white" class="my-auto">© 2020 Spencer Moffat</p>
+          </v-col>
+          <br>
+        </v-row>
       </v-footer>
     </v-main>
 

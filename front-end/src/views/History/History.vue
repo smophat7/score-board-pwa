@@ -87,7 +87,9 @@ export default {
           text: "Game",
           value: 'game.name'
         },
-        // { text: "Winner", value: 'winnerDisplay' },
+        {
+          text: "Winner",
+          value: 'winnerDisplay' },
         {
           text: "# Players",
           value: 'numPlayers',
@@ -100,6 +102,7 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch("members/fetch");
     this.$store.dispatch("plays/fetch");
   },
   computed: {

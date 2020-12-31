@@ -126,7 +126,7 @@ import axios from "axios";
     },
     methods: {
       cancel() {
-        this.$store.commit("clearRecordState");
+        this.$store.commit("record/clearRecordState");
         this.showDialog = !this.showDialog;
         
         // Go back to previous page

@@ -18,9 +18,14 @@ export default {
         return game.id === gameId;
       }).images.medium;
     },
-    idToMember(personId) {
-      return this.$root.$data.members.find((member) => {
-        return member.id === personId;
+    // idToMember(personId) {
+    //   return this.$root.$data.members.find((member) => {
+    //     return member.id === personId;
+    //   });
+    // },
+    idToMember(memberId) {
+      return this.$store.getters["members/members"].find((member) => {
+        return member.id === memberId;
       });
     },
     playWinnerMember(membersId, type, ifBoardWon) {

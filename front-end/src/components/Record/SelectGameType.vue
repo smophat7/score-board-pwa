@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Select Game Type</h2>
-    <h3 style="color:red;">At the moment, only the "Points" option is functional.</h3>
+    <h3 style="color:red;">At the moment, only the "Points" and "Ranked" options are functional.</h3>
     <v-container>
       <v-btn-toggle v-model="selection" rounded>
         <v-btn>Points</v-btn>
