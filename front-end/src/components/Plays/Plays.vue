@@ -6,14 +6,14 @@
         <v-spacer></v-spacer>
 
         <!-- Desktop Action Button (stays at the top) -->
-          <v-btn class="hidden-xs-only my-auto" color="secondary" rounded to="/record">
+          <v-btn class="hidden-xs-only my-auto" color="secondary" rounded to="record">
           <v-icon>mdi-plus</v-icon>
             Record Play
           </v-btn>
 
         <!-- Mobile FAB (position:fixed) -->
         <v-fab-transition>
-          <v-btn class="d-sm-none fab-mobile" color="secondary" fab fixed to="/record">
+          <v-btn class="d-sm-none fab-mobile" color="secondary" fab fixed to="record">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-fab-transition>

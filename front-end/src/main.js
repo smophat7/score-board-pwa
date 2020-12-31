@@ -6,6 +6,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import firebase from 'firebase/app';
 import 'firebase/auth';
+// import firebase from './firebase';
 
 // Font-Awesome - only the icons I need instead of them all
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -36,8 +37,7 @@ let data = {
 
 Vue.config.productionTip = false;
 
-// Firebase initialization
-
+// Firebase set-up
 var firebaseConfig = {
   apiKey: "AIzaSyC-ZIvbUdr1aG-2AKWtvyhLKmxV1-lTeRE",
   authDomain: "scoreboard-51b31.firebaseapp.com",
@@ -48,7 +48,9 @@ var firebaseConfig = {
   measurementId: "G-HT2H1WV990"
 };
 firebase.initializeApp(firebaseConfig);
-
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch("fetchUser", user);
+});
 
 new Vue({
   router,

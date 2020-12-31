@@ -4,13 +4,13 @@
     <!-- Top App Bar -->
     <v-app-bar app clipped-left color="primary" dark>
       <!-- Logo/Brand -->
-      <div class="d-flex align-center">
+      <router-link to="/" tag="div" class="d-flex align-center logo-container">
         <v-img alt="ScoreBoard Logo" class="shrink mr-2" contain
           :src="'../img/logo/default_2.png'" transition="scale-transition" width="160" />
-      </div>
+      </router-link>
       <v-spacer></v-spacer>
-      <!-- Profile picture + dropdown menu -->
-      <v-menu v-model="profileDropdown" close-on-click close-on-content-click offset-y transition="slide-y-transition">
+      <!-- Profile picture + dropdown menu (logged in) -->
+      <v-menu v-if="loggedIn" v-model="profileDropdown" close-on-click close-on-content-click offset-y transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">          
           <v-avatar v-bind="attrs" v-on="on">
             <v-img class="profile-picture-border" src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
@@ -22,16 +22,20 @@
             <span class="mx-auto">Settings</span>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item @click="" class="px-4">
+          <v-list-item @click="logOut" class="px-4">
             <v-icon class="pr-3">mdi-logout</v-icon>
             <span class="mx-auto">Log Out</span>
           </v-list-item>
         </v-list>
       </v-menu>
+      <!-- Log In button (not logged in) -->
+      <v-btn v-else to="/login" color="secondary">
+        Log In
+      </v-btn>
     </v-app-bar>
 
     <!-- Side Navigation Drawer on Large Devices -->
-    <v-navigation-drawer app clipped disable-route-watcher v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
+    <v-navigation-drawer app v-if="loggedIn" clipped disable-route-watcher v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
       
       <!-- Group Selection Dropdown -->
       <v-list-item v-if="!mini" class="group-select-item-height">
@@ -97,7 +101,7 @@
       </v-fab-transition> -->
 
     <!-- More menu -->
-    <v-bottom-sheet v-model="mobileDrawerBotom" class="d-sm-none">
+    <v-bottom-sheet v-if="loggedIn" v-model="mobileDrawerBotom" class="d-sm-none">
       <v-sheet class="text-center" height="200px">
         <v-container>
           <GroupSelectExpanded :dropBelow="false" :dropAbove="true" />
@@ -112,7 +116,7 @@
     </v-bottom-sheet>
 
     <!-- Mobile Navigation and Bottom Drawer-->
-    <v-bottom-navigation app class="d-sm-none" color="primary" grow>
+    <v-bottom-navigation app v-if="loggedIn" class="d-sm-none" color="primary" grow>
       <v-btn v-for="item in items" :key="item.title" link :to="item.path">
         <span>{{item.title}}</span>
         <v-icon>{{ item.icon }}</v-icon>
@@ -127,14 +131,13 @@
 </template>
 
 <script>
-import GroupSelectExpanded from "@/components/AppView/GroupSelectExpanded";
-import GroupSelectShrunk from "@/components/AppView/GroupSelectShrunk";
+import firebase from "firebase";
 
 export default {
   name: "App",
   components: {
-    GroupSelectExpanded,
-    GroupSelectShrunk,
+    GroupSelectExpanded: () => import("@/components/AppView/GroupSelectExpanded"),
+    GroupSelectShrunk: () => import("@/components/AppView/GroupSelectShrunk"),
   },
   data: () => ({
     profileDropdown: false,
@@ -165,13 +168,39 @@ export default {
       },
     ],
     mini: false,
-  })
+  }),
+  computed: {
+    loggedIn() {
+      return this.$store.state.user.loggedIn;
+    }
+  },
+  methods: {
+    // logOut() {
+    //   firebase
+    //     .auth()
+    //     .signOut()
+    //     .then(() => {
+    //       // console.log("router replace");
+    //       this.$router.replace({
+    //         name: "LandingPage"
+    //       });
+    //     });
+    // },
+    async logOut() {
+      await firebase.auth().signOut();
+      this.$router.replace({ name: "LandingPage" });
+    }
+  }
 };
 </script>
 
 
 <style>
 /* Globally applied styles */
+
+.logo-container {
+  cursor: pointer;
+}
 
 .profile-picture-border {
   border: solid 1.5px white;

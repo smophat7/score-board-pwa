@@ -11,5 +11,8 @@ export default new Vuetify({
         secondary: '#2e7d32',
       }
     }
-  }
+  },
+  // options: {
+  //   customProperties: true,
+  // },
 });
