@@ -4,9 +4,9 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import { auth } from './firebase';
 // import firebase from './firebase';
+
 
 // Font-Awesome - only the icons I need instead of them all
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -37,25 +37,24 @@ let data = {
 
 Vue.config.productionTip = false;
 
-// Firebase set-up
-var firebaseConfig = {
-  apiKey: "AIzaSyC-ZIvbUdr1aG-2AKWtvyhLKmxV1-lTeRE",
-  authDomain: "scoreboard-51b31.firebaseapp.com",
-  projectId: "scoreboard-51b31",
-  storageBucket: "scoreboard-51b31.appspot.com",
-  messagingSenderId: "900445771506",
-  appId: "1:900445771506:web:1ad2bbac1e4fc74b55a26b",
-  measurementId: "G-HT2H1WV990"
-};
-firebase.initializeApp(firebaseConfig);
-firebase.auth().onAuthStateChanged(user => {
-  store.dispatch("fetchUser", user);
-});
 
-new Vue({
-  router,
-  store,
-  data,
-  vuetify,
-  render: h => h(App)
-}).$mount("#app");
+let app
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      data,
+      vuetify,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+;})
+
+// new Vue({
+//   router,
+//   store,
+//   data,
+//   vuetify,
+//   render: h => h(App)
+// }).$mount("#app");
