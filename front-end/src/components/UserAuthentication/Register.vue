@@ -1,61 +1,81 @@
 <template>
-  <form @submit.prevent="submit">
-    <!-- <v-row> -->
-      <v-text-field
-        v-model="firstName"
-        :error-messages="firstNameErrors"
-        label="First Name"
-        required
-        @input="$v.firstName.$touch()"
-        @blur="$v.firstName.$touch()"
-        prepend-icon="mdi-account-circle"
-      ></v-text-field>
-      <v-text-field
-        v-model="lastName"
-        :error-messages="lastNameErrors"
-        label="Last Name"
-        required
-        @input="$v.lastName.$touch()"
-        @blur="$v.lastName.$touch()"
-        prepend-icon="mdi-account-circle"
-      ></v-text-field>
-      <v-text-field
-        v-model="email"
-        :error-messages="emailErrors"
-        label="Email"
-        required
-        @input="$v.email.$touch()"
-        @blur="$v.email.$touch()"
-        prepend-icon="mdi-mail"
-      ></v-text-field>
-      <v-text-field
-        v-model="password"
-        :type="showPassword ? 'text' : 'password'"
-        :error-messages="passwordErrors"
-        label="Password"
-        required
-        @input="$v.password.$touch()"
-        @blur="$v.password.$touch()"
-        prepend-icon="mdi-lock"
-        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append="showPassword = !showPassword"
-        ></v-text-field>
-      <v-text-field
-        v-model="confirmPassword"
-        :type="showConfirmPassword ? 'text' : 'password'"
-        :error-messages="confirmPasswordErrors"
-        label="Confirm Password"
-        required
-        @input="$v.confirmPassword.$touch()"
-        @blur="$v.confirmPassword.$touch()"
-        prepend-icon="mdi-lock"
-        :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append="showConfirmPassword = !showConfirmPassword"
-      ></v-text-field>
-      <v-btn color="primary" type="submit">Register</v-btn>
-
-    <!-- </v-row> -->
-  </form>
+  <v-container>
+    <h1>Registration</h1>
+    <form @submit.prevent="submit">
+      <v-row>
+        <v-col cols=12 sm=6>
+          <v-text-field
+            v-model="firstName"
+            :error-messages="firstNameErrors"
+            label="First Name"
+            required
+            @input="$v.firstName.$touch()"
+            @blur="$v.firstName.$touch()"
+            prepend-icon="mdi-badge-account-horizontal"
+          ></v-text-field>
+        </v-col>
+        <v-col cols=12 sm=6>
+          <v-text-field
+            v-model="lastName"
+            :error-messages="lastNameErrors"
+            label="Last Name"
+            required
+            @input="$v.lastName.$touch()"
+            @blur="$v.lastName.$touch()"
+            prepend-icon="mdi-badge-account-horizontal"
+          ></v-text-field>
+        </v-col>
+        <v-col cols=12>
+          <v-text-field
+            v-model="email"
+            :error-messages="emailErrors"
+            label="Email"
+            required
+            @input="$v.email.$touch()"
+            @blur="$v.email.$touch()"
+            prepend-icon="mdi-email"
+          ></v-text-field>
+        </v-col>
+        <v-col cols=12>
+          <v-text-field
+            v-model="password"
+            :type="showPassword ? 'text' : 'password'"
+            :error-messages="passwordErrors"
+            label="Password"
+            required
+            counter
+            @input="$v.password.$touch()"
+            @blur="$v.password.$touch()"
+            prepend-icon="mdi-lock"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
+            ></v-text-field>
+        </v-col>
+        <v-col cols=12>
+          <v-text-field
+            v-model="confirmPassword"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            :error-messages="confirmPasswordErrors"
+            label="Confirm Password"
+            required
+            counter
+            @input="$v.confirmPassword.$touch()"
+            @blur="$v.confirmPassword.$touch()"
+            prepend-icon="mdi-lock"
+            :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showConfirmPassword = !showConfirmPassword"
+          ></v-text-field>
+        </v-col>
+        <v-col cols=12>
+          <span v-if="error" class="red--text">{{error}}</span>
+          <v-btn color="primary" type="submit" :disabled="!noValidationErrors" class="float-right">Register</v-btn>
+        </v-col>
+        <v-col cols=12 class="text-right">
+          <router-link to="/login" class="login-link">Already have an account?</router-link>
+        </v-col>
+      </v-row>
+    </form>
+  </v-container>
 </template>
 
 
@@ -81,12 +101,19 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
-      status: null,
       showPassword: false,
       showConfirmPassword: false,
+      error: null,
     };
   },
   computed: {
+     noValidationErrors() {
+      return this.firstNameErrors.length === 0 &&
+        this.lastNameErrors.length === 0 &&
+        this.emailErrors.length === 0 &&
+        this.passwordErrors.length === 0 && 
+        this.confirmPasswordErrors.length === 0;
+    },
     firstNameErrors() {
       const errors = [];
       if (!this.$v.firstName.$dirty) return errors;
@@ -106,7 +133,7 @@ export default {
       !this.$v.email.required && errors.push("E-mail is required");
       return errors;
     },
-      passwordErrors() {
+    passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
       !this.$v.password.minLength &&
@@ -137,3 +164,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+.login-link {
+  text-decoration: none;
+}
+
+</style>

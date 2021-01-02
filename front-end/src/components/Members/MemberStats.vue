@@ -8,9 +8,9 @@
       <v-spacer></v-spacer>
       <v-btn color="error" class="mr-5" @click="deleteMember">
         <v-progress-circular v-if="loadingDelete"
-            indeterminate
-            color="white"
-          ></v-progress-circular>
+          indeterminate
+          color="white"
+        ></v-progress-circular>
         <v-icon v-else color="white">mdi-delete-forever</v-icon>
       </v-btn>
       <v-btn color="primary" @click="$store.commit('setIfMemberEditComponent', true)">
