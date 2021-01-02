@@ -89,11 +89,11 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const hideForAuth = to.matched.some(x => x.meta.hideForAuth);
   if (requiresAuth && !store.state.user.loggedIn) {
-    console.log("reroute to /login");
+    // console.log("reroute to /login");
     next('/login');
   }
   else if (hideForAuth && store.state.user.loggedIn) {
-    console.log("reroute to /collection");
+    // console.log("reroute to /collection");
     next('/collection');
   }
   else {

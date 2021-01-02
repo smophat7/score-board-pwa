@@ -99,7 +99,7 @@ export default {
           }
           if (play.type === this.$root.$data.enumGameType.POINTS.HIGH_WINS || play.type === this.$root.$data.enumGameType.POINTS
             .LOW_WINS) {
-              console.log(result);
+              // console.log(result);
           result += ": " + play.points[ids[0]] + " pts";
         }
         return result;

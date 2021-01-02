@@ -16,7 +16,6 @@ require("./models/Member");
 require("./models/Play");
 
 // Connecting to Firebase
-console.log(admin.credential.applicationDefault());
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
