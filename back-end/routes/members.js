@@ -2,12 +2,13 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var Member = mongoose.model("Member");
+const checkIfAuthenticated = require('../middleware/authentication');
 
 // Must use toJSON() instead of res.json() in order to have virtuals returned (lastName in this case)
 
 
 // Sends back an array of Members
-router.get("/", (req, res, next) => {
+router.get("/", checkIfAuthenticated, (req, res, next) => {
   Member.find(function(err, members) {
     if (err) { return next(err); }
     res.send(JSON.parse(JSON.stringify(members)));  // Should be able to do just res.send(toJSON(members)); but it said toJSON() is not a function

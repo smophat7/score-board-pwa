@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     user: {
       loggedIn: false,
       data: null,
+      idToken: null,
     },
     ifMemberEditComponent: false,     // Controls what to view within MemberDetails.vue
     ifGameEditComponent: false,       // Controls what to view within GameDetails.vue
@@ -25,6 +26,9 @@ const store = new Vuex.Store({
     },
     SET_USER(state, data) {
       state.user.data = data;
+    },
+    SET_USER_IDTOKEN(state, firebaseIdToken) {
+      state.user.idToken = firebaseIdToken;
     },
     setIfMemberEditComponent(state, isEditing) {
       state.ifMemberEditComponent = isEditing;
@@ -41,9 +45,13 @@ const store = new Vuex.Store({
           displayName: user.displayName,
           email: user.email
         });
-      } else {
+      }
+      else {
         context.commit("SET_USER", null);
       }
+    },
+    setIdToken(context, idToken) {
+      context.commit("SET_USER_IDTOKEN", idToken);
     }
   },
   modules: {

@@ -5,18 +5,16 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { auth } from './firebase';
-// import firebase from './firebase';
 
-
-// Font-Awesome - only the icons I need instead of them all
+// Font-Awesome - only the icons I need
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome';
-import { faChessRook } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faFistRaised } from '@fortawesome/free-solid-svg-icons';
-import { faTrophy } from '@fortawesome/free-solid-svg-icons';
-import { faDice } from '@fortawesome/free-solid-svg-icons';
-import { faChartBar } from '@fortawesome/free-solid-svg-icons';
+import { faChessRook, faPlus, faFistRaised, faTrophy, faDice, faChartBar } from '@fortawesome/free-solid-svg-icons';
+// import { faPlus } from '@fortawesome/free-solid-svg-icons';
+// import { faFistRaised } from '@fortawesome/free-solid-svg-icons';
+// import { faTrophy } from '@fortawesome/free-solid-svg-icons';
+// import { faDice } from '@fortawesome/free-solid-svg-icons';
+// import { faChartBar } from '@fortawesome/free-solid-svg-icons';
 library.add(faPlus);
 library.add(faChessRook);
 library.add(faFistRaised);
@@ -45,7 +43,6 @@ let data = {
 
 Vue.config.productionTip = false;
 
-
 let app
 auth.onAuthStateChanged(() => {
   if (!app) {
@@ -58,11 +55,3 @@ auth.onAuthStateChanged(() => {
     }).$mount('#app')
   }
 ;})
-
-// new Vue({
-//   router,
-//   store,
-//   data,
-//   vuetify,
-//   render: h => h(App)
-// }).$mount("#app");

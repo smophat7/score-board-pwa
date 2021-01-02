@@ -83,7 +83,7 @@
               color="white"
             ></v-progress-circular>
             <span v-else>
-              Reset Email
+              Send Reset Email
             </span>
           </v-btn>
         </v-card-actions>

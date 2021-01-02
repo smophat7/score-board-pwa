@@ -54,7 +54,10 @@ export default {
       context.commit("LOADING_STATUS_MEMBERS", true);
       let url = "/api/members";
       try {
-        let response = await axios.get(url);
+        console.log(context);
+        console.log(context.rootState);
+        console.log(context.rootState.user);
+        let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SAVE_MEMBERS", response.data);
       }
       catch (error) {

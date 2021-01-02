@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');                             // Use in development on local machine, don't know if I need it in production (security issue if I don't set proper whitelist)
+var admin = require('firebase-admin');
 
 // Connecting MongoDB / Mongoose
 var mongoose = require("mongoose");
@@ -14,9 +15,17 @@ require("./models/Game");
 require("./models/Member");
 require("./models/Play");
 
+// Connecting to Firebase
+console.log(admin.credential.applicationDefault());
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
+  databaseURL: "mongodb://localhost/scoreboard-dev",
+});
 
 // Custom routes (mini-apps)
 var indexRouter = require('./routes/index');
+// var authenticationRouter = require("./routes/authentication");
 var usersRouter = require('./routes/users');
 var collectionRouter = require("./routes/collection");
 var membersRouter = require("./routes/members");
@@ -37,10 +46,15 @@ app.use(cors());                                        // Use in development on
 
 // Custom routes (mini-apps)
 app.use('/api/', indexRouter);
+// app.use('api/authentication/', authenticationRouter);
 app.use('/api/users', usersRouter);
 app.use("/api/collection", collectionRouter);
 app.use("/api/members", membersRouter);
 app.use("/api/plays", playsRouter);
+
+// Middleware for authenticating Firebase users
+const checkIfAuthenticated = require('./middleware/authentication');
+app.use(checkIfAuthenticated);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

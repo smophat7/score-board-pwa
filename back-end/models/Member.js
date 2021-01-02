@@ -11,11 +11,11 @@ var MemberSchema = new mongoose.Schema({
   lastName: String,
   dateJoined: { type: Date, default: Date.now },
   profilePicture: String,
+  // firebaseUID: null,
 }, opts);
 
 MemberSchema.virtual("fullName").get(function() {
   return this.firstName + " " + this.lastName;
 });
-
 
 mongoose.model("Member", MemberSchema);
