@@ -1,0 +1,29 @@
+{
+  "name": "ScoreBoardsss",
+  "themeColor": "#3949ab",
+  "start_url": "index.html",
+  "msTileColor": "#3949ab",
+  "display": "fullscreen",
+  "background_color": "#3949ab",
+  "icons": [{
+      "src": "public/img/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "public/img/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "public/img/icons/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "public/img/icons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+}

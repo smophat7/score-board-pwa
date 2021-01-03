@@ -66,7 +66,7 @@ export default {
       context.commit("LOADING_STATUS_DETAIL_MEMBER", true);
       let url = "/api/members/" + id;
       try {
-        let response = await axios.get(url);
+        let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_MEMBER", response.data);
       }
       catch (error) {
@@ -93,7 +93,7 @@ export default {
       context.commit("LOADING_STATUS_UPDATE", true);
       let url = "/api/members/" + currentMemberId;
       try {
-        let response = await axios.put(url, updatedMember);
+        let response = await axios.put(url, updatedMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_MEMBER", response.data);
       }
       catch (error) {
@@ -111,7 +111,7 @@ export default {
     async delete(context, memberToDelete) {
       let url = "/api/members/" + memberToDelete._id;
       try {
-        await axios.delete(url);
+        await axios.delete(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);
