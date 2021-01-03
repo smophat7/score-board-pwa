@@ -18,19 +18,17 @@ const getAuthToken = (req, res, next) => {
 
 const checkIfAuthenticated = (req, res, next) => {
  getAuthToken(req, res, async () => {
-  //  console.log("inside checkIfAuthenticated");
     try {
       const { authToken } = req;
-      // console.log(await admin.auth().verifyIdToken(authToken));
+      console.log("authToken: " + authToken);
       const userInfo = await admin.auth().verifyIdToken(authToken);
-      // console.log("userInfo: " + userInfo);
+      console.log("userInfo: " + userInfo);
       req.authId = userInfo.uid;
       return next();
     }
     catch (error) {
-      // console.log(error);
+      console.log("authentication error: " + error);
       return res.status(401).send({ error: 'You are not authorized to make this request.' });
-      // return res.status(401).send(error);
     }
   });
 };
