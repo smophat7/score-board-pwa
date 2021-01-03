@@ -76,9 +76,10 @@ export default {
     },
     async add(context, newMember) {
       context.commit("LOADING_STATUS_ADD_NEW", true);
+      console.log("addNewMember: " + newMember);
       let url = "/api/members";
       try {
-        await axios.post(url, newMember);
+        await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);

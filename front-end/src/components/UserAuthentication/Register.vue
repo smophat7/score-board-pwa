@@ -151,7 +151,9 @@ export default {
   },
   methods: {
     async submit() {
+      // Create user with Firebase
       try {
+        console.log("About to create new user with email and password");
         let responseData = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password);
         let fullName = this.firstName + " " + this.lastName;
         responseData.user.updateProfile({ displayName: fullName });
@@ -160,6 +162,25 @@ export default {
       catch(error) {
         this.error = error.message;
       }
+
+      // Create new Member in MongoDB
+      let newMember = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
+        firebaseUID: this.$store.state.user.data.uid, 
+      }
+      console.log("New Member from registration's UID: " + newMember.firebaseUID);
+      await this.$store.dispatch("members/add", newMember);
+
+      // Create new Group with user-member in it
+      console.log("state.user.member: " + this.$store.state.user.member);
+      let newGroup = {
+        name: this.firstName + "'s Group",
+        members: [this.$store.state.user.member.id],
+      };
+      console.log("New Group from registration: " + newGroup);
+      await this.$store.dispatch("groups/add", newGroup);
     }
   }
 };

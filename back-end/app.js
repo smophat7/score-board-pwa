@@ -13,6 +13,7 @@ var db = mongoose.connection; // Suggested by https://developer.mozilla.org/en-U
 db.on("error", console.error.bind(console, "MongoDB connection error:")); // Suggested by https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 require("./models/Game");
 require("./models/Member");
+require("./models/Group");
 require("./models/Play");
 
 // Connecting to Firebase
@@ -34,6 +35,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var collectionRouter = require("./routes/collection");
 var membersRouter = require("./routes/members");
+var groupsRouter = require("./routes/groups");
 var playsRouter = require("./routes/plays");
 
 var app = express();
@@ -55,6 +57,7 @@ app.use('/api/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use("/api/collection", collectionRouter);
 app.use("/api/members", membersRouter);
+app.use("/api/groups", groupsRouter);
 app.use("/api/plays", playsRouter);
 
 // Middleware for authenticating Firebase users

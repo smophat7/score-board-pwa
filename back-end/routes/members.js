@@ -16,16 +16,27 @@ router.get("/", checkIfAuthenticated, (req, res, next) => {
 });
 
 
+// Returns member with certain Firebase UID
+router.get("/firebase/:uid", checkIfAuthenticated, (req, res, next) => {
+  Member.findOne({ firebaseUID: req.params.uid }, function(err, member) {
+    if (err) { return next(err); }
+    console.log("findOne:" + member);
+    res.json(member);
+  });
+});
+
+
 // Returns one Member for detailed viewing
-router.get("/:id", (req, res, next) => {
+router.get("/:id", checkIfAuthenticated, (req, res, next) => {
   Member.findById(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
     res.json(foundItem);
   });
 });
 
+
 // Saves a new Member to the DB and sends back the newly created Member
-router.post("/", (req, res, next) => {
+router.post("/", checkIfAuthenticated, (req, res, next) => {
   let newMember = new Member(req.body);
   newMember.save(function(err, member) {
     if (err) { return next(err); }
@@ -35,7 +46,7 @@ router.post("/", (req, res, next) => {
 
 
 // Deletes a Member permanently from the database and sends back the deleted Member
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkIfAuthenticated, (req, res, next) => {
   Member.findByIdAndDelete(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
     res.send(JSON.parse(JSON.stringify(foundItem)));
@@ -44,7 +55,7 @@ router.delete("/:id", (req, res, next) => {
 
 
 // Updates a Member and sends back the updated version (because "{ new: true }")
-router.put("/:id", (req, res, next) => {
+router.put("/:id", checkIfAuthenticated, (req, res, next) => {
   Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
     if (err) { return next(err); }
     res.send(JSON.parse(JSON.stringify(foundItem)));

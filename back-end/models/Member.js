@@ -11,7 +11,7 @@ var MemberSchema = new mongoose.Schema({
   lastName: String,
   dateJoined: { type: Date, default: Date.now },
   profilePicture: String,
-  // firebaseUID: null,
+  firebaseUID: String,
 }, opts);
 
 MemberSchema.virtual("fullName").get(function() {
