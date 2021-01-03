@@ -16,8 +16,14 @@ require("./models/Member");
 require("./models/Play");
 
 // Connecting to Firebase
+// admin.initializeApp({
+//   credential: admin.credential.applicationDefault(),
+//   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
+//   // databaseURL: "mongodb://localhost/scoreboard-dev",
+// });
+let serviceAccount = require("./scoreboard-e0619-firebase-adminsdk-qphdz-3f84713fd2.json");
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
+  credential: admin.credential.cert(serviceAccount)
   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
   // databaseURL: "mongodb://localhost/scoreboard-dev",
 });
