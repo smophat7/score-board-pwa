@@ -61,5 +61,14 @@ router.put("/addMemberToGroup/:id", (req, res, next) => {
   });
 });
 
+// Adds Member to a Group if they send a matching Join Code and sends back the updated version of the Group (because "{ new: true }")
+router.put("/addMemberToGroupByJoinCode/:id", (req, res, next) => {
+  Group.findOneAndUpdate({ joinCode: req.params.id}, {$push: {members: req.body._id}}, { new: true }, function(err, foundItem) {
+    if (err) { return next(err); }
+    console.log(foundItem);
+    res.json(foundItem);
+  });
+});
+
 
 module.exports = router;

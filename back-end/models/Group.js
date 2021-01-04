@@ -8,6 +8,7 @@ var GroupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Member",
   }],
+  joinCode: String,
 });
 
 mongoose.model("Group", GroupSchema);

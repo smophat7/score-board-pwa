@@ -175,6 +175,7 @@ export default {
       let newGroup = {
         name: this.firstName + "'s Group",
         members: [this.$store.state.user.member.id],
+        joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated alphanumeric string, 8-chars
       };
       await this.$store.dispatch("groups/add", newGroup);
       await this.$store.dispatch("groups/fetch");

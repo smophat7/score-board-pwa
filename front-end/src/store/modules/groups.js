@@ -87,6 +87,15 @@ export default {
         console.log(error);
       }
     },
+    async addMemberToGroupByJoinCode(context, joinCode) {
+      let url = "api/groups/addMemberToGroupByJoinCode/" + joinCode;
+      try {
+        await axios.put(url, context.rootState.user.member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+      }
+      catch(error) {
+        console.log(error);
+      }
+    },
     setCurrentGroup(context, currentGroup) {
       context.commit("SET_CURRENT_GROUP", currentGroup);
     },

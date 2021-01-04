@@ -35,6 +35,14 @@ const routes = [
     },
   },
   {
+    path: '/joinGroup',
+    name: 'JoinGroupWithJoinCode',
+    component: () => import("../components/GroupManagement/JoinGroup.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/analytics',
     name: 'Analytics',
     component: () => import("../components/Analytics/Analytics.vue"),
