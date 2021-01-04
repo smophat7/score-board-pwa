@@ -38,7 +38,7 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_GROUPS", true);
-      console.log("url for get groups: " + context.rootState.user.member.id)
+      console.log("memberId for get groups url: " + context.rootState.user.member.id)
       let url = "/api/groups/" + context.rootState.user.member.id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
@@ -65,6 +65,8 @@ export default {
       context.commit("LOADING_STATUS_ADD_NEW", true);
       let url = "/api/groups";
       try {
+        console.log("about to try to create a new group!");
+        console.log("group to add: " + group);
         await axios.post(url, group, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {

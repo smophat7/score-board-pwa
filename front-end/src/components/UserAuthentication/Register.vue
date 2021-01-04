@@ -67,7 +67,7 @@
           ></v-text-field>
         </v-col>
         <v-col cols=12>
-          <span v-if="error" class="red--text">{{error}}</span>
+          <span v-if="registrationError" class="red--text">{{registrationError}}</span>
           <v-btn color="primary" type="submit" :disabled="!noValidationErrors" class="float-right">Register</v-btn>
         </v-col>
         <v-col cols=12 class="text-right">
@@ -103,11 +103,14 @@ export default {
       confirmPassword: "",
       showPassword: false,
       showConfirmPassword: false,
-      error: null,
+      // error: null,
     };
   },
   computed: {
-     noValidationErrors() {
+    registrationError() {
+      return this.$store.state.registerErrorMessage;
+    },
+    noValidationErrors() {
       return this.firstNameErrors.length === 0 &&
         this.lastNameErrors.length === 0 &&
         this.emailErrors.length === 0 &&
@@ -151,18 +154,13 @@ export default {
   },
   methods: {
     async submit() {
-      // Create user with Firebase
-      try {
-        console.log("About to create new user with email and password");
-        let responseData = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password);
-        let fullName = this.firstName + " " + this.lastName;
-        responseData.user.updateProfile({ displayName: fullName });
-        this.$router.replace({ name: "Collection" });
-      }
-      catch(error) {
-        this.error = error.message;
-      }
-
+      // Create new user in Firebase Auth
+      let newUser = {
+        email: this.email,
+        password: this.password,
+      };
+      await this.$store.dispatch("createNewUser", newUser);
+      
       // Create new Member in MongoDB
       let newMember = {
         firstName: this.firstName,
@@ -170,8 +168,11 @@ export default {
         profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
         firebaseUID: this.$store.state.user.data.uid, 
       }
-      console.log("New Member from registration's UID: " + newMember.firebaseUID);
+      console.log("About to create New Member (with registration's UID): " + newMember.firebaseUID);
       await this.$store.dispatch("members/add", newMember);
+      console.log("created new member for registered user");
+      await this.$store.dispatch("setUserMember");
+      console.log("set user member");
 
       // Create new Group with user-member in it
       console.log("state.user.member: " + this.$store.state.user.member);
@@ -181,6 +182,10 @@ export default {
       };
       console.log("New Group from registration: " + newGroup);
       await this.$store.dispatch("groups/add", newGroup);
+
+      // Go to logged in view
+      this.$router.replace({ name: "Collection" });
+
     }
   }
 };

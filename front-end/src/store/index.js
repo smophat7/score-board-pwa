@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import firebase from "firebase";
 
 import collection from "./modules/collection";
 import members from "./modules/members";
@@ -18,6 +19,7 @@ const store = new Vuex.Store({
       idToken: null,
       member: null,
     },
+    registerErrorMessage: null,
     ifMemberEditComponent: false,     // Controls what to view within MemberDetails.vue
     ifGameEditComponent: false,       // Controls what to view within GameDetails.vue
   },
@@ -35,6 +37,9 @@ const store = new Vuex.Store({
     SET_USER_MEMBER(state, userMember) {
       state.user.member = userMember;
     },
+    SET_REGISTER_ERROR_MESSAGE(state, errorMessage) {
+      state.registerErrorMessage = errorMessage;
+    },
     setIfMemberEditComponent(state, isEditing) {
       state.ifMemberEditComponent = isEditing;
     },
@@ -43,6 +48,19 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+    async createNewUser(context, newUser) {
+      let email = newUser.email;
+      let password = newUser.password;
+      try {
+        console.log("About to create new user with email and password");
+        let responseData = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        let fullName = this.firstName + " " + this.lastName;
+        await responseData.user.updateProfile({ displayName: fullName });
+      }
+      catch(error) {
+        context.commit("SET_REGISTER_ERROR_MESSAGE", error.message);
+      }
+    },
     setUserData(context, user) {
       context.commit("SET_LOGGED_IN", user !== null);
       if (user) {
