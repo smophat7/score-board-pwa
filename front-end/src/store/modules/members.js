@@ -90,7 +90,7 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_ADD_NEW", false);
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     },
     async update(context, payload) {
       let currentMemberId = payload.currentMemberId;
@@ -105,7 +105,7 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_UPDATE", false);
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     },
     async cascadeDelete(context, memberToDelete) {
       context.commit("LOADING_STATUS_DELETE", true);
@@ -121,7 +121,7 @@ export default {
       catch (error) {
         console.log(error);
       }
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     },
   }
 }

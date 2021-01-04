@@ -116,9 +116,9 @@ export default {
   //   },
   // },
   methods: {
-    handleDetailClick(item) {
+    async handleDetailClick(item) {
       // this.detailMember = item;
-      this.$store.dispatch("members/fetchOneForDetail", item.id);
+      await this.$store.dispatch("members/fetchOneForDetail", item.id);
       this.detailDialog = true;
     },
     addNewMemberClick() {

@@ -8,9 +8,6 @@
 <script>
 export default {
   name: "MemberDetails",
-  props: {
-    // member: Object,
-  },
   components: {
     MemberEdit: () => import("@/components/Members/MemberEdit.vue"),
     MemberStats: () => import('@/components/Members/MemberStats.vue')

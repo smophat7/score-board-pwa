@@ -106,7 +106,7 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_DELETE", false);
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     },
     async deleteFromMember(context, memberToDelete) {
       context.commit("LOADING_STATUS_DELETE", true);
@@ -118,7 +118,7 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_DELETE", false);
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     },
     async deleteFromGame(context, gameToDelete) {
       context.commit("LOADING_STATUS_DELETE", true);
@@ -130,7 +130,7 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_DELETE", false);
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     }
   }
 }

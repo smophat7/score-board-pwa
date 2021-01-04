@@ -2,7 +2,8 @@
   <v-menu v-model="groupSelectDropdown" close-on-click close-on-content-click :top="dropAbove" :bottom="dropBelow" offset-y class="group-menu-align">
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" v-on="on" block color="secondary">
-        {{ currentGroup.name }}
+        <span v-if="currentGroup">{{ currentGroup.name }}</span>
+        <span v-else>No Group</span>
         <v-icon v-if="groupSelectDropdown">mdi-chevron-up</v-icon>
         <v-icon v-else>mdi-chevron-down</v-icon>
       </v-btn>

@@ -168,24 +168,20 @@ export default {
         profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
         firebaseUID: this.$store.state.user.data.uid, 
       }
-      // console.log("About to create New Member (with registration's UID): " + newMember.firebaseUID);
       await this.$store.dispatch("members/add", newMember);
-      // console.log("created new member for registered user");
       await this.$store.dispatch("setUserMember");
-      // console.log("set user member");
 
       // Create new Group with user-member in it
-      // console.log("state.user.member: " + this.$store.state.user.member);
       let newGroup = {
         name: this.firstName + "'s Group",
         members: [this.$store.state.user.member.id],
       };
-      // console.log("New Group from registration: " + newGroup);
       await this.$store.dispatch("groups/add", newGroup);
+      await this.$store.dispatch("groups/fetch");
+      await this.$store.dispatch("groups/setCurrentGroup", this.$store.state.groups.groups[0]);
 
       // Go to logged in view
       this.$router.replace({ name: "Collection" });
-
     }
   }
 };
