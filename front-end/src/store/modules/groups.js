@@ -73,7 +73,7 @@ export default {
         console.log(error);
       }
       context.commit("LOADING_STATUS_ADD_NEW", false);
-      context.dispatch("fetch");
+      await context.dispatch("fetch");
     },
     async addMemberToGroup(context, member) {
       console.log("member to update: " + member.id);
@@ -103,7 +103,7 @@ export default {
     //     console.log(error);
     //   }
     //   context.commit("LOADING_STATUS_UPDATE", false);
-    //   context.dispatch("fetch");
+    //   await context.dispatch("fetch");
     // },
     // async cascadeDelete(context, gameToDelete) {
     //   context.commit("LOADING_STATUS_DELETE", true);
@@ -119,7 +119,7 @@ export default {
     //   catch (error) {
     //     console.log(error);
     //   }
-    //   context.dispatch("fetch");
+    //   await context.dispatch("fetch");
     // },
   },
 }

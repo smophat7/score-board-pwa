@@ -56,9 +56,11 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_MEMBERS", true);
-      let url = "/api/members";
+      // let url = "/api/members";
+      let url = "/api/groups/" + context.rootState.groups.currentGroup._id + "/members"
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        console.log(JSON.stringify(response));
         context.commit("SAVE_MEMBERS", response.data);
       }
       catch (error) {

@@ -13,6 +13,16 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
   });
 });
 
+// Returns an array of Members in the given Group (:id is the Group Id)
+router.get("/:id/members", checkIfAuthenticated, (req, res, next) => {
+  Group.findById(req.params.id).populate("members").exec(function(err, group) {
+    if (err) { return next(err); }
+    console.log(group);
+    console.log(group.members);
+    res.json(group.members);
+  });
+});
+
 
 // // Returns one Game for detailed viewing
 // router.get("/:id", (req, res, next) => {
