@@ -55,6 +55,7 @@ export default {
         profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
       });
       await this.$store.dispatch("members/add", newMember);
+      await this.$store.dispatch("groups/addMemberToGroup", this.$store.state.members.newlyAddedMember);
       this.firstName = "",
       this.lastName = "",
       this.$emit("close-modal");

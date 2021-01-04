@@ -6,6 +6,7 @@ export default {
   state: {
     members: [],
     detailMember: null,
+    newlyAddedMember: null,
     loadingMembers: false,
     loadingDetailMember: false,
     loadingAddNew: false,
@@ -32,6 +33,9 @@ export default {
     },
     SET_DETAIL_MEMBER(state, member) {
       state.detailMember = member;
+    },
+    SET_NEWLY_ADDED_MEMBER(state, member) {
+      state.newlyAddedMember = member;
     },
     LOADING_STATUS_MEMBERS(state, ifLoading) {
       state.loadingMembers = ifLoading;
@@ -79,7 +83,8 @@ export default {
       console.log("addNewMember: " + newMember);
       let url = "/api/members";
       try {
-        await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        context.commit("SET_NEWLY_ADDED_MEMBER", response.data);
       }
       catch (error) {
         console.log(error);

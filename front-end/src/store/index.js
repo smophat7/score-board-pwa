@@ -78,13 +78,13 @@ const store = new Vuex.Store({
       context.commit("SET_USER_IDTOKEN", idToken);
     },
     async setUserMember(context) {
-      console.log("in setUserMember");
-      console.log("context.state.user.data.uid: ");
-      console.log(context.state.user.data.uid);
+      // console.log("in setUserMember");
+      // console.log("context.state.user.data.uid: ");
+      // console.log(context.state.user.data.uid);
       let url = "api/members/firebase/" + context.state.user.data.uid;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-        console.log("axios.get member from UID response.data: " + JSON.stringify(response.data));
+        // console.log("axios.get member from UID response.data: " + JSON.stringify(response.data));
         context.commit("SET_USER_MEMBER", response.data);
       }
       catch (error) {

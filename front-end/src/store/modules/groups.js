@@ -38,7 +38,7 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_GROUPS", true);
-      console.log("memberId for get groups url: " + context.rootState.user.member.id)
+      // console.log("memberId for get groups url: " + context.rootState.user.member.id)
       let url = "/api/groups/" + context.rootState.user.member.id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
@@ -74,6 +74,21 @@ export default {
       }
       context.commit("LOADING_STATUS_ADD_NEW", false);
       context.dispatch("fetch");
+    },
+    async addMemberToGroup(context, member) {
+      console.log("member to update: " + member.id);
+      // let memberId = member.id;
+      console.log(typeof memberId);
+      let url = "api/groups/addMemberToGroup/" + context.state.currentGroup._id;
+      try {
+        await axios.put(url, member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+      }
+      catch(error) {
+        console.log(error);
+      }
+    },
+    setCurrentGroup(context, currentGroup) {
+      context.commit("SET_CURRENT_GROUP", currentGroup);
     },
     // async update(context, payload) {
     //   let currentGameId = payload.currentGameId;

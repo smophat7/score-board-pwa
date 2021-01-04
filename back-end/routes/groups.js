@@ -42,13 +42,14 @@ router.post("/", checkIfAuthenticated, (req, res, next) => {
 // });
 
 
-// // Updates a Game and sends back the updated version (because "{ new: true }")
-// router.put("/:id", (req, res, next) => {
-//   Game.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
-//     if (err) { return next(err); }
-//     res.json(foundItem);
-//   });
-// });
+// Adds Member to a Group and sends back the updated version of the Group (because "{ new: true }")
+router.put("/addMemberToGroup/:id", (req, res, next) => {
+  Group.findByIdAndUpdate(req.params.id, {$push: {members: req.body._id}}, { new: true }, function(err, foundItem) {
+    if (err) { return next(err); }
+    console.log(foundItem);
+    res.json(foundItem);
+  });
+});
 
 
 module.exports = router;

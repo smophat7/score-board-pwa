@@ -6,7 +6,7 @@
         Details
       </div>
       <v-spacer></v-spacer>
-      <v-btn color="error" class="mr-5" @click="deleteMember">
+      <v-btn v-if="!isCurrentUser" color="error" class="mr-5" @click="deleteMember">
         <v-progress-circular v-if="loadingDelete"
           indeterminate
           color="white"
@@ -60,6 +60,7 @@ export default {
   computed: {
     member() { return this.$store.getters["members/detailMember"]; },
     loadingDelete() { return this.$store.state.members.loadingDelete; },
+    isCurrentUser() { return this.member.id == this.$store.state.user.member.id; },
   },
   methods: {
     async deleteMember() {

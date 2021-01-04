@@ -20,7 +20,7 @@ router.get("/", checkIfAuthenticated, (req, res, next) => {
 router.get("/firebase/:uid", checkIfAuthenticated, (req, res, next) => {
   Member.findOne({ firebaseUID: req.params.uid }, function(err, member) {
     if (err) { return next(err); }
-    console.log("findOne:" + member);
+    // console.log("findOne:" + member);
     res.json(member);
   });
 });
