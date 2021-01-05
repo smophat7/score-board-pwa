@@ -63,10 +63,24 @@ router.put("/addMemberToGroup/:id", (req, res, next) => {
 
 // Adds Member to a Group if they send a matching Join Code and sends back the updated version of the Group (because "{ new: true }")
 router.put("/addMemberToGroupByJoinCode/:id", (req, res, next) => {
-  Group.findOneAndUpdate({ joinCode: req.params.id}, {$push: {members: req.body._id}}, { new: true }, function(err, foundItem) {
+  Group.findOne({ joinCode: req.params.id}, function(err, foundItem) {
     if (err) { return next(err); }
-    console.log(foundItem);
-    res.json(foundItem);
+    if (!foundItem) {
+      res.status(404).send({ message: "No group found with this code. Try another code or try again later." });
+    }
+    else {
+      console.log("foundItem: " + foundItem);
+      if (foundItem.members.includes(req.body._id)) {
+        res.status(500).send({ message: "You're already a member of this group." });
+      }
+      else {
+        // Add member to the group
+        Group.findOneAndUpdate({ joinCode: req.params.id}, {$push: {members: req.body._id}}, { new: true }, function(err, foundItem) {
+          if (err) { return next(err); }
+          res.json(foundItem);
+        });
+      }
+    }
   });
 });
 

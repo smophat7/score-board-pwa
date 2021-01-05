@@ -10,6 +10,8 @@ export default {
     loadingAddNew: false,
     loadingUpdate: false,
     loadingDelete: false,
+    ifShowJoinGroup: false,
+    addByJoinCodeError: null,
   },
   getters: { },
   mutations: {
@@ -33,6 +35,12 @@ export default {
     },
     LOADING_STATUS_DELETE(state, ifLoading) {
       state.loadingDelete = ifLoading;
+    },
+    SET_SHOW_JOIN_GROUP(state, ifShow) {
+      state.ifShowJoinGroup = ifShow;
+    },
+    SET_ADD_BY_JOIN_CODE_ERROR(state, error) {
+      state.addByJoinCodeError = error;
     },
   },
   actions: {
@@ -65,8 +73,8 @@ export default {
       context.commit("LOADING_STATUS_ADD_NEW", true);
       let url = "/api/groups";
       try {
-        console.log("about to try to create a new group!");
-        console.log("group to add: " + group);
+        // console.log("about to try to create a new group!");
+        // console.log("group to add: " + group);
         await axios.post(url, group, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
@@ -76,9 +84,9 @@ export default {
       await context.dispatch("fetch");
     },
     async addMemberToGroup(context, member) {
-      console.log("member to update: " + member.id);
+      // console.log("member to update: " + member.id);
       // let memberId = member.id;
-      console.log(typeof memberId);
+      // console.log(typeof memberId);
       let url = "api/groups/addMemberToGroup/" + context.state.currentGroup._id;
       try {
         await axios.put(url, member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
@@ -93,11 +101,14 @@ export default {
         await axios.put(url, context.rootState.user.member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch(error) {
-        console.log(error);
+        context.commit("SET_ADD_BY_JOIN_CODE_ERROR", error.response.data.message);
       }
     },
     setCurrentGroup(context, currentGroup) {
       context.commit("SET_CURRENT_GROUP", currentGroup);
+    },
+    changeShowJoinGroup(context, ifShow) {
+      context.commit("SET_SHOW_JOIN_GROUP", ifShow);
     },
     // async update(context, payload) {
     //   let currentGameId = payload.currentGameId;

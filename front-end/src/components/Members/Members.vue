@@ -5,6 +5,40 @@
         <h1>Group</h1>
         <v-spacer></v-spacer>
 
+          <!-- Invite users (with modal with join code) -->
+          <v-btn class="mr-3 my-auto" color="secondary" rounded @click="inviteDialog = true">
+            <v-icon class="mr-2">mdi-share-variant</v-icon>
+            Invite
+          </v-btn>
+          <v-dialog v-model="inviteDialog" max-width="550px" transition="dialog-bottom-transition">
+            <template>
+              <v-card class="d-flex flex-column">
+                <v-card-title class="secondary headline">
+                  <div class="text-truncate white--text">
+                    Invite Users
+                  </div>
+                </v-card-title>
+                <v-card-text class="py-2">
+                  <v-row align="center" justify="center">
+                    <v-col class="text-center">
+                      <p>To invite ScoreBoard users to join this group, they can select "Join a Group" from the group selection dropdown and input this unique group join code:</p>
+                      <h4>{{ groupJoinCode }}</h4>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-spacer></v-spacer>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn block color="error" text @click="inviteDialog = false">
+                    <v-icon left color="error">mdi-close-circle</v-icon>
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
+
         <!-- Desktop Action Button (stays at the top) -->
           <v-btn class="hidden-xs-only my-auto" color="secondary" rounded @click="addNewMemberClick">
             <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
@@ -85,6 +119,7 @@ export default {
   data() {
     return {
       search: "",
+      inviteDialog: false,
       detailDialog: false,
       addNewMemberDialog: false,
       detailMember: null,
@@ -97,12 +132,15 @@ export default {
       ]
     };
   },
-  created() {
-    this.$store.dispatch("members/fetch");
+  async created() {
+    await this.$store.dispatch("members/fetch");
+    await this.$store.dispatch("groups/fetch");
+    await this.$store.dispatch("groups/setCurrentGroup");
   },
   computed: {
     members() { return this.$store.getters["members/members"]; },
     loadingMembers() { return this.$store.state.members.loadingMembers; },
+    groupJoinCode() { return this.$store.state.groups.currentGroup.joinCode; },
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },

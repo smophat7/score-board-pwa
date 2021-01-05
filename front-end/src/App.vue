@@ -8,43 +8,54 @@
         <v-img alt="ScoreBoard Logo" class="shrink mr-2" contain
           :src="'../img/logo/default_2.png'" transition="scale-transition" width="160" />
       </router-link>
-      <v-spacer></v-spacer>
-      <!-- Profile picture + dropdown menu (logged in) -->
-      <v-menu v-if="loggedIn" v-model="profileDropdown" close-on-click close-on-content-click offset-y transition="slide-y-transition">
-        <template v-slot:activator="{ on, attrs }">          
-          <v-avatar v-bind="attrs" v-on="on">
-            <v-img class="profile-picture-border" src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
-          </v-avatar>
-        </template>
-        <v-list>
-          <v-list-item @click="" class="px-4">
-            <v-icon class="pr-3">mdi-cog</v-icon>
-            <span class="mx-auto">Settings</span>
+      <!-- <v-spacer></v-spacer> -->
+      <v-row no-gutters>
+        <v-spacer></v-spacer>
+        <v-col v-if="loggedIn">
+          <!-- Group Selection Dropdown -->
+          <v-list-item class="group-select-item-height d-none d-sm-flex group-selection-justification">
+            <GroupSelectExpanded :dropBelow="true" :dropAbove="false" />
           </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item @click="logOut" class="px-4">
-            <v-icon class="pr-3">mdi-logout</v-icon>
-            <span class="mx-auto">Log Out</span>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        </v-col>        
+        <v-col class="align-self-center profile-column">
+          <!-- Profile picture + dropdown menu (logged in) -->
+          <v-menu v-if="loggedIn" v-model="profileDropdown" close-on-click close-on-content-click offset-y transition="slide-y-transition">
+            <template v-slot:activator="{ on, attrs }">          
+              <v-avatar v-bind="attrs" v-on="on">
+                <v-img class="profile-picture-border" src="https://randomuser.me/api/portraits/men/86.jpg"></v-img>
+              </v-avatar>
+            </template>
+            <v-list>
+              <v-list-item @click="" class="px-4">
+                <v-icon class="pr-3">mdi-cog</v-icon>
+                <span class="mx-auto">Settings</span>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item @click="logOut" class="px-4">
+                <v-icon class="pr-3">mdi-logout</v-icon>
+                <span class="mx-auto">Log Out</span>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>        
+      </v-row>
       <!-- Log In button (not logged in) -->
-      <v-btn v-else to="/login" color="secondary">
+      <v-btn v-if="!loggedIn" to="/login" color="secondary">
         Log In
       </v-btn>
     </v-app-bar>
 
     <!-- Side Navigation Drawer on Large Devices -->
-    <v-navigation-drawer app v-if="loggedIn" clipped disable-route-watcher v-model="sideDrawer" :width="200" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
+    <v-navigation-drawer app v-if="loggedIn" clipped disable-route-watcher v-model="sideDrawer" :width="175" :mini-variant.sync="mini" :permanent="$vuetify.breakpoint.smAndUp">
       
       <!-- Group Selection Dropdown -->
-      <v-list-item v-if="!mini" class="group-select-item-height">
+      <!-- <v-list-item v-if="!mini" class="group-select-item-height">
         <GroupSelectExpanded :dropBelow="true" :dropAbove="false" />
-      </v-list-item>
-      <v-list-item v-else class="group-select-padding group-select-item-height">
+      </v-list-item> -->
+      <!-- <v-list-item v-else class="group-select-padding group-select-item-height">
         <GroupSelectShrunk :dropBelow="true" :dropAbove="false" />
       </v-list-item>
-      <v-divider></v-divider>
+      <v-divider></v-divider> -->
 
       <!-- Side Menu Items -->
       <v-list>
@@ -138,6 +149,7 @@ export default {
   components: {
     GroupSelectExpanded: () => import("@/components/AppView/GroupSelectExpanded"),
     GroupSelectShrunk: () => import("@/components/AppView/GroupSelectShrunk"),
+    // JoinGroup: () => import("@/components/GroupManagement/JoinGroup"),
   },
   data: () => ({
     profileDropdown: false,
@@ -172,24 +184,13 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.state.user.loggedIn;
-    }
+    },
   },
   methods: {
-    // logOut() {
-    //   firebase
-    //     .auth()
-    //     .signOut()
-    //     .then(() => {
-    //       // console.log("router replace");
-    //       this.$router.replace({
-    //         name: "LandingPage"
-    //       });
-    //     });
-    // },
     async logOut() {
       await firebase.auth().signOut();
       this.$router.replace({ name: "LandingPage" });
-    }
+    },
   }
 };
 </script>
@@ -200,6 +201,14 @@ export default {
 
 .logo-container {
   cursor: pointer;
+}
+
+.group-selection-justification {
+  justify-content: flex-end;
+}
+
+.profile-column {
+  max-width: 55px !important;
 }
 
 .profile-picture-border {
