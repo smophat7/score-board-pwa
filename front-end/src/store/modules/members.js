@@ -57,7 +57,8 @@ export default {
     async fetch(context) {
       context.commit("LOADING_STATUS_MEMBERS", true);
       // let url = "/api/members";
-      let url = "/api/groups/" + context.rootState.groups.currentGroup._id + "/members"
+      let url = "/api/members/" + context.rootState.groups.currentGroup._id;
+      // let url = "/api/groups/" + context.rootState.groups.currentGroup._id + "/members"
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         // console.log(JSON.stringify(response));
@@ -86,6 +87,25 @@ export default {
       console.log("addNewMember.firstName: " + newMember.firstName);
       let url = "/api/members";
       try {
+        // let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        console.log("stringified response from adding new Mongo member: " + response.data);
+        context.commit("SET_NEWLY_ADDED_MEMBER", JSON.stringify(response.data));
+      }
+      catch (error) {
+        console.log(error);
+      }
+      context.commit("LOADING_STATUS_ADD_NEW", false);
+      // await context.dispatch("fetch");
+    },
+    async addToCurrentGroup(context, newMember) {
+      context.commit("LOADING_STATUS_ADD_NEW", true);
+      console.log("addNewMember: " + newMember);
+      console.log("addNewMember.firstName: " + newMember.firstName);
+      let groupId = context.rootState.groups.currentGroup._id;
+      let url = "/api/members/" + groupId;
+      try {
+        // let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         console.log("stringified response from adding new Mongo member: " + response.data);
         context.commit("SET_NEWLY_ADDED_MEMBER", JSON.stringify(response.data));

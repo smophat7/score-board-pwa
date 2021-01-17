@@ -46,7 +46,6 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_GROUPS", true);
-      // console.log("memberId for get groups url: " + context.rootState.user.member.id)
       let url = "/api/groups/" + context.rootState.user.member.id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
@@ -73,8 +72,6 @@ export default {
       context.commit("LOADING_STATUS_ADD_NEW", true);
       let url = "/api/groups";
       try {
-        // console.log("about to try to create a new group!");
-        // console.log("group to add: " + group);
         await axios.post(url, group, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
@@ -83,15 +80,18 @@ export default {
       context.commit("LOADING_STATUS_ADD_NEW", false);
       await context.dispatch("fetch");
     },
-    async addMemberToGroup(context, member) {
-      let url = "api/groups/addMemberToGroup/" + context.state.currentGroup._id;
-      try {
-        await axios.put(url, member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-      }
-      catch(error) {
-        console.log(error);
-      }
-    },
+    //  WASN'T QUITE WORKING WHEN I LAST LEFT IT
+    // async addMemberToGroup(context, member) {
+    //   console.log("newlyAddedMember to add to group is is: " + member);
+    //   console.log("current Group id is: " + context.state.currentGroup._id);
+    //   let url = "api/groups/addMemberToGroup/" + context.state.currentGroup._id;
+    //   try {
+    //     await axios.put(url, member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+    //   }
+    //   catch(error) {
+    //     console.log(error);
+    //   }
+    // },
     async addMemberToGroupByJoinCode(context, joinCode) {
       let url = "api/groups/addMemberToGroupByJoinCode/" + joinCode;
       try {

@@ -2,16 +2,17 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var Member = mongoose.model("Member");
+var Group = mongoose.model("Group");
 const checkIfAuthenticated = require('../middleware/authentication');
 
 // Must use toJSON() instead of res.json() in order to have virtuals returned (lastName in this case)
 
 
-// Sends back an array of Members
-router.get("/", checkIfAuthenticated, (req, res, next) => {
-  Member.find(function(err, members) {
+// Returns an array of Members by finding the group specified by the parameter id and finding its Members
+router.get("/:id", checkIfAuthenticated, (req, res, next) => {
+  Group.findById(req.params.id).populate("members").exec(function(err, group) {
     if (err) { return next(err); }
-    res.send(JSON.parse(JSON.stringify(members)));  // Should be able to do just res.send(toJSON(members)); but it said toJSON() is not a function
+    res.json(group.members);
   });
 });
 
@@ -46,6 +47,66 @@ router.post("/", checkIfAuthenticated, (req, res, next) => {
     res.send(JSON.parse(JSON.stringify(member)));  // Should be able to do just res.send(toJSON(members)); but it said toJSON() is not a function
   });
 });
+
+// Saves a new Member to the DB, adds them to the current group, and sends back the newly created Member
+router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
+  let newMember = new Member(req.body);
+
+  // Save new Member
+  newMember.save(function(err, member) {
+    if (err) { return next(err); }
+  });
+  
+  Group.findByIdAndUpdate(req.params.groupId, {$push: {members: newMember._id}}, { new: true }, function(err, foundItem) {
+    if (err) {
+      console.log("err:" + err)
+      return next(err);
+    }
+  });
+
+  res.send(newMember);
+});
+
+
+// // Registers a new member in one call. Creates the member object, adds a
+// // new group with them in it. Returns the new Member.
+// router.post("/register", checkIfAuthenticated, (req, res, next) => {
+//   console.log("in the register thing");
+//   let newMember = new Member(req.body);
+//   console.log("created new Member object!");
+
+  
+
+//   // Create a new groupo with the new Member in it
+//   let newGroup = new Group({
+//     name: newMember.firstName + "'s Group",
+//     members: [],
+//     joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated all-caps alphanumeric string, 8-chars
+//   });
+
+
+//   // Save new Member
+//   newMember.save(function(err, member) {
+//     console.log("in newMember.save() function");
+//     if (err) { return next(err); }
+//     console.log("made it past the newMember.save() error thing");
+//   });
+  
+//   console.log("saved new Member: " + JSON.stringify(newMember));
+//   newGroup.save(function(err, group) {
+//     if (err) { return next(err); }
+//   });
+//   console.log("saved new Group");
+
+//   Group.findByIdAndUpdate(newGroup._id, {$push: {members: newMember._id}}, { new: true }, function(err, foundItem) {
+//     if (err) {
+//       console.log("err:" + err)
+//       return next(err);
+//     }
+//   });
+
+//   res.send(newGroup);
+// });
 
 
 // Deletes a Member permanently from the database and sends back the deleted Member

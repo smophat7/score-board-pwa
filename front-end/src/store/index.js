@@ -48,16 +48,51 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+    // resetToBaseState(context) {
+    //   console.log("reseting to base state");
+    //   context.commit("SET_USER_IDTOKEN", null);
+    //   context.commit("SET_USER_MEMBER", null);
+    //   context.commit("SET_REGISTER_ERROR_MESSAGE", null);
+    //   context.dispatch("groups/setCurrentGroup", null, {root:true});
+    // },
+    // async registerNewUser(context, newUserInfo) {
+    //   // Create a new Firebase user
+    //   let newFirebaseUser = {
+    //     email: newUserInfo.email,
+    //     password: newUserInfo.password,
+    //   }
+    //   await context.dispatch('createNewFirebaseUser', newFirebaseUser);
+      
+    //   // Create a new MongoDB member and default with group
+    //   let newMongoMember = {
+    //     firstName: newUserInfo.firstName,
+    //     lastName: newUserInfo.lastName,
+    //     profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
+    //     firebaseUID: context.state.user.data.uid, 
+    //   };
+    //   let url = "api/members/register";
+    //   try {
+    //     let response = await axios.post(url, newMongoMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+    //     context.commit("SET_USER_MEMBER", response.data);
+    //   }
+    //   catch (error) {
+    //     console.log(error);
+    //   }
+
+    //   // Refreshing the app state accordingly
+    //   await context.dispatch("groups/fetch", {root:true});
+    //   await context.dispatch("groups/setCurrentGroup", context.rootState.groups.groups[0], {root:true});
+    // },
     async registerNewUser(context, newUserInfo) {
       let newFirebaseUser = {
         email: newUserInfo.email,
         password: newUserInfo.password,
       }
       await context.dispatch('createNewFirebaseUser', newFirebaseUser);
-      // console.log("just made a new Firebase user in registerNewUser");
+      console.log("just made a new Firebase user in registerNewUser");
 
       if (context.state.user.loggedIn) {
-        // console.log("about to create new Mongo Member");
+        console.log("about to create new Mongo Member");
         let newMongoMember = {
           firstName: newUserInfo.firstName,
           lastName: newUserInfo.lastName,
@@ -65,24 +100,24 @@ const store = new Vuex.Store({
           firebaseUID: context.state.user.data.uid, 
         };
         await context.dispatch("members/add", newMongoMember, {root:true});
-        // console.log("about to setUserMember from registration thing");
+        console.log("about to setUserMember from registration thing");
         await context.dispatch("setUserMember");
   
-        // console.log("about to create NewGroup");
+        console.log("about to create NewGroup");
         let newGroup = {
           name: newUserInfo.firstName + "'s Group",
           members: [context.state.user.member.id],
           joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated all-caps alphanumeric string, 8-chars
         };
         await context.dispatch("groups/add", newGroup, {root:true});
-        // console.log("about to fetch all the groups this member belongs to");
+        console.log("about to fetch all the groups this member belongs to");
         await context.dispatch("groups/fetch", {root:true});
-        // console.log("about to set the current group");
+        console.log("about to set the current group");
         await context.dispatch("groups/setCurrentGroup", context.rootState.groups.groups[0], {root:true});
       }
-      // else {
-      //   console.log("Not logged in, so I didn't try to make a new mongo member or group or anything. I'm assuming registration failed?");
-      // }
+      else {
+        console.log("Not logged in, so I didn't try to make a new mongo member or group or anything. I'm assuming registration failed?");
+      }
     },
     async createNewFirebaseUser(context, newUser) {
       let email = newUser.email;
