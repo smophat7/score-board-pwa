@@ -84,9 +84,6 @@ export default {
       await context.dispatch("fetch");
     },
     async addMemberToGroup(context, member) {
-      // console.log("member to update: " + member.id);
-      // let memberId = member.id;
-      // console.log(typeof memberId);
       let url = "api/groups/addMemberToGroup/" + context.state.currentGroup._id;
       try {
         await axios.put(url, member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});

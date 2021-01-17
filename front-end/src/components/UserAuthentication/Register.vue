@@ -154,35 +154,16 @@ export default {
   },
   methods: {
     async submit() {
-      // Create new user in Firebase Auth
-      let newUser = {
+      let newUserInfo = {
         email: this.email,
         password: this.password,
-      };
-      await this.$store.dispatch("createNewUser", newUser);
-      
-      // Create new Member in MongoDB
-      let newMember = {
         firstName: this.firstName,
         lastName: this.lastName,
-        profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
-        firebaseUID: this.$store.state.user.data.uid, 
-      }
-      await this.$store.dispatch("members/add", newMember);
-      await this.$store.dispatch("setUserMember");
-
-      // Create new Group with user-member in it
-      let newGroup = {
-        name: this.firstName + "'s Group",
-        members: [this.$store.state.user.member.id],
-        joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated alphanumeric string, 8-chars
       };
-      await this.$store.dispatch("groups/add", newGroup);
-      await this.$store.dispatch("groups/fetch");
-      await this.$store.dispatch("groups/setCurrentGroup", this.$store.state.groups.groups[0]);
-
-      // Go to logged in view
-      this.$router.replace({ name: "Collection" });
+      await this.$store.dispatch("registerNewUser", newUserInfo);
+      if (this.$store.state.user.loggedIn) {
+        this.$router.replace({ name: "Collection" });
+      }
     }
   }
 };

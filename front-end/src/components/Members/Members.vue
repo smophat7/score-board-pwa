@@ -135,7 +135,6 @@ export default {
   async created() {
     await this.$store.dispatch("members/fetch");
     await this.$store.dispatch("groups/fetch");
-    await this.$store.dispatch("groups/setCurrentGroup");
   },
   computed: {
     members() { return this.$store.getters["members/members"]; },

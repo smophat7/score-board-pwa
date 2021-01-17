@@ -82,17 +82,19 @@ export default {
     },
     async add(context, newMember) {
       context.commit("LOADING_STATUS_ADD_NEW", true);
-      // console.log("addNewMember: " + newMember);
+      console.log("addNewMember: " + newMember);
+      console.log("addNewMember.firstName: " + newMember.firstName);
       let url = "/api/members";
       try {
         let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-        context.commit("SET_NEWLY_ADDED_MEMBER", response.data);
+        console.log("stringified response from adding new Mongo member: " + response.data);
+        context.commit("SET_NEWLY_ADDED_MEMBER", JSON.stringify(response.data));
       }
       catch (error) {
         console.log(error);
       }
       context.commit("LOADING_STATUS_ADD_NEW", false);
-      await context.dispatch("fetch");
+      // await context.dispatch("fetch");
     },
     async update(context, payload) {
       let currentMemberId = payload.currentMemberId;

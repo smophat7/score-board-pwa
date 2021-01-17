@@ -100,9 +100,9 @@ export default {
       ]
     };
   },
-  created() {
-    this.$store.dispatch("members/fetch");
-    this.$store.dispatch("plays/fetch");
+  async created() {
+    await this.$store.dispatch("members/fetch");
+    await this.$store.dispatch("plays/fetch");
   },
   computed: {
     plays() { return this.$store.getters["plays/plays"]; },

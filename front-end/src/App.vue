@@ -26,6 +26,9 @@
               </v-avatar>
             </template>
             <v-list>
+              <v-subheader>
+                <span v-if="userMember != null" class="text-truncate">Hi, {{ userMember.firstName }}</span>
+                </v-subheader>
               <v-list-item @click="" class="px-4">
                 <v-icon class="pr-3">mdi-cog</v-icon>
                 <span class="mx-auto">Settings</span>
@@ -149,7 +152,11 @@ export default {
   components: {
     GroupSelectExpanded: () => import("@/components/AppView/GroupSelectExpanded"),
     GroupSelectShrunk: () => import("@/components/AppView/GroupSelectShrunk"),
-    // JoinGroup: () => import("@/components/GroupManagement/JoinGroup"),
+  },
+  async created() {
+    if (this.$store.state.user.member) {
+      await this.$store.dispatch("groups/fetch");
+    }
   },
   data: () => ({
     profileDropdown: false,
@@ -182,9 +189,8 @@ export default {
     mini: false,
   }),
   computed: {
-    loggedIn() {
-      return this.$store.state.user.loggedIn;
-    },
+    loggedIn() { return this.$store.state.user.loggedIn; },
+    userMember() { return this.$store.state.user.member; },
   },
   methods: {
     async logOut() {

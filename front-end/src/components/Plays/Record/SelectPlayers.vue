@@ -57,8 +57,8 @@ export default {
       search: "",
     };
   },
-  created() {
-    this.$store.dispatch("members/fetch");
+  async created() {
+    await this.$store.dispatch("members/fetch");
   },
   computed: {
     members() { return this.$store.getters["members/members"]; },

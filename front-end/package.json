@@ -13,7 +13,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.0",
     "@saeris/vue-spinners": "^1.0.8",
     "aos": "^3.0.0-beta.6",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "firebase": "^8.2.1",
