@@ -127,4 +127,15 @@ router.put("/:id", checkIfAuthenticated, (req, res, next) => {
 });
 
 
+// Sets the specific Member's 'onboardingComplete' boolean to true and sends back the updated version (because "{ new: true }")
+router.put("/onboardingStatus/:id", checkIfAuthenticated, (req, res, next) => {
+  console.log("req.body: " + JSON.stringify(req.body));
+  // Member.findByIdAndUpdate(req.params.id, { onboardingComplete: req.body }, { new: true }, function(err, foundItem) {
+  Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
+    if (err) { console.log(err); return next(err); }
+    res.send(JSON.parse(JSON.stringify(foundItem)));
+  });
+});
+
+
 module.exports = router;

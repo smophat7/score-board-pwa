@@ -21,9 +21,17 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import("../components/UserAuthentication/Register.vue"),
+    component: () => import("../components/UserAuthentication/Registration/Register.vue"),
     meta: {
       hideForAuth: true,
+    },
+  },
+  {
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import("../components/UserAuthentication/Registration/Onboarding.vue"),
+    meta: {
+      requiresAuth: true,
     },
   },
   {
@@ -40,6 +48,7 @@ const routes = [
     component: () => import("../components/GroupManagement/JoinGroup.vue"),
     meta: {
       requiresAuth: true,
+      requiresOnboardingComplete: true,
     },
   },
   {
@@ -48,6 +57,7 @@ const routes = [
     component: () => import("../components/Analytics/Analytics.vue"),
     meta: {
       requiresAuth: true,
+      requiresOnboardingComplete: true,
     },
   },
   {
@@ -56,6 +66,7 @@ const routes = [
     component: () => import("../components/Members/Members.vue"),
     meta: {
       requiresAuth: true,
+      requiresOnboardingComplete: true,
     },
   },
   {
@@ -64,6 +75,7 @@ const routes = [
     component: () => import("../components/Collection/Collection.vue"),
     meta: {
       requiresAuth: true,
+      requiresOnboardingComplete: true,
     },
   },
   {
@@ -72,6 +84,7 @@ const routes = [
     component: () => import("../components/Plays/Plays.vue"),
     meta: {
       requiresAuth: true,
+      requiresOnboardingComplete: true,
     },
   },
   {
@@ -80,6 +93,7 @@ const routes = [
     component: () => import("../components/Plays/Record/RecordGame.vue"),
     meta: {
       requiresAuth: true,
+      requiresOnboardingComplete: true,
     },
   },
 ];
@@ -92,17 +106,23 @@ const router = new VueRouter({
   }
 });
 
-// Navigation guards that check for authentication meta properties in routes
+// Navigation guards that check for authentication/onboarding meta properties in routes
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const hideForAuth = to.matched.some(x => x.meta.hideForAuth);
+  const requiresOnboardingComplete = to.matched.some(x => x.meta.requiresOnboardingComplete);
+
+  // Authentication checks
   if (requiresAuth && !store.state.user.loggedIn) {
-    // console.log("reroute to /login");
     next('/login');
   }
   else if (hideForAuth && store.state.user.loggedIn) {
-    // console.log("reroute to /collection");
     next('/collection');
+  }
+  
+  // Onboarding-complete check
+  if (requiresOnboardingComplete && !store.state.user.member.onboardingComplete) {
+    next('/onboarding');
   }
   else {
     next()
