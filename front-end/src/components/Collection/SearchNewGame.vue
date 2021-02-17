@@ -143,7 +143,8 @@ export default {
         });
     },
     async addToShelf(game) {
-      await this.$store.dispatch("collection/add", game);
+      await this.$store.dispatch("collection/addToCurrentGroup", game);
+      // await this.$store.dispatch("collection/add", game);
     },
     async removeFromShelf(game) {
       // Because this list is based off of the BoardGame Atlas API results which have

@@ -19,19 +19,19 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
 
 // Returns member with certain Firebase UID
 router.get("/firebase/:uid", checkIfAuthenticated, (req, res, next) => {
-  console.log("inside members/firebase/:uid thing");
+  // console.log("inside members/firebase/:uid thing");
   Member.findOne({ firebaseUID: req.params.uid }, function(err, member) {
-    console.log("inside findOne request");
-    console.log("uid: " + req.params.uid);
+    // console.log("inside findOne request");
+    // console.log("uid: " + req.params.uid);
     if (err) { return next(err); }
-    console.log("findOne:" + member);
+    // console.log("findOne:" + member);
     res.json(member);
   });
 });
 
 
 // Returns one Member for detailed viewing
-router.get("/:id", checkIfAuthenticated, (req, res, next) => {
+router.get("/single/:id", checkIfAuthenticated, (req, res, next) => {
   Member.findById(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
     res.json(foundItem);

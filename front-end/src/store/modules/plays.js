@@ -76,7 +76,7 @@ export default {
       context.commit("LOADING_STATUS_PLAYS", true);
       let url = "/api/plays";
       try {
-        let response = await axios.get(url);
+        let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SAVE_PLAYS", response.data);
       }
       catch (error) {
@@ -88,7 +88,7 @@ export default {
       context.commit("LOADING_STATUS_DETAIL_PLAY", true);
       let url = "/api/plays/" + id;
       try {
-        let response = await axios.get(url);
+        let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_PLAY", response.data);
       }
       catch (error) {
@@ -100,7 +100,7 @@ export default {
       context.commit("LOADING_STATUS_DELETE", true);
       let url = "/api/plays/" + playToDelete._id;
       try {
-        await axios.delete(url);
+        await axios.delete(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);
@@ -112,7 +112,7 @@ export default {
       context.commit("LOADING_STATUS_DELETE", true);
       let url = "/api/plays/fromMembers/" + memberToDelete._id;
       try {
-        await axios.delete(url);
+        await axios.delete(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);
@@ -124,7 +124,7 @@ export default {
       context.commit("LOADING_STATUS_DELETE", true);
       let url = "/api/plays/fromGames/" + gameToDelete._id;
       try {
-        await axios.delete(url);
+        await axios.delete(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);

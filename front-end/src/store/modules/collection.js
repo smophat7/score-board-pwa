@@ -37,9 +37,10 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_GAMES", true);
-      let url = "/api/collection";
+      // let url = "/api/collection";
+      let url = "/api/collection/" + context.rootState.groups.currentGroup._id;
       try {
-        let response = await axios.get(url);
+        let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SAVE_GAMES", response.data);
       }
       catch (error) {
@@ -49,15 +50,65 @@ export default {
     },
     async fetchOneForDetail(context, id) {
       context.commit("LOADING_STATUS_DETAIL_GAME", true);
-      let url = "/api/collection/" + id;
+      let url = "/api/collection/single/" + id;
       try {
-        let response = await axios.get(url);
+        let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_GAME", response.data);
       }
       catch (error) {
         console.log(error);
       }
       context.commit("LOADING_STATUS_DETAIL_GAME", false);
+    },
+    async addToCurrentGroup(context, game) {
+      context.commit("LOADING_STATUS_ADD_NEW", true);
+
+      // Only keep the attributes from the Board Game Atlas
+      // API that I have in my mongoose schema
+      let newGameFormatted = {
+        board_game_id: game.id,
+        name: game.name,
+        name_original: game.name,
+        year_published: game.year_published,
+        min_players: game.min_players,
+        max_players: game.max_players,
+        min_playtime: game.min_playtime,
+        max_playtime: game.max_playtime,
+        min_age: game.min_age,
+        description: game.description,
+        description_preview: game.description_preview,
+        image_url: game.image_url,
+        thumb_url: game.thumb_url,
+        images: game.images,
+        url: game.url,
+        price: game.price,
+        msrp: game.msrp,
+        discount: game.discount,
+        primary_publisher: game.primary_publisher.name,
+        developers: game.developers,
+        artists: game.artists,
+        names: game.names,
+        num_user_ratings: game.num_user_ratings,
+        average_user_rating: game.average_user_rating,
+        official_url: game.official_url,
+        rules_url: game.rules_url,
+        reddit_all_time_count: game.reddit_all_time_count,
+        reddit_week_count: game.reddit_week_count,
+        reddit_day_count: game.reddit_day_count,
+        historical_low_price: game.historical_low_price,
+        historical_low_date: game.historical_low_date,
+        rank: game.rank,
+        trending_rank: game.trending_rank,
+      };
+      let url = "/api/collection/" + context.rootState.groups.currentGroup._id;
+      try {
+        await axios.post(url, newGameFormatted, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+      }
+      catch (error) {
+        console.log(error);
+      }
+      context.commit("LOADING_STATUS_ADD_NEW", false);
+      await context.dispatch("fetch");
     },
     async add(context, game) {
       context.commit("LOADING_STATUS_ADD_NEW", true);
@@ -101,7 +152,7 @@ export default {
       };
       let url = "/api/collection";
       try {
-        await axios.post(url, newGameFormatted);
+        await axios.post(url, newGameFormatted, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);
@@ -115,7 +166,7 @@ export default {
       context.commit("LOADING_STATUS_UPDATE", true);
       let url = "/api/collection/" + currentGameId;
       try {
-        let response = await axios.put(url, updatedGame);
+        let response = await axios.put(url, updatedGame, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_GAME", response.data);
       }
       catch (error) {
@@ -133,7 +184,7 @@ export default {
     async delete(context, gameToDelete) {
       let url = "/api/collection/" + gameToDelete._id;
       try {
-        await axios.delete(url);
+        await axios.delete(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);

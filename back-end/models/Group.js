@@ -8,6 +8,10 @@ var GroupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Member",
   }],
+  games: [{                                     // Array of Games (even if there are none)
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Game",
+  }],
   joinCode: String,
 });
 

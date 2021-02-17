@@ -55,6 +55,7 @@ export default {
         name: this.groupName,
         date: new Date(),
         members: [this.$store.state.user.member.id],
+        games: [],
         joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),            // Randomly generated all-caps alphanumeric string, 8-chars
       }
       await this.$store.dispatch("groups/add", newGroup);

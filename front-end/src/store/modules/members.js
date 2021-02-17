@@ -71,7 +71,7 @@ export default {
     },
     async fetchOneForDetail(context, id) {
       context.commit("LOADING_STATUS_DETAIL_MEMBER", true);
-      let url = "/api/members/" + id;
+      let url = "/api/members/single/" + id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_MEMBER", response.data);
@@ -88,7 +88,7 @@ export default {
       let url = "/api/members";
       try {
         let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-        console.log("stringified response from adding new Mongo member: " + response.data);
+        // console.log("stringified response from adding new Mongo member: " + response.data);
         context.commit("SET_NEWLY_ADDED_MEMBER", JSON.stringify(response.data));
       }
       catch (error) {

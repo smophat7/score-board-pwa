@@ -7,7 +7,7 @@ var Group = mongoose.model("Group");
 
 // Returns an array of Groups the user is in (:id is user's Member id, not Firebase)
 router.get("/:id", checkIfAuthenticated, (req, res, next) => {
-  console.log("memberId: " + req.params.id);
+  // console.log("memberId: " + req.params.id);
   Group.find({ members: req.params.id }, function(err, groups) {
     if (err) { return next(err); }
     // console.log("groups: " + groups);

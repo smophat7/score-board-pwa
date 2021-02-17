@@ -152,7 +152,7 @@ export default {
       // Post new Pplay object to DB
       let url = "/api/plays";
       try {
-        await axios.post(url, newPlay);
+        await axios.post(url, newPlay, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }
       catch (error) {
         console.log(error);

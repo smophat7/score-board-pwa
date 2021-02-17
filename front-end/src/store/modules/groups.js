@@ -96,7 +96,8 @@ export default {
     async addMemberToGroupByJoinCode(context, joinCode) {
       let url = "api/groups/addMemberToGroupByJoinCode/" + joinCode;
       try {
-        await axios.put(url, context.rootState.user.member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        let response = await axios.put(url, context.rootState.user.member, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        context.dispatch("setCurrentGroup", response.data);
       }
       catch(error) {
         context.commit("SET_ADD_BY_JOIN_CODE_ERROR", error.response.data.message);
