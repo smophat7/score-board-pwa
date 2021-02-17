@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  name: "GroupSelectExpanded",
+  name: "GroupSelect",
   components: {
     JoinGroup: () => import("@/components/GroupManagement/JoinGroup"),
     CreateGroup: () => import("@/components/GroupManagement/CreateGroup"),

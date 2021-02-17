@@ -14,7 +14,7 @@
         <v-col v-if="loggedIn">
           <!-- Group Selection Dropdown -->
           <v-list-item class="group-select-item-height d-none d-sm-flex group-selection-justification">
-            <GroupSelectExpanded :dropBelow="true" :dropAbove="false" />
+            <GroupSelect :dropBelow="true" :dropAbove="false" />
           </v-list-item>
         </v-col>        
         <v-col class="align-self-center profile-column">
@@ -53,7 +53,7 @@
       
       <!-- Group Selection Dropdown -->
       <!-- <v-list-item v-if="!mini" class="group-select-item-height">
-        <GroupSelectExpanded :dropBelow="true" :dropAbove="false" />
+        <GroupSelect :dropBelow="true" :dropAbove="false" />
       </v-list-item> -->
       <!-- <v-list-item v-else class="group-select-padding group-select-item-height">
         <GroupSelectShrunk :dropBelow="true" :dropAbove="false" />
@@ -118,7 +118,7 @@
     <v-bottom-sheet v-if="loggedIn" v-model="mobileDrawerBotom" class="d-sm-none">
       <v-sheet class="text-center" height="200px">
         <v-container>
-          <GroupSelectExpanded :dropBelow="false" :dropAbove="true" />
+          <GroupSelect :dropBelow="false" :dropAbove="true" />
         </v-container>
         <div class="py-3">
           More options, pages, and account controls can go here
@@ -150,8 +150,7 @@ import firebase from "firebase";
 export default {
   name: "App",
   components: {
-    GroupSelectExpanded: () => import("@/components/AppView/GroupSelectExpanded"),
-    GroupSelectShrunk: () => import("@/components/AppView/GroupSelectShrunk"),
+    GroupSelect: () => import("@/components/AppView/GroupSelect"),
   },
   async created() {
     if (this.$store.state.user.member) {

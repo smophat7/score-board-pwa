@@ -59,7 +59,6 @@ export default {
       }
       await this.$store.dispatch("groups/add", newGroup);
       await this.$store.dispatch("groups/fetch");
-      this.$store.dispatch("groups/setCurrentGroup", newGroup);
       
       // Re-fetch everything (probably a way to specify only the active page, which would be better, just need to record that in state
       await this.$store.dispatch("members/fetch");

@@ -72,7 +72,8 @@ export default {
       context.commit("LOADING_STATUS_ADD_NEW", true);
       let url = "/api/groups";
       try {
-        await axios.post(url, group, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        let response = await axios.post(url, group, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
+        context.dispatch("setCurrentGroup", response.data);
       }
       catch (error) {
         console.log(error);
