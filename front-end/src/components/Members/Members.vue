@@ -2,7 +2,7 @@
   <v-container>
     <v-container>
       <v-row>
-        <h1>Group</h1>
+        <h1>{{currentGroup.name}}</h1>
         <v-spacer></v-spacer>
 
           <!-- Invite users (with modal with join code) -->
@@ -139,6 +139,7 @@ export default {
   computed: {
     members() { return this.$store.getters["members/members"]; },
     loadingMembers() { return this.$store.state.members.loadingMembers; },
+    currentGroup() { return this.$store.state.groups.currentGroup },
     groupJoinCode() { return this.$store.state.groups.currentGroup.joinCode; },
     computedHeaders() {
       return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);

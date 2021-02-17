@@ -121,8 +121,8 @@ const store = new Vuex.Store({
     },
     async completeOnboarding(context) {
       let url = "/api/members/onboardingStatus/" + context.state.user.member.id;
-      console.log("memberid: " + context.state.user.member.id);
-      console.log("idtoken: " + context.rootState.user.idToken);
+      // console.log("memberid: " + context.state.user.member.id);
+      // console.log("idtoken: " + context.rootState.user.idToken);
       try {
         // await axios.get("/api/members", { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         let response = await axios.put(url, { onboardingComplete: true }, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});

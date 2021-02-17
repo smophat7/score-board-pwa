@@ -124,6 +124,8 @@ router.beforeEach((to, from, next) => {
   if (requiresOnboardingComplete && !store.state.user.member.onboardingComplete) {
     next('/onboarding');
   }
+
+  // Default is just to continue
   else {
     next()
   }

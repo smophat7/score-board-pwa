@@ -19,12 +19,21 @@
           <v-icon class="pr-3">mdi-account-arrow-right</v-icon>
           <span class="mx-auto">Join a Group</span>
         </v-list-item>
-        <v-list-item @click="" class="px-4">
+        <v-list-item @click="showCreateGroup" class="px-4">
           <v-icon class="pr-3">mdi-plus</v-icon>
           <span class="mx-auto">Create a Group</span>
         </v-list-item>
       </v-list>
     </v-menu>
+    <v-dialog
+      v-model="createGroupDialog"
+      max-width="550px"
+      scrollable
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+      transition="dialog-bottom-transition"
+    >
+      <CreateGroup v-on:close-modal="createGroupDialog = false"/>
+    </v-dialog>
     <v-dialog
       v-model="joinGroupDialog"
       max-width="550px"
@@ -42,6 +51,7 @@ export default {
   name: "GroupSelectExpanded",
   components: {
     JoinGroup: () => import("@/components/GroupManagement/JoinGroup"),
+    CreateGroup: () => import("@/components/GroupManagement/CreateGroup"),
   },
   props: {
     dropAbove: Boolean,
@@ -51,6 +61,7 @@ export default {
     return {
       groupSelectDropdown: false,
       joinGroupDialog: false,
+      createGroupDialog: false,
     }
   },
   computed: {
@@ -68,6 +79,9 @@ export default {
     showJoinGroup() {
       this.joinGroupDialog = true;
     },
+    showCreateGroup() {
+      this.createGroupDialog = true;
+    }
   },
 }
 </script>

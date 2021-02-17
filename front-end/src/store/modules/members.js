@@ -99,14 +99,14 @@ export default {
     },
     async addToCurrentGroup(context, newMember) {
       context.commit("LOADING_STATUS_ADD_NEW", true);
-      console.log("addNewMember: " + newMember);
-      console.log("addNewMember.firstName: " + newMember.firstName);
+      // console.log("addNewMember: " + newMember);
+      // console.log("addNewMember.firstName: " + newMember.firstName);
       let groupId = context.rootState.groups.currentGroup._id;
       let url = "/api/members/" + groupId;
       try {
         // let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         let response = await axios.post(url, newMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-        console.log("stringified response from adding new Mongo member: " + response.data);
+        // console.log("stringified response from adding new Mongo member: " + response.data);
         context.commit("SET_NEWLY_ADDED_MEMBER", JSON.stringify(response.data));
       }
       catch (error) {
