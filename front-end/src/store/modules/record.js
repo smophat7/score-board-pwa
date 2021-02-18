@@ -149,8 +149,8 @@ export default {
         date: parseISO(context.state.recordDate, 'YYYY-MM-DD', new Date()),
       };
 
-      // Post new Pplay object to DB
-      let url = "/api/plays";
+      // Post new Play object to DB
+      let url = "/api/plays/" + context.rootState.groups.currentGroup._id;
       try {
         await axios.post(url, newPlay, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
       }

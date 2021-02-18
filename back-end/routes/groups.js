@@ -19,8 +19,6 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
 router.get("/:id/members", checkIfAuthenticated, (req, res, next) => {
   Group.findById(req.params.id).populate("members").exec(function(err, group) {
     if (err) { return next(err); }
-    console.log(group);
-    console.log(group.members);
     res.json(group.members);
   });
 });
@@ -74,7 +72,6 @@ router.put("/addMemberToGroupByJoinCode/:id", (req, res, next) => {
       res.status(404).send({ message: "No group found with this code. Try another code or try again later." });
     }
     else {
-      console.log("foundItem: " + foundItem);
       if (foundItem.members.includes(req.body._id)) {
         res.status(500).send({ message: "You're already a member of this group." });
       }

@@ -74,7 +74,7 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_PLAYS", true);
-      let url = "/api/plays";
+      let url = "/api/plays/" + context.rootState.groups.currentGroup._id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SAVE_PLAYS", response.data);
@@ -86,7 +86,7 @@ export default {
     },
     async fetchOneForDetail(context, id) {
       context.commit("LOADING_STATUS_DETAIL_PLAY", true);
-      let url = "/api/plays/" + id;
+      let url = "/api/plays/single/" + id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_DETAIL_PLAY", response.data);

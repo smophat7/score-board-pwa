@@ -34,7 +34,6 @@ router.get("/single/:id", checkIfAuthenticated, (req, res, next) => {
 
 // Saves a new Game to the DB, adds it to the current group, and sends back the newly created Game
 router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
-  console.log("go into the add to collection by group id thing");
   let newGame = new Game(req.body);
 
   // Save new Game

@@ -1,21 +1,30 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
-const checkIfAuthenticated = require('../middleware/authentication');
 var Play = mongoose.model("Play");
+var Group = mongoose.model("Group");
+const checkIfAuthenticated = require('../middleware/authentication');
 
 
-// Returns an array of all of the Plays
-router.get("/", checkIfAuthenticated, (req, res, next) => {
-  Play.find().lean().populate("game").sort({date: -1}).exec(function(err, play) {
+// Returns an array of Plays by finding the group specified by the parameter id and finding its Plays
+router.get("/:id", checkIfAuthenticated, (req, res, next) => {
+  Group.findById(req.params.id).populate("plays").exec(function(err, group) {
     if (err) { return next(err); }
-    res.json(play)
+    res.json(group.plays);
   });
 });
 
+// // Returns an array of all of the Plays
+// router.get("/", checkIfAuthenticated, (req, res, next) => {
+//   Play.find().lean().populate("game").sort({date: -1}).exec(function(err, play) {
+//     if (err) { return next(err); }
+//     res.json(play)
+//   });
+// });
+
 
 // Returns one Play for detailed viewing
-router.get("/:id", checkIfAuthenticated, (req, res, next) => {
+router.get("/single/:id", checkIfAuthenticated, (req, res, next) => {
   Play.findById(req.params.id, function(err, foundItem) {
     if (err) { return next(err); }
     res.json(foundItem);
@@ -30,6 +39,26 @@ router.post("/", checkIfAuthenticated, (req, res, next) => {
     if (err) { return next(err); }
     res.json(play);
   });
+});
+
+
+// Saves a new Play to the DB, adds it to the current group, and sends back the newly created Play
+router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
+  let newPlay = new Play(req.body);
+
+  // Save new Play
+  newPlay.save(function(err, play) {
+    if (err) { return next(err); }
+  });
+  
+  Group.findByIdAndUpdate(req.params.groupId, {$push: {plays: newPlay._id}}, { new: true }, function(err, foundItem) {
+    if (err) {
+      console.log("err:" + err)
+      return next(err);
+    }
+  });
+
+  res.send(newPlay);
 });
 
 
