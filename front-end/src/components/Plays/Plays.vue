@@ -54,7 +54,7 @@
       :fullscreen="$vuetify.breakpoint.xsOnly"
       transition="dialog-bottom-transition"
     >
-      <PlayDetails :play="detailPlay" v-on:close-modal="dialog = false"/>
+      <PlayDetails v-on:close-modal="dialog = false"/>
     </v-dialog>
 
   </v-container>
@@ -112,8 +112,12 @@ export default {
     },
   },
   methods: {
-    handleClick(item) {
-      this.detailPlay = item;
+    // handleClick(item) {
+    //   this.detailPlay = item;
+    //   this.dialog = true;
+    // },
+    async handleClick(item) {
+      await this.$store.dispatch("plays/fetchOneForDetail", item._id);
       this.dialog = true;
     },
   }

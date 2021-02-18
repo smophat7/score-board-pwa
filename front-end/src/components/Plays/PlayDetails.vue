@@ -73,11 +73,12 @@ import axios from "axios";
 
 export default {
   name: "PlayDetails",
-  props: {
-    play: Object,
-  },
+  // props: {
+  //   play: Object,
+  // },
   // mixins: [HistoryFunctions],
   computed: {
+    play() { return this.$store.getters["plays/detailPlay"]; },
     loadingDelete() { return this.$store.state.plays.loadingDelete; },
   },
   methods: {

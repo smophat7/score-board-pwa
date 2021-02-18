@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     plays: [],
-    detailGame: null,
+    detailPlay: null,
     loadingPlays: false,
     loadingDetailPlay: false,
     loadingAddNew: false,
@@ -43,9 +43,9 @@ export default {
         }
       });
     },
-    detailGame: state => {
-      state.detailGame["readableDateJoined"] = formatISO(parseISO(state.detailPlay.date, 'YYYY-MM-DD', new Date()), {representation: 'date'});
-      return state.detailGame;
+    detailPlay: state => {
+      state.detailPlay["readableDateJoined"] = formatISO(parseISO(state.detailPlay.date, 'YYYY-MM-DD', new Date()), {representation: 'date'});
+      return state.detailPlay;
     },
   },
   mutations: {
@@ -53,7 +53,7 @@ export default {
       state.plays = plays;
     },
     SET_DETAIL_PLAY(state, play) {
-      state.detailGame = play;
+      state.detailPlay = play;
     },
     LOADING_STATUS_PLAYS(state, ifLoading) {
       state.loadingPlays = ifLoading;
