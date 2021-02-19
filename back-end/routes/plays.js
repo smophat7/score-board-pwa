@@ -6,13 +6,23 @@ var Group = mongoose.model("Group");
 const checkIfAuthenticated = require('../middleware/authentication');
 
 
-// Returns an array of Plays by finding the group specified by the parameter id and finding its Plays (w/ deep .populate() syntax to get Game for each Play)
+// Returns an array of Plays by finding the group specified by the parameter id and finding its Plays (w/ deep .populate() syntax to populate deeper levels for each Play)
 router.get("/:id", checkIfAuthenticated, (req, res, next) => {
   Group.findById(req.params.id).populate({
     path : 'plays',
     populate : {
-      path : 'game'
-    }
+      path : 'game',
+    },
+  }).populate({
+    path : 'plays',
+    populate : {
+      path : 'players',
+    },
+  }).populate({
+    path : 'plays',
+    populate : {
+      path : 'winners',
+    },
   }).exec(function(err, group) {
     if (err) { return next(err); }
     res.json(group.plays);
@@ -60,6 +70,7 @@ router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
     if (err) { return next(err); }
   });
   
+  // Add new Play to the Group
   Group.findByIdAndUpdate(req.params.groupId, {$push: {plays: newPlay._id}}, { new: true }, function(err, foundItem) {
     if (err) {
       console.log("err:" + err)
@@ -69,6 +80,7 @@ router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
 
   res.send(newPlay);
 });
+
 
 
 // Deletes a Play permanently from the database and sends back the deleted Play

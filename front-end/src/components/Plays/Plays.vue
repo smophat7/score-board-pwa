@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import axios from "axios";
 // import { formatISO, parseISO } from 'date-fns';
 import { RingLoader } from "@saeris/vue-spinners";
 import HistoryFunctions from "@/mixins/HistoryFunctions.js";

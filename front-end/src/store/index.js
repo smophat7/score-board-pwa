@@ -96,6 +96,7 @@ const store = new Vuex.Store({
         let newMongoMember = {
           firstName: newUserInfo.firstName,
           lastName: newUserInfo.lastName,
+          fullName: newUserInfo.firstName + " " + newUserInfo.lastName,
           profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
           firebaseUID: context.state.user.data.uid,
         };
@@ -106,7 +107,7 @@ const store = new Vuex.Store({
         // console.log("about to create NewGroup");
         // let newGroup = {
         //   name: newUserInfo.firstName + "'s Group",
-        //   members: [context.state.user.member.id],
+        //   members: [context.state.user.member._id],
         //   joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated all-caps alphanumeric string, 8-chars
         // };
         // await context.dispatch("groups/add", newGroup, {root:true});
@@ -120,8 +121,8 @@ const store = new Vuex.Store({
       }
     },
     async completeOnboarding(context) {
-      let url = "/api/members/onboardingStatus/" + context.state.user.member.id;
-      // console.log("memberid: " + context.state.user.member.id);
+      let url = "/api/members/onboardingStatus/" + context.state.user.member._id;
+      // console.log("memberid: " + context.state.user.member._id);
       // console.log("idtoken: " + context.rootState.user.idToken);
       try {
         // await axios.get("/api/members", { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});

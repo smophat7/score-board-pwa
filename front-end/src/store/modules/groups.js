@@ -46,7 +46,7 @@ export default {
   actions: {
     async fetch(context) {
       context.commit("LOADING_STATUS_GROUPS", true);
-      let url = "/api/groups/" + context.rootState.user.member.id;
+      let url = "/api/groups/" + context.rootState.user.member._id;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SAVE_GROUPS", response.data);

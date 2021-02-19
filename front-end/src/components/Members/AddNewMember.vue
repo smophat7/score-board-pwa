@@ -52,6 +52,7 @@ export default {
       let newMember = new Object({
         firstName: this.firstName,
         lastName: this.lastName,
+        fullName: this.firstName + " " + this.lastName,
         profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
       });
       await this.$store.dispatch("members/addToCurrentGroup", newMember);

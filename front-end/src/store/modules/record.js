@@ -96,7 +96,7 @@ export default {
 
       // Create array of member ids instead of member objects to include in newPlay for DB
       let gamePlayers = context.state.players.map(playerObj => {
-        return playerObj.id;
+        return playerObj._id;
       });
 
       // Get an array of the winner(s) - Member IDs
@@ -121,7 +121,7 @@ export default {
           winners = membersWithWinningPoints;
           break;
         case "ranked":
-          for (let i = 0; i < context.state.recordRank; i++) {
+          for (let i = 0; i < context.state.recordRank.length; i++) {
             if (context.state.recordRank[i] != null) {
               winners = context.state.recordRank[i]
               break;

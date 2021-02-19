@@ -72,7 +72,7 @@ export default {
         lastName: this.lastName,
       });
       await this.$store.dispatch("members/update", {
-        currentMemberId: this.member.id,
+        currentMemberId: this.member._id,
         updatedMember: newMemberVersion
       });
       this.memberLocal = this.member;

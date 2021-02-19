@@ -106,7 +106,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { RingLoader } from "@saeris/vue-spinners";
 
 export default {
@@ -127,8 +126,9 @@ export default {
         { text: "Joined", value: 'readableDate', hide: 'xsOnly' },
         { text: "First", value: 'firstName' },
         { text: "Last", value: 'lastName' },
-        { text: "# Wins", value: 'totalWins' },
-        { text: "# Games Played", value: 'gamesPlayed', hide: 'smAndDown'},
+        { text: "Win %", value: 'winPercentageDisplay', hide: 'smAndDown'},
+        { text: "# Wins", value: 'numWins' },
+        { text: "# Games Played", value: 'numPlays', hide: 'smAndDown'},
       ]
     };
   },
@@ -156,7 +156,7 @@ export default {
   methods: {
     async handleDetailClick(item) {
       // this.detailMember = item;
-      await this.$store.dispatch("members/fetchOneForDetail", item.id);
+      await this.$store.dispatch("members/fetchOneForDetail", item._id);
       this.detailDialog = true;
     },
     addNewMemberClick() {

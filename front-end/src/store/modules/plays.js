@@ -24,7 +24,7 @@ export default {
           }
           if (play.winners.length === 1) {
             winnerDisplay = rootGetters["members/members"].find((member) => {
-              return member.id === play.winners[0];
+              return member._id === play.winners[0]._id;
             }).fullName;
           }
           else {

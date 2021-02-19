@@ -54,7 +54,7 @@ export default {
       let newGroup = {
         name: this.groupName,
         date: new Date(),
-        members: [this.$store.state.user.member.id],
+        members: [this.$store.state.user.member._id],
         games: [],
         joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),            // Randomly generated all-caps alphanumeric string, 8-chars
       }

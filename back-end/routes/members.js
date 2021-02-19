@@ -1,17 +1,43 @@
 var express = require('express');
+var _ = require('lodash');
 var router = express.Router();
 var mongoose = require("mongoose");
 var Member = mongoose.model("Member");
 var Group = mongoose.model("Group");
+var Play = mongoose.model("Play");
 const checkIfAuthenticated = require('../middleware/authentication');
+
 
 // Must use toJSON() instead of res.json() in order to have virtuals returned (lastName in this case)
 
 
-// Returns an array of Members by finding the group specified by the parameter id and finding its Members
+// // Returns an array of Members by finding the group specified by the parameter id and finding its Members
+// router.get("/:id", checkIfAuthenticated, (req, res, next) => {
+//   Group.findById(req.params.id).populate("members").exec(function(err, group) {
+//     if (err) { return next(err); }
+//     res.json(group.members);
+//   });
+// });
+
+// Returns an array of Members by finding the group specified by the parameter id and finding its Members (also calculates play/win counts/percentages and includes those)
 router.get("/:id", checkIfAuthenticated, (req, res, next) => {
-  Group.findById(req.params.id).populate("members").exec(function(err, group) {
+  Group.findById(req.params.id).populate("members").lean().exec(async function(err, group) {          // .lean() returns an POJO instead so I can add attributes
     if (err) { return next(err); }
+    // Calculate play/win counts/percentages for each member and return that as part of the object
+    for (const member of group.members) {
+      // Calculate play count
+      await Play.countDocuments({ players: member._id}, function(err, count) {
+        if (err) { return next(err); }
+        member['numPlays'] = count;
+      });
+      // Calculate win count
+      await Play.countDocuments({ winners: member._id}, function(err, count) {
+        if (err) { return next(err); }
+        member['numWins'] = count;
+      });
+      // Win percentage
+      member['winRate'] = member['numWins'] / member['numPlays'];
+    }
     res.json(group.members);
   });
 });
@@ -19,12 +45,8 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
 
 // Returns member with certain Firebase UID
 router.get("/firebase/:uid", checkIfAuthenticated, (req, res, next) => {
-  // console.log("inside members/firebase/:uid thing");
   Member.findOne({ firebaseUID: req.params.uid }, function(err, member) {
-    // console.log("inside findOne request");
-    // console.log("uid: " + req.params.uid);
     if (err) { return next(err); }
-    // console.log("findOne:" + member);
     res.json(member);
   });
 });

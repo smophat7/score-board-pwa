@@ -60,7 +60,7 @@ export default {
   computed: {
     member() { return this.$store.getters["members/detailMember"]; },
     loadingDelete() { return this.$store.state.members.loadingDelete; },
-    isCurrentUser() { return this.member.id == this.$store.state.user.member.id; },
+    isCurrentUser() { return this.member._id == this.$store.state.user.member._id; },
   },
   methods: {
     async deleteMember() {

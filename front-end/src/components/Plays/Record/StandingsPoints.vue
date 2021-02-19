@@ -15,7 +15,7 @@
         <v-text-field
         v-for="player in players"
         :key="player.id" :label="player.fullName"
-        v-model.number="pointAssignment[player.id]"
+        v-model.number="pointAssignment[player._id]"
         type="number">
         </v-text-field>
       </v-form>
@@ -46,7 +46,7 @@ export default {
       
       let pointsObj = new Object;
       this.players.forEach(player => {
-        let id = player.id;
+        let id = player._id;
         pointsObj[id] = null;
       });
       this.pointAssignment = pointsObj;

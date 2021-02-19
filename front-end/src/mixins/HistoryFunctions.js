@@ -20,7 +20,7 @@ export default {
     },
     // idToMember(personId) {
     //   return this.$root.$data.members.find((member) => {
-    //     return member.id === personId;
+    //     return member._id === personId;
     //   });
     // },
     idToMember(memberId) {

@@ -67,7 +67,7 @@
 
           <v-stepper-content step="5" class="stepper-contents ">
             <h2>Get Started</h2>
-            <h3>Create your first gamine group. All you need is a name (that you can change at any time).</h3>
+            <h3>Create your first gaming group. All you need is a name (that you can change at any time).</h3>
             <v-text-field v-model="groupName" label="Group Name" required></v-text-field>
             <p>Other ScoreBoard users can join your group by entering the unique join code that you can find on the Group page.</p>
           </v-stepper-content>
@@ -132,7 +132,7 @@ export default {
         let newGroup = {
           name: this.groupName,
           date: new Date(),
-          members: [this.$store.state.user.member.id],
+          members: [this.$store.state.user.member._id],
           games: [],
           joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),            // Randomly generated all-caps alphanumeric string, 8-chars
         }
