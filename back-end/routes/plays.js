@@ -29,6 +29,7 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
   });
 });
 
+
 // // Returns an array of all of the Plays
 // router.get("/", checkIfAuthenticated, (req, res, next) => {
 //   Play.find().lean().populate("game").sort({date: -1}).exec(function(err, play) {

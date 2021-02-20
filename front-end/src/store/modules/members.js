@@ -1,5 +1,5 @@
 import axios from "axios";
-import { add, formatISO, parseISO } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
 
 export default {
   namespaced: true,
@@ -19,12 +19,13 @@ export default {
         return {
           ...member,
           readableDate: formatISO(parseISO(member.dateJoined, 'YYYY-MM-DD', new Date()), {representation: 'date'}),
-          winPercentageDisplay: (member.winRate * 100).toString() + "%",
+          winPercentageDisplay: (member.winRate * 100).toFixed(1) + "%",
         }
       });
     },
     detailMember: state => {
       state.detailMember["readableDateJoined"] = formatISO(parseISO(state.detailMember.dateJoined, 'YYYY-MM-DD', new Date()), {representation: 'date'});
+      state.detailMember['winPercentageDisplay'] = (state.detailMember.winRate * 100).toFixed(1) + "%";
       return state.detailMember;
     },
   },

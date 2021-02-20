@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { RingLoader } from "@saeris/vue-spinners";
 
 export default {
@@ -92,6 +91,7 @@ export default {
       searchNewGamesDialog: false,
       headers: [
         { text: "Game", value: 'name'},
+        { text: "# Plays", value: 'numPlays'},
         { text: "Min. Players", value: 'min_players' },
         { text: "Max. Players", value: 'max_players', hide: 'xsOnly' },
         { text: "Min. Time (minutes)", value: 'min_playtime' },
@@ -106,9 +106,7 @@ export default {
   computed: {
     games() { return this.$store.state.collection.games; },
     loadingGames() { return this.$store.state.collection.loadingGames; },
-    computedHeaders() {
-      return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]);
-    },
+    computedHeaders() { return this.headers.filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide]); },
   },
   methods: {
     handleDetailClick(item) {

@@ -126,7 +126,7 @@ export default {
         { text: "Joined", value: 'readableDate', hide: 'xsOnly' },
         { text: "First", value: 'firstName' },
         { text: "Last", value: 'lastName' },
-        { text: "Win %", value: 'winPercentageDisplay', hide: 'smAndDown'},
+        { text: "Win %", value: 'winPercentageDisplay' },
         { text: "# Wins", value: 'numWins' },
         { text: "# Games Played", value: 'numPlays', hide: 'smAndDown'},
       ]

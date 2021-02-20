@@ -26,14 +26,9 @@
         </v-col>
         <v-col cols="12" sm="6" class="py-2">
           <div class="member-stats mx-auto">
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <p>{ An overview of their play history and fun stats (maybe some graphs and such) will go here. }</p>
-            <!-- <p>Wins: <strong>{{ member.totalWins }}</strong></p>
-            <p>Plays: <strong>{{ member.gamesPlayed }}</strong></p>
-            <p>Win Rate: <strong>{{ percentWin(member.totalWins, member.gamesPlayed) }}%</strong></p> -->
+            <p>Wins: <strong>{{ member.numWins }}</strong></p>
+            <p>Plays: <strong>{{ member.numPlays }}</strong></p>
+            <p>Win Rate: <strong>{{ member.winPercentageDisplay }}</strong></p>
           </div>
         </v-col>
       </v-row>

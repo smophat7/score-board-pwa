@@ -26,12 +26,12 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
     // Calculate play/win counts/percentages for each member and return that as part of the object
     for (const member of group.members) {
       // Calculate play count
-      await Play.countDocuments({ players: member._id}, function(err, count) {
+      await Play.countDocuments({ players: member._id }, function(err, count) {
         if (err) { return next(err); }
         member['numPlays'] = count;
       });
       // Calculate win count
-      await Play.countDocuments({ winners: member._id}, function(err, count) {
+      await Play.countDocuments({ winners: member._id }, function(err, count) {
         if (err) { return next(err); }
         member['numWins'] = count;
       });
@@ -54,9 +54,21 @@ router.get("/firebase/:uid", checkIfAuthenticated, (req, res, next) => {
 
 // Returns one Member for detailed viewing
 router.get("/single/:id", checkIfAuthenticated, (req, res, next) => {
-  Member.findById(req.params.id, function(err, foundItem) {
+  Member.findById(req.params.id).lean().exec(async function(err, member) {
     if (err) { return next(err); }
-    res.json(foundItem);
+    // Calculate play count
+    await Play.countDocuments({ players: member._id }, function(err, count) {
+      if (err) { return next(err); }
+      member['numPlays'] = count;
+    });
+    // Calculate win count
+    await Play.countDocuments({ winners: member._id }, function(err, count) {
+      if (err) { return next(err); }
+      member['numWins'] = count;
+    });
+    // Win percentage
+    member['winRate'] = member['numWins'] / member['numPlays'];
+    res.json(member);
   });
 });
 
