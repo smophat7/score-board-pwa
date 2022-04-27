@@ -144,7 +144,7 @@ import axios from "axios";
       },
       async submit() {
         this.$store.dispatch("record/add");
-
+        this.$store.commit("record/clearRecordState");
         // Navigate back to play history page
         this.$router.go(-1);
       }

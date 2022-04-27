@@ -22,7 +22,23 @@
           <h2>{{ play.game.name }}</h2>
           <h4>{{ play.readableDate }}</h4> 
         </v-col>
-        <!-- <v-col cols="12" sm="6" class="py-2"> -->
+        <v-col cols="12" sm="6" class="py-2">
+
+        <!-- Co-Op game -->
+        <div v-if="play.type == this.$root.$data.enumGameType.CO_OP">
+          <p>This was a co-op game. Will figure out displaying these results later.</p>
+        </div>
+
+        <!-- Ranked game -->
+        <div v-if="play.type == this.$root.$data.enumGameType.RANKED">
+          <v-list>
+            <v-lsit-item v-for="(members, index) in printRanking" :key="members[0]._id" >
+              <span>{{ index + 1 }}. {{ members }}</span>
+              <br>
+            </v-lsit-item>
+          </v-list>
+        </div>
+
 
           <!-- <div v-if="isCoop">
             <h3>Players</h3>
@@ -47,11 +63,10 @@
               </v-list-item>
             </v-list>
           </div> -->
-        <!-- </v-col> -->
+        </v-col>
       </v-row>
 
-      <p><strong>Description:</strong> {{ play.description }}</p>
-      <p><em>More details about the game (who won, how many points people get, etc.) will be here too. Just didn't have time to figure all that out just yet!</em></p>
+      <p v-if="play.description != null && play.description != ''"><strong>Description:</strong> {{ play.description }}</p>
     </v-card-text>
 
     <v-spacer></v-spacer>
@@ -68,8 +83,7 @@
 </template>
 
 <script>
-// import HistoryFunctions from "@/mixins/HistoryFunctions.js";
-import axios from "axios";
+import HistoryFunctions from "@/mixins/HistoryFunctions.js";
 
 export default {
   name: "PlayDetails",
@@ -80,6 +94,24 @@ export default {
   computed: {
     play() { return this.$store.getters["plays/detailPlay"]; },
     loadingDelete() { return this.$store.state.plays.loadingDelete; },
+    filteredRanking() { return this.play.ranking.filter(rank => rank.length > 0); },
+    printRanking() {
+      let filteredRanking = this.play.ranking.filter(rank => rank.length > 0);
+      let printRanking = [];
+      filteredRanking.forEach(rank => {
+        let ranking = rank[0].fullName;
+        if (ranking.length > 1) {
+          for (let i = 1; i < rank.length; i++) {
+            ranking += ", " + rank[i].fullName;
+          }
+        }
+        printRanking.push(ranking);
+      });
+      return printRanking;
+    },
+    printPoints() {
+      
+    }
   },
   methods: {
     deletePlay() {
