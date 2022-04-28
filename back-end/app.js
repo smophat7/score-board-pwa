@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');                             // Use in development on local machine, don't know if I need it in production (security issue if I don't set proper whitelist)
 var admin = require('firebase-admin');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger-output.json');
 
 // Connecting MongoDB / Mongoose
 var mongoose = require("mongoose");
@@ -51,6 +53,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());                                        // Use in development on local machine, don't know if I need it in production (security issue if I don't set proper whitelist)
 
+// API Swagger Documentation through Swagger-UI and Swagger-AutoGen
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Custom routes (mini-apps)
 app.use('/api/', indexRouter);
 // app.use('api/authentication/', authenticationRouter);
@@ -60,9 +65,9 @@ app.use("/api/members", membersRouter);
 app.use("/api/groups", groupsRouter);
 app.use("/api/plays", playsRouter);
 
-// Middleware for authenticating Firebase users
-const checkIfAuthenticated = require('./middleware/authentication');
-app.use(checkIfAuthenticated);
+// Middleware for authenticating Firebase users          //TODO If every endpoint checks for authentication, do I need it here?
+// const checkIfAuthenticated = require('./middleware/authentication');
+// app.use(checkIfAuthenticated);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

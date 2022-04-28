@@ -137,7 +137,7 @@ export default {
     await this.$store.dispatch("groups/fetch");
   },
   computed: {
-    members() { return this.$store.getters["members/members"]; },
+    members() { return this.$store.getters["members/members"]; },  //TODO Only get play history/stats for performance in the current group
     loadingMembers() { return this.$store.state.members.loadingMembers; },
     currentGroup() { return this.$store.state.groups.currentGroup },
     groupJoinCode() { return this.$store.state.groups.currentGroup.joinCode; },

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "start-swagger": "node ./swagger/swagger.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -15,6 +16,9 @@
     "jade": "~1.11.0",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.2",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "swagger-autogen": "^2.21.1",
+    "swagger-ui-express": "^4.3.0",
+    "yarn": "^1.22.18"
   }
 }
