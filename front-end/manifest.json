@@ -1,5 +1,5 @@
 {
-  "name": "ScoreBoardsss",
+  "name": "ScoreBoard",
   "themeColor": "#3949ab",
   "start_url": "index.html",
   "msTileColor": "#3949ab",
@@ -25,5 +25,5 @@
       "sizes": "32x32",
       "type": "image/png"
     }
-  ],
+  ]
 }
