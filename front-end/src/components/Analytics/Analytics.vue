@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <h1>Analytics.vue</h1>
+    <h1>Analytics</h1>
+    <p>Coming soon: Charts and graphs and all of that fun stuff with statistical insights that are both cool and hip.</p>
   </v-container>
 </template>
 

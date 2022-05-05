@@ -66,8 +66,8 @@ app.use("/api/groups", groupsRouter);
 app.use("/api/plays", playsRouter);
 
 // Middleware for authenticating Firebase users          //TODO If every endpoint checks for authentication, do I need it here?
-// const checkIfAuthenticated = require('./middleware/authentication');
-// app.use(checkIfAuthenticated);
+const checkIfAuthenticated = require('./middleware/authentication');
+app.use(checkIfAuthenticated);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

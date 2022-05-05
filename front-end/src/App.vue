@@ -29,7 +29,7 @@
               <v-subheader>
                 <span v-if="userMember != null" class="text-truncate">Hi, {{ userMember.firstName }}</span>
                 </v-subheader>
-              <v-list-item @click="" class="px-4">
+              <v-list-item @click="" disabled class="px-4">
                 <v-icon class="pr-3">mdi-cog</v-icon>
                 <span class="mx-auto">Settings</span>
               </v-list-item>
@@ -100,7 +100,7 @@
             </v-btn>
           </v-col>
           <v-col cols="12" class="text-center py-0">
-            <p style="color:white" class="my-auto">© 2020 Spencer Moffat</p>
+            <p style="color:white" class="my-auto">© 2022 Spencer Moffat</p>
           </v-col>
           <br>
         </v-row>

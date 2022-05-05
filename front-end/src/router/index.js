@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import firebase from "firebase";
 import store from "@/store/index.js";
 
 import firebase from 'firebase/app';
@@ -10,9 +9,6 @@ import 'firebase/auth';
 Vue.use(VueRouter);
 
 const routes = [
-  // { path: '/',
-  //   redirect: { name: 'Collection' },
-  // },
   {
     path: '/',
     name: 'LandingPage',

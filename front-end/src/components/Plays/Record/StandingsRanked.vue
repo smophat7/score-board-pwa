@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Rank Players</h2>
+    <p>Drag players to the appropriate boxes.</p>
 
     <!-- Using "(e, index)" instead of just "index" in the v-for makes it so that the -->
     <!-- resulting index value is 0-based instead of 1-based, which is a weird default -->

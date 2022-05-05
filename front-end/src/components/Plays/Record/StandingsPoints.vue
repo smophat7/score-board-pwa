@@ -1,25 +1,21 @@
 <template>
   <div>
     <h2>Assign Points</h2>
-      <v-btn-toggle class="my-4"
-          v-model="isLowWins"
-          mandatory
-          rounded
-        >
-          <v-btn>High wins</v-btn>
-          <v-btn>Low wins</v-btn>
-        </v-btn-toggle>
-    <v-container>
-      <v-form @submit.prevent>
-        <!-- <v-checkbox v-model="isLowWins" label="Highest points win"></v-checkbox> -->
-        <v-text-field
-        v-for="player in players"
-        :key="player.id" :label="player.fullName"
-        v-model.number="pointAssignment[player._id]"
-        type="number">
-        </v-text-field>
-      </v-form>
-    </v-container>
+    <p class="mt-5 mb-2">Did highest points win or was it kinda like golf?</p>
+      <v-btn-toggle v-model="isLowWins" mandatory class="mb-3">
+        <v-btn>High wins</v-btn>
+        <v-btn>Low wins</v-btn>
+      </v-btn-toggle>
+    <p class="mt-5 mb-0">How many points did everyone get?</p>
+    <v-form @submit.prevent>
+      <!-- <v-checkbox v-model="isLowWins" label="Highest points win"></v-checkbox> -->
+      <v-text-field
+      v-for="player in players"
+      :key="player.id" :label="player.fullName"
+      v-model.number="pointAssignment[player._id]"
+      type="number">
+      </v-text-field>
+    </v-form>
   </div>
 </template>
 

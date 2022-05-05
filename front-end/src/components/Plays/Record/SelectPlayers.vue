@@ -1,35 +1,34 @@
 <template>
   <div>
     <h2>Select Players</h2>
+    <p>Which members of your gaming group participated?</p>
 
     <!-- Selected players as chips and search bar -->
-    <v-container>
-      <v-row align="center" justify="start">
-        <!-- Selected players -->
-        <v-col v-for="(player) in selected" :key="player.id">
-          <v-chip label close @click:close="removeFromSelection(player)">
-            <v-avatar left>
-              <v-img :src="'../img/profiles/' + player.profilePicture" :alt="player.fullName + ' avatar icon'"></v-img>
-            </v-avatar>
-            {{ player.fullName }}
-          </v-chip>
+    <v-row align="center" justify="start">
+      <!-- Selected players -->
+      <v-col v-for="(player) in selected" :key="player.id">
+        <v-chip label close @click:close="removeFromSelection(player)">
+          <v-avatar left>
+            <v-img :src="'../img/profiles/' + player.profilePicture" :alt="player.fullName + ' avatar icon'"></v-img>
+          </v-avatar>
+          {{ player.fullName }}
+        </v-chip>
+      </v-col>
+      <!-- Search -->
+      <v-col
+          v-if="!allSelected"
+          cols="12"
+        >
+          <v-text-field
+            ref="search"
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            full-width
+            label="Search"
+            single-line
+          ></v-text-field>
         </v-col>
-        <!-- Search -->
-        <v-col
-            v-if="!allSelected"
-            cols="12"
-          >
-            <v-text-field
-              ref="search"
-              v-model="search"
-              prepend-inner-icon="mdi-magnify"
-              full-width
-              label="Search"
-              single-line
-            ></v-text-field>
-          </v-col>
-      </v-row>
-    </v-container>
+    </v-row>
 
     <v-divider></v-divider>
 

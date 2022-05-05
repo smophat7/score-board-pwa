@@ -1,14 +1,12 @@
 <template>
   <div>
     <h2>Select Game Type</h2>
-    <h3 style="color:red;">At the moment, only the "Points" and "Ranked" options are functional.</h3>
-    <v-container>
-      <v-btn-toggle v-model="selection" rounded>
+    <p>Did you keep score or was it more of a 1st, 2nd, 3rd situation?</p>
+      <v-btn-toggle v-model="selection">
         <v-btn>Points</v-btn>
         <v-btn>Ranked</v-btn>
-        <v-btn>Co-op</v-btn>
+        <!-- <v-btn>Co-op</v-btn> -->
       </v-btn-toggle>
-    </v-container>
   </div>
 </template>
 

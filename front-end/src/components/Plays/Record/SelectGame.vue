@@ -1,24 +1,21 @@
 <template>
   <div>
     <h2>Select Game</h2>
-    <v-container v-if="selected != null">
-      <v-chip label close @click:close="removeSelection">
-        <v-avatar left>
-          <v-img :src="selected.images.thumb" :alt="selected.name + ' game cover'"></v-img>
-        </v-avatar>
-        {{ selected.name }}
-      </v-chip>
-    </v-container>
-    <v-container>
-      <v-text-field
-        ref="search"
-        v-model="search"
-        prepend-inner-icon="mdi-magnify"
-        full-width
-        label="Search"
-        single-line
-      ></v-text-field>
-    </v-container>
+    <p>Which game did you play?</p>
+    <v-chip label close @click:close="removeSelection" v-if="selected != null">
+      <v-avatar left>
+        <v-img :src="selected.images.thumb" :alt="selected.name + ' game cover'"></v-img>
+      </v-avatar>
+      {{ selected.name }}
+    </v-chip>
+    <v-text-field
+      ref="search"
+      v-model="search"
+      prepend-inner-icon="mdi-magnify"
+      full-width
+      label="Search"
+      single-line
+    ></v-text-field>
 
     <v-divider></v-divider>
 
