@@ -97,7 +97,7 @@ const store = new Vuex.Store({
           firstName: newUserInfo.firstName,
           lastName: newUserInfo.lastName,
           fullName: newUserInfo.firstName + " " + newUserInfo.lastName,
-          profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
+          profilePicture: "default-profile.jpg",        // TODO supply individualized URL or picture data
           firebaseUID: context.state.user.data.uid,
         };
         await context.dispatch("members/add", newMongoMember, {root:true});
