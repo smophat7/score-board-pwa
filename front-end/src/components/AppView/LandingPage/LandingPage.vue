@@ -5,8 +5,8 @@
     <v-container class="header-container">
       <v-row class="header-row px-2 pt-1 pb-3">
         <div class="header-content mx-auto align-self-center px-2">
-          <h1 data-aos="zoom-out" data-aos-duration="1000">Words go here</h1>
-          <p data-aos="zoom-out" data-aos-duration="1000">More words that I can write and such.</p>
+          <h1 data-aos="zoom-out" data-aos-duration="1000">Data-backed bragging rights</h1>
+          <p data-aos="zoom-out" data-aos-duration="1000">Lose that 3x5 card and truly track your games</p>
           <img src="@/../public/img/red-dice.png" alt="dice" data-aos="zoom-out" data-aos-duration="1000">
           <br>
           <v-btn to="/register" color="primary">Sign Up</v-btn>
