@@ -61,15 +61,6 @@ router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
   res.send(newGame);
 });
 
-// // Saves a new Game to the DB and returns the newly created Game
-// router.post("/", checkIfAuthenticated, (req, res, next) => {
-//   let newGame = new Game(req.body);
-//   newGame.save(function(err, game) {
-//     if (err) { return next(err); }
-//     res.json(game);
-//   });
-// });
-
 
 // Deletes a Game permanently from the database and sends back the deleted Game
 router.delete("/:id", checkIfAuthenticated, (req, res, next) => {

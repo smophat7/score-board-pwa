@@ -1,8 +1,4 @@
 var mongoose = require("mongoose");
-// var Play = require("../routes/plays.js");
-// var Play = require("./Play.js");
-// var Plays = require("../routes/plays.js");
-// var PlaySchema = mongoose.model('Play').schema;
 
 // Schema to be used in the back-end/routes/collection.js API routes
 var GameSchema = new mongoose.Schema({
@@ -47,61 +43,5 @@ var GameSchema = new mongoose.Schema({
   rank: Number,
   trending_rank: Number,
 });
-
-
-// Delete function pre/middleware (deletes all plays that reference the game to be deleted)
-GameSchema.pre('findOneAndDelete', async function(next) {
-  // console.log("in the pre-hook!");
-  // console.log(this._conditions._id);
-  // console.log(this.id);
-
-  // Play.find(function(err, games) {
-  //   if (err) { return next(err); }
-  //   res.json(games);
-  // });
-  
-  // await this.model("Play").find(function(err, plays) {
-  //   console.log("in the Play.find()");
-  //   if (err) { return next(err); }
-  //   console.log(plays);
-  // });
-
-  // await this.model("Plays").deleteMany({ _id: this._conditions._id }, function(err, result) {
-  //   console.log("in the await deleteMany() function!");
-  //   if (err) { return next(err); }
-  //   console.log(result);
-  // });
-
-  next();
-});
-
-
-// // Delete function pre/middleware (deletes all plays that reference the game to be deleted)
-// GameSchema.pre('findOneAndDelete', async function() {
-//   console.log("in the pre-hook!");
-//   // console.log(Play);
-//   // console.log(this);
-//   // console.log(this.model("Play"));
-
-//   // console.log(mongoose.models.Play);
-//   // console.log(mongoose.modelSchemas.Play);
-  
-//   // Play.find(function(err, plays) {
-//   // this.model("Play").find(function(err, plays) {
-//   //   console.log("in the Play.find()");
-//   //   if (err) { return next(err); }
-//   //   console.log(plays);
-//   // });
-
-//   // await Play.deleteMany({ _id: ObjectId(this.id) }, function(err, result) {
-//   await mongoose.modelSchemas.Play.deleteMany({ _id: ObjectId(this.id) }, function(err, result) {
-//     console.log("in the await deleteMany() function!");
-//     if (err) { return next(err); }
-//     console.log(result);
-//   });
-// });
-
-// error handling??
-
 
 mongoose.model("Game", GameSchema);

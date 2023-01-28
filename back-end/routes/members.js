@@ -25,17 +25,17 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
     if (err) { return next(err); }
     // Calculate play/win counts/percentages for each member and return that as part of the object
     for (const member of group.members) {
-      // Calculate play count
+      // Calculate play count                                                               //TODO: restrict stats to current group only
       await Play.countDocuments({ players: member._id }, function(err, count) {
         if (err) { return next(err); }
         member['numPlays'] = count;
       });
-      // Calculate win count
+      // Calculate win count                                                                //TODO: restrict stats to current group only
       await Play.countDocuments({ winners: member._id }, function(err, count) {
         if (err) { return next(err); }
         member['numWins'] = count;
       });
-      // Win percentage
+      // Win percentage                                                                     //TODO: restrict stats to current group only
       member['winRate'] = member['numWins'] / member['numPlays'];
     }
     res.json(group.members);
@@ -56,17 +56,14 @@ router.get("/firebase/:uid", checkIfAuthenticated, (req, res, next) => {
 router.get("/single/:id", checkIfAuthenticated, (req, res, next) => {
   Member.findById(req.params.id).lean().exec(async function(err, member) {
     if (err) { return next(err); }
-    // Calculate play count
     await Play.countDocuments({ players: member._id }, function(err, count) {
       if (err) { return next(err); }
       member['numPlays'] = count;
     });
-    // Calculate win count
     await Play.countDocuments({ winners: member._id }, function(err, count) {
       if (err) { return next(err); }
       member['numWins'] = count;
     });
-    // Win percentage
     member['winRate'] = member['numWins'] / member['numPlays'];
     res.json(member);
   });
@@ -117,14 +114,6 @@ router.post("/:groupId", checkIfAuthenticated, (req, res, next) => {
 //     members: [],
 //     joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated all-caps alphanumeric string, 8-chars
 //   });
-
-
-//   // Save new Member
-//   newMember.save(function(err, member) {
-//     console.log("in newMember.save() function");
-//     if (err) { return next(err); }
-//     console.log("made it past the newMember.save() error thing");
-//   });
   
 //   console.log("saved new Member: " + JSON.stringify(newMember));
 //   newGroup.save(function(err, group) {
@@ -163,8 +152,6 @@ router.put("/:id", checkIfAuthenticated, (req, res, next) => {
 
 // Sets the specific Member's 'onboardingComplete' boolean to true and sends back the updated version (because "{ new: true }")
 router.put("/onboardingStatus/:id", checkIfAuthenticated, (req, res, next) => {
-  console.log("req.body: " + JSON.stringify(req.body));
-  // Member.findByIdAndUpdate(req.params.id, { onboardingComplete: req.body }, { new: true }, function(err, foundItem) {
   Member.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, foundItem) {
     if (err) { console.log(err); return next(err); }
     res.send(JSON.parse(JSON.stringify(foundItem)));

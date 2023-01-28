@@ -57,7 +57,7 @@
 
           <v-stepper-content step="3" class="stepper-contents ">
             <h2>Collection</h2>
-            <h3>Your digital gaming closet. Search from over _______ games or create your own.</h3>
+            <h3>Your digital gaming closet. Search from over 100,000 games or create your own.</h3>
           </v-stepper-content>
 
           <v-stepper-content step="4" class="stepper-contents ">

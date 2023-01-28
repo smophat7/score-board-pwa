@@ -19,21 +19,14 @@ require("./models/Group");
 require("./models/Play");
 
 // Connecting to Firebase
-// admin.initializeApp({
-//   credential: admin.credential.applicationDefault(),
-//   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
-//   // databaseURL: "mongodb://localhost/scoreboard-dev",
-// });
-let serviceAccount = require("./scoreboard-e0619-firebase-adminsdk-qphdz-3f84713fd2.json");
+let serviceAccount = require("./scoreboard-e0619-firebase-adminsdk-qphdz-3f84713fd2.json");   // dev
+// let serviceAccount = require("./scoreboard-e0619-firebase-adminsdk-qphdz-80d277d5d6.json");   // production
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
-  // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
-  // databaseURL: "mongodb://localhost/scoreboard-dev",
 });
 
 // Custom routes (mini-apps)
 var indexRouter = require('./routes/index');
-// var authenticationRouter = require("./routes/authentication");
 var usersRouter = require('./routes/users');
 var collectionRouter = require("./routes/collection");
 var membersRouter = require("./routes/members");
@@ -58,7 +51,6 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Custom routes (mini-apps)
 app.use('/api/', indexRouter);
-// app.use('api/authentication/', authenticationRouter);
 app.use('/api/users', usersRouter);
 app.use("/api/collection", collectionRouter);
 app.use("/api/members", membersRouter);

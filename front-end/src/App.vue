@@ -29,7 +29,7 @@
               <v-subheader>
                 <span v-if="userMember != null" class="text-truncate">Hi, {{ userMember.firstName }}</span>
                 </v-subheader>
-              <v-list-item @click="" disabled class="px-4">
+              <v-list-item disabled class="px-4">
                 <v-icon class="pr-3">mdi-cog</v-icon>
                 <span class="mx-auto">Settings</span>
               </v-list-item>
@@ -93,7 +93,7 @@
         <router-view class="full-screen" />
       </v-fade-transition>
       <v-footer color="primary">
-        <v-row justify="center">
+        <v-row justify="center" class="py-2">
           <v-col cols="12" class="text-center py-0">
             <v-btn icon color="white" exact href="https://github.com/smophat7/score-board-pwa" target="_blank">
               <v-icon>mdi-github</v-icon>
@@ -202,7 +202,7 @@ export default {
 
 
 <style>
-/* Globally applied styles */
+/**************** Globally applied styles ****************/
 
 .logo-container {
   cursor: pointer;

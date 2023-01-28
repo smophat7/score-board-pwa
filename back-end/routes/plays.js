@@ -6,7 +6,8 @@ var Group = mongoose.model("Group");
 const checkIfAuthenticated = require('../middleware/authentication');
 
 
-// Returns an array of Plays by finding the group specified by the parameter id and finding its Plays (w/ deep .populate() syntax to populate deeper levels for each Play)
+// Returns an array of Plays by finding the group specified by the parameter id and
+// finding its Plays (w/ deep .populate() syntax to populate deeper levels for each Play)
 router.get("/:id", checkIfAuthenticated, (req, res, next) => {
   Group.findById(req.params.id).populate({
     path : 'plays',
@@ -41,10 +42,6 @@ router.get("/:id", checkIfAuthenticated, (req, res, next) => {
 
 // Returns one Play for detailed viewing
 router.get("/single/:id", checkIfAuthenticated, (req, res, next) => {
-  // Play.findById(req.params.id, function(err, foundItem) {
-  //   if (err) { return next(err); }
-  //   res.json(foundItem);
-  // });
   Play.findById(req.params.id).populate("game").populate("players").populate("winners").exec(function(err, foundItem) {
     if (err) { return next(err); }
     res.json(foundItem);

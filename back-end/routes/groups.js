@@ -7,10 +7,8 @@ var Group = mongoose.model("Group");
 
 // Returns an array of Groups the user is in (:id is user's Member id, not Firebase)
 router.get("/:id", checkIfAuthenticated, (req, res, next) => {
-  // console.log("memberId: " + req.params.id);
   Group.find({ members: req.params.id }, function(err, groups) {
     if (err) { return next(err); }
-    // console.log("groups: " + groups);
     res.json(groups);
   });
 });
@@ -55,11 +53,8 @@ router.post("/", checkIfAuthenticated, (req, res, next) => {
 // // WASN'T QUITE WORKING WHEN I LAST LEFT IT
 // // Adds Member to a Group and sends back the updated version of the Group (because "{ new: true }")
 // router.put("/addMemberToGroup/:id", (req, res, next) => {
-//   console.log("member object to add to group is: " + req.body.id);
-//   console.log("REQREQREQREQREQREQREQREQREQREQREQ: " + JSON.stringify(req));
 //   Group.findByIdAndUpdate(req.params.id, {$push: {members: req.body._id}}, { new: true }, function(err, foundItem) {
 //     if (err) { return next(err); }
-//     console.log(foundItem);
 //     res.json(foundItem);
 //   });
 // });

@@ -48,51 +48,14 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    // resetToBaseState(context) {
-    //   console.log("reseting to base state");
-    //   context.commit("SET_USER_IDTOKEN", null);
-    //   context.commit("SET_USER_MEMBER", null);
-    //   context.commit("SET_REGISTER_ERROR_MESSAGE", null);
-    //   context.dispatch("groups/setCurrentGroup", null, {root:true});
-    // },
-    // async registerNewUser(context, newUserInfo) {
-    //   // Create a new Firebase user
-    //   let newFirebaseUser = {
-    //     email: newUserInfo.email,
-    //     password: newUserInfo.password,
-    //   }
-    //   await context.dispatch('createNewFirebaseUser', newFirebaseUser);
-      
-    //   // Create a new MongoDB member and default with group
-    //   let newMongoMember = {
-    //     firstName: newUserInfo.firstName,
-    //     lastName: newUserInfo.lastName,
-    //     profilePicture: "default-profile.jpg",        // EDIT to supply individualized URL or picture data
-    //     firebaseUID: context.state.user.data.uid, 
-    //   };
-    //   let url = "api/members/register";
-    //   try {
-    //     let response = await axios.post(url, newMongoMember, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-    //     context.commit("SET_USER_MEMBER", response.data);
-    //   }
-    //   catch (error) {
-    //     console.log(error);
-    //   }
-
-    //   // Refreshing the app state accordingly
-    //   await context.dispatch("groups/fetch", {root:true});
-    //   await context.dispatch("groups/setCurrentGroup", context.rootState.groups.groups[0], {root:true});
-    // },
     async registerNewUser(context, newUserInfo) {
       let newFirebaseUser = {
         email: newUserInfo.email,
         password: newUserInfo.password,
       }
       await context.dispatch('createNewFirebaseUser', newFirebaseUser);
-      console.log("just made a new Firebase user in registerNewUser");
 
       if (context.state.user.loggedIn) {
-        console.log("about to create new Mongo Member");
         let newMongoMember = {
           firstName: newUserInfo.firstName,
           lastName: newUserInfo.lastName,
@@ -101,20 +64,7 @@ const store = new Vuex.Store({
           firebaseUID: context.state.user.data.uid,
         };
         await context.dispatch("members/add", newMongoMember, {root:true});
-        console.log("about to setUserMember from registration thing");
         await context.dispatch("setUserMember");
-  
-        // console.log("about to create NewGroup");
-        // let newGroup = {
-        //   name: newUserInfo.firstName + "'s Group",
-        //   members: [context.state.user.member._id],
-        //   joinCode: Math.random().toString(36).substr(2, 8).toUpperCase(),          // Randomly generated all-caps alphanumeric string, 8-chars
-        // };
-        // await context.dispatch("groups/add", newGroup, {root:true});
-        // console.log("about to fetch all the groups this member belongs to");
-        // await context.dispatch("groups/fetch", {root:true});
-        // console.log("about to set the current group");
-        // await context.dispatch("groups/setCurrentGroup", context.rootState.groups.groups[0], {root:true});
       }
       else {
         console.log("Not logged in, so I didn't try to make a new mongo member or group or anything. I'm assuming registration failed?");
@@ -122,10 +72,7 @@ const store = new Vuex.Store({
     },
     async completeOnboarding(context) {
       let url = "/api/members/onboardingStatus/" + context.state.user.member._id;
-      // console.log("memberid: " + context.state.user.member._id);
-      // console.log("idtoken: " + context.rootState.user.idToken);
       try {
-        // await axios.get("/api/members", { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         let response = await axios.put(url, { onboardingComplete: true }, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
         context.commit("SET_USER_MEMBER", response.data);
       }
@@ -137,7 +84,6 @@ const store = new Vuex.Store({
       let email = newUser.email;
       let password = newUser.password;
       try {
-        // console.log("About to create new user with email and password");
         let responseData = await firebase.auth().createUserWithEmailAndPassword(email, password);
         let fullName = this.firstName + " " + this.lastName;
         await responseData.user.updateProfile({ displayName: fullName });
@@ -166,14 +112,9 @@ const store = new Vuex.Store({
       context.commit("SET_USER_IDTOKEN", idToken);
     },
     async setUserMember(context) {
-      // console.log("in setUserMember");
-      // console.log("context.state.user.data.uid: ");
-      // console.log(context.state.user.data.uid);
       let url = "api/members/firebase/" + context.state.user.data.uid;
       try {
         let response = await axios.get(url, { headers: { authorization: `Bearer ${context.rootState.user.idToken}` }});
-        // console.log("axios.get member from UID response.data: " + JSON.stringify(response.data));
-        // console.log("set_user_member response.data: " + response.data);
         context.commit("SET_USER_MEMBER", response.data);
       }
       catch (error) {

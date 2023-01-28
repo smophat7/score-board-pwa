@@ -9,16 +9,18 @@
     </v-card-title>
 
     <v-card-text>
-      <v-row align="center" justify="center">
-        <v-col cols="12">
-          <v-form v-on:submit.prevent="joinGroup">
-            <p>Members of the group you would like to join can provide you with the group's join code. They can see this by going to the "Group" page and clicking "Invite".</p>
-            <v-text-field v-model="joinCodeInput" label="Join Code" required></v-text-field>
-            <p class="red--text">{{ error }}</p>
-            <v-btn color="success" type="submit">Join</v-btn>
-          </v-form>
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row align="center" justify="center">
+          <v-col cols="12">
+            <v-form v-on:submit.prevent="joinGroup">
+              <p>Members of the group you would like to join can provide you with the group's join code. They can see this by going to the "Group" page and clicking "Invite".</p>
+              <v-text-field v-model="joinCodeInput" label="Join Code" required></v-text-field>
+              <p class="red--text">{{ error }}</p>
+              <v-btn color="success" type="submit">Join</v-btn>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card-text>
 
     <v-spacer></v-spacer>
